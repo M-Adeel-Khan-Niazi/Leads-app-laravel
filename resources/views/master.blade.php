@@ -44,8 +44,8 @@
           <img src="{{ asset('img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block float-left pr-4">Alexander Pierce</a>
-            <a href="#"><i class="fas fa-sign-out-alt"></i></a>
+          <a href="#" class="d-block float-left pr-4">{{ auth()->user()->name }}</a>
+            <a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i></a>
         </div>
       </div>
 

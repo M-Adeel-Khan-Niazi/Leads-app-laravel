@@ -21,6 +21,7 @@ use \App\Http\Controllers\AuthController;
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login-attempt', [AuthController::class, 'login_attempt'])->name('login_attempt');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/', [AppController::class, 'dashboard'])->name('home');
