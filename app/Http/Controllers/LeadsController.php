@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Leads;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LeadsController extends Controller
@@ -14,7 +15,8 @@ class LeadsController extends Controller
      */
     public function index()
     {
-        //
+        $leads = Leads::latest()->paginate(10);
+        return view('leads.index', compact('leads'));
     }
 
     /**
@@ -24,24 +26,25 @@ class LeadsController extends Controller
      */
     public function create()
     {
-        //
+        $agents = User::where('role', 'agent')->get();
+        return view('leads.form', compact('agents'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Leads  $leads
+     * @param \App\Models\Leads $leads
      * @return \Illuminate\Http\Response
      */
     public function show(Leads $leads)
@@ -52,7 +55,7 @@ class LeadsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Leads  $leads
+     * @param \App\Models\Leads $leads
      * @return \Illuminate\Http\Response
      */
     public function edit(Leads $leads)
@@ -63,8 +66,8 @@ class LeadsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Leads  $leads
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Leads $leads
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Leads $leads)
@@ -75,7 +78,7 @@ class LeadsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Leads  $leads
+     * @param \App\Models\Leads $leads
      * @return \Illuminate\Http\Response
      */
     public function destroy(Leads $leads)

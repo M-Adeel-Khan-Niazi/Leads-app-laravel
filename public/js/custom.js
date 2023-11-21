@@ -4,6 +4,9 @@ $(document).ready(function ($) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    $('.select2').select2();
+
     var Toast = Swal.mixin({
         toast: true,
         position: 'top-end',

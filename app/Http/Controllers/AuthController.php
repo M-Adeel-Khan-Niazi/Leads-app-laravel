@@ -22,7 +22,10 @@ class AuthController extends Controller
             return redirect()->back()->with('error', 'Credentials not match!');
         }
         $request->session()->regenerate();
-        return redirect()->intended('/');
+        if (Auth::user()->role === 'admin')
+            return redirect()->intended('/');
+        else
+            return redirect()->intended('/leads');
     }
 
     public function logout()

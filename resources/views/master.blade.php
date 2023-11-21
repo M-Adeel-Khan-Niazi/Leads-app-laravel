@@ -11,8 +11,10 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -54,31 +56,32 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="{{ route('home') }}" class="nav-link {{ empty(request()->segments()) ? 'active': '' }}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-          </li>
-            <li class="nav-item">
-            <a href="{{ route('agents.index') }}" class="nav-link {{ !empty(request()->segments()) && request()->segments()[0] == 'agents' ? 'active': '' }}">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Agents
-              </p>
-            </a>
-            </li>
-            <li class="nav-item">
-            <a href="{{ route('installers.index') }}" class="nav-link {{ !empty(request()->segments()) && request()->segments()[0] == 'installers' ? 'active': '' }}">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                  Installers
-              </p>
-            </a>
-            </li>
-            <li class="nav-item">
+            @if(auth()->user()->role === 'admin')
+              <li class="nav-item">
+                <a href="{{ route('home') }}" class="nav-link {{ empty(request()->segments()) ? 'active': '' }}">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                    Dashboard
+                  </p>
+                </a>
+              </li>
+                <li class="nav-item">
+                <a href="{{ route('agents.index') }}" class="nav-link {{ !empty(request()->segments()) && request()->segments()[0] == 'agents' ? 'active': '' }}">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                    Agents
+                  </p>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="{{ route('installers.index') }}" class="nav-link {{ !empty(request()->segments()) && request()->segments()[0] == 'installers' ? 'active': '' }}">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                      Installers
+                  </p>
+                </a>
+                </li>
+                <li class="nav-item">
                 <a href="{{ route('funders.index') }}" class="nav-link {{ !empty(request()->segments()) && request()->segments()[0] == 'funders' ? 'active': '' }}">
               <i class="nav-icon fas fa-users"></i>
               <p>
@@ -86,6 +89,7 @@
               </p>
             </a>
           </li>
+            @endif
             <li class="nav-item">
                 <a href="{{ route('leads.index') }}" class="nav-link {{ !empty(request()->segments()) && request()->segments()[0] == 'leads' ? 'active': '' }}">
                     <i class="nav-icon fas fa-bullhorn"></i>
@@ -137,8 +141,10 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.min.js') }}"></script>
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('js/demo.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
+@stack('scripts')
 </body>
 </html>
