@@ -16,7 +16,8 @@
                             <h3 class="card-title">Lead Details</h3>
                         </div>
                         <div class="card-body">
-                            <div class="row">
+                            @if(auth()->user()->role == 'admin')
+                                <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="agent_id">Select Agent</label>
@@ -42,6 +43,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -196,7 +198,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_proof_sent" type="checkbox" id="is_proof_sent" value="{{ old('is_proof_sent', isset($row) ? $row->is_proof_sent : false) }}">
+                                            <input class="custom-control-input" name="is_proof_sent" type="checkbox" id="is_proof_sent" value="{{ isset($row) && !empty($row->is_proof_sent) ? $row->is_proof_sent : old('is_proof_sent') }}">
                                             <label for="is_proof_sent" class="custom-control-label">Benefit Proof and Proof of address sent</label>
                                             @error('is_proof_sent')
                                             <span id="is_proof_sent" class="error invalid-feedback">{{ $message }}</span>
@@ -208,8 +210,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="{{ route('leads.index') }}" class="btn btn-secondary">Back</a>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="submit" class="btn btn-primary" id="submit-btn">Save</button>
                         </div>
                     </div>
                 </div>
@@ -282,8 +283,8 @@
                                     <div class="form-group">
                                         <label for="type">Select Resident Type</label>
                                         <select class="form-control @error('type') is-invalid @enderror" id="type" name="type" style="width: 100%;">
-                                                <option value="rented" {{ isset($row) ? $row->type == 'rented' ? 'selected': null : old('type') }}>Rented</option>
-                                                <option value="owner" {{ isset($row) ? $row->type == 'owner' ? 'selected': null : old('type') }}>Home Owner</option>
+                                                <option value="rented" {{ isset($row) && $row->type == 'rented' ? 'selected' : (old('type') == 'rented' ? 'selected' : '') }}>Rented</option>
+                                                <option value="owner" {{ isset($row) && $row->type == 'owner' ? 'selected' : (old('type') == 'owner' ? 'selected' : '') }}>Home Owner</option>
                                         </select>
                                         @error('type')
                                         <span id="type" class="error invalid-feedback">{{ $message }}</span>
@@ -341,8 +342,8 @@
                                     <div class="form-group">
                                         <label for="is_benefit_recipient">Select Benefit Recipient</label>
                                         <select class="form-control @error('is_benefit_recipient') is-invalid @enderror" id="is_benefit_recipient" name="is_benefit_recipient" style="width: 100%;">
-                                            <option value="false" {{ isset($row) ? !$row->is_benefit_recipient ? 'selected': null : old('is_benefit_recipient') }}>No</option>
-                                            <option value="true" {{ isset($row) ? $row->is_benefit_recipient ? 'selected': null : old('is_benefit_recipient') }}>Yes</option>
+                                            <option value="false" {{ isset($row) && !$row->is_benefit_recipient ? 'selected': (old('is_benefit_recipient') == false ? 'selected': '') }}>No</option>
+                                            <option value="true" {{ isset($row) && $row->is_benefit_recipient ? 'selected': (old('is_benefit_recipient') ? 'selected': '')}}>Yes</option>
                                         </select>
                                         @error('is_benefit_recipient')
                                         <span id="is_benefit_recipient" class="error invalid-feedback">{{ $message }}</span>
@@ -418,12 +419,14 @@
             $(this).attr('value', 'true');
         else
             $(this).attr('value', 'false');
+        checkAll();
     });
     $("#is_proof_sent").on('change', function() {
         if ($(this).is(':checked'))
             $(this).attr('value', 'true');
         else
             $(this).attr('value', 'false');
+        checkAll()
     });
     $("#type").on('change', function() {
         if($(this).val() === 'owner')
@@ -437,5 +440,11 @@
         else
             $(".benefit_details").show()
     })
+    function checkAll() {
+        // if ($("#is_proof_sent").val() == 'true' && $("#is_data_sent").val() == 'true')
+        //     $('#submit-btn').html('Submit');
+        // else
+        //     $('#submit-btn').html('Save');
+    }
 </script>
 @endpush

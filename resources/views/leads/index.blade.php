@@ -20,11 +20,10 @@
                         <thead>
                         <tr>
                             <th style="width: 10px">#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Type</th>
-                            <th>Phone Number</th>
-                            <th>Education</th>
+                            <th>Agent Name</th>
+                            <th>Source</th>
+                            <th>Status</th>
+                            <th>Created By</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -33,11 +32,10 @@
                         @forelse($leads as $lead)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $lead->first_name }}</td>
-                            <td>{{ $lead->last_name ?? 'N/A' }}</td>
-                            <td>{{ $lead->type }}</td>
-                            <td>{{ $lead->phone_number }}</td>
-                            <td>{{ $lead->education }}</td>
+                            <td>{{ $lead->agent_details ? $lead->agent_details->name : 'N/A' }}</td>
+                            <td>{{ $lead->source ?? 'N/A' }}</td>
+                            <td>{{ $lead->status }}</td>
+                            <td>{{ $lead->created_by_user ? $lead->created_by_user->name : 'N/A' }}</td>
                             <td>{{ $lead->created_at->format('Y-m-d H:i') }}</td>
                             <td>
                                 <form method="post" id="delete-form" action="{{ route('leads.destroy', $lead->id) }}">

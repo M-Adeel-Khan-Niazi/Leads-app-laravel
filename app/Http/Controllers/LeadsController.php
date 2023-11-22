@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Leads;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LeadsController extends Controller
 {
@@ -15,7 +16,9 @@ class LeadsController extends Controller
      */
     public function index()
     {
-        $leads = Leads::latest()->paginate(10);
+        $leads = Leads::with('created_by_user', 'agent_details')->when(Auth::user()->role == 'admin', function ($q) {
+            $q->where('status', '!=', 'draft');
+        })->paginate(10);
         return view('leads.index', compact('leads'));
     }
 
@@ -38,7 +41,53 @@ class LeadsController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        if ($request->is_data_sent && $request->is_proof_sent) {
+            $validation_rules = [
+                "agent_id" => 'nullable',
+                "source" => 'nullable',
+                "address_line_one" => 'required',
+                "house_number" => 'required',
+                "street" => 'required',
+                "town" => 'required',
+                "postal_code" => 'required',
+                "is_prev_epc" => 'nullable',
+                "epc_rating" => 'required_if:is_prev_epc,true',
+                "epc_date" => 'required_if:is_prev_epc,true',
+                "is_property_check" => 'nullable',
+                "gas_safe_results" => 'required',
+                "property_type" => 'required',
+                "main_wall_type" => 'required',
+                "extension_wall_type" => 'required',
+                "resident_first_name" => 'required',
+                "resident_mid_name" => 'required',
+                "resident_sur_name" => 'required',
+                "resident_dob" => 'required',
+                "resident_contact" => 'required',
+                "resident_email" => 'required',
+                "type" => 'required',
+                "owner_name" => 'required_if:type,rented',
+                "owner_contact" => 'required_if:type,rented',
+                "owner_email" => 'required_if:type,rented',
+                "benefit_type" => 'required',
+                "is_benefit_recipient" => 'nullable',
+                "benefit_first_name" => 'required_if:is_benefit_recipient,false',
+                "benefit_mid_name" => 'required_if:is_benefit_recipient,false',
+                "benefit_sur_name" => 'required_if:is_benefit_recipient,false',
+                "benefit_dob" => 'required_if:is_benefit_recipient,false',
+            ];
+            $request->validate($validation_rules);
+        }
+        $lead = new Leads($request->except('is_benefit_recipient', 'is_property_check', 'is_prev_epc', 'is_proof_sent', 'is_data_sent'));
+        if ($request->is_data_sent && $request->is_proof_sent)
+            $lead->status = 'pending';
+        $lead->is_benefit_recipient = (boolean)$request->is_benefit_recipient;
+        $lead->is_property_check = (boolean)$request->is_property_check;
+        $lead->is_prev_epc = (boolean)$request->is_prev_epc;
+        $lead->is_proof_sent = (boolean)$request->is_proof_sent;
+        $lead->is_data_sent = (boolean)$request->is_data_sent;
+        $lead->created_by = Auth::id();
+        $lead->save();
+        return redirect()->route('leads.index');
     }
 
     /**
