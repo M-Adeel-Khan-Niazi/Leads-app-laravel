@@ -29,4 +29,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('installers', InstallerController::class);
     Route::resource('funders', FunderController::class);
     Route::resource('leads', LeadsController::class);
+    Route::get('leads-details/{lead}', [LeadsController::class, 'leads_details'])->name('leads.details');
 });

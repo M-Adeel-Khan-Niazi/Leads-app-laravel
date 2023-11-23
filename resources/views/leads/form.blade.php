@@ -441,10 +441,10 @@
             $(".benefit_details").show()
     })
     function checkAll() {
-        // if ($("#is_proof_sent").val() == 'true' && $("#is_data_sent").val() == 'true')
-        //     $('#submit-btn').html('Submit');
-        // else
-        //     $('#submit-btn').html('Save');
+        if ($("#is_proof_sent").val() == 'true' && $("#is_data_sent").val() == 'true')
+            $('#submit-btn').html('Submit');
+        else
+            $('#submit-btn').html('Save');
     }
 </script>
 @endpush

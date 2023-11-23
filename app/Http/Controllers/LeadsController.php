@@ -134,4 +134,9 @@ class LeadsController extends Controller
     {
         //
     }
+
+    public function leads_details(Leads $leads)
+    {
+        return view('leads.lead-details');
+    }
 }

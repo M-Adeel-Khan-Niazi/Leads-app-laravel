@@ -34,11 +34,32 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $lead->agent_details ? $lead->agent_details->name : 'N/A' }}</td>
                             <td>{{ $lead->source ?? 'N/A' }}</td>
-                            <td>{{ $lead->status }}</td>
+                            <td>
+                                @switch($lead->status)
+                                    @case('draft')
+                                    <button type="button" class="btn btn-block btn-dark btn-sm">Draft</button>
+                                    @break
+                                    @case('pending')
+                                    <button type="button" class="btn btn-block btn-secondary btn-sm">Pending</button>
+                                    @break
+                                    @case('stop')
+                                    <button type="button" class="btn btn-block btn-danger btn-sm">Stop</button>
+                                    @break
+                                    @case('in-progress')
+                                    <button type="button" class="btn btn-block btn-primary btn-sm">In-Progress</button>
+                                    @break
+                                    @case('completed')
+                                    <button type="button" class="btn btn-block btn-success btn-sm">Completed</button>
+                                    @break
+                                @endswitch
+                            </td>
                             <td>{{ $lead->created_by_user ? $lead->created_by_user->name : 'N/A' }}</td>
                             <td>{{ $lead->created_at->format('Y-m-d H:i') }}</td>
-                            <td>
+                            <td class="text-center">
                                 <form method="post" id="delete-form" action="{{ route('leads.destroy', $lead->id) }}">
+                                    @if($lead->status == 'pending')
+                                        <a href="{{ route('leads.details', $lead->id) }}" class="btn btn-sm btn-outline-primary">Next <i class="fas fa-arrow-right"></i></a>
+                                    @endif
                                     <a href="{{ route('leads.edit', $lead->id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-pen"></i></a>
                                     @csrf
                                     @method('DELETE')
