@@ -48,7 +48,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>65</h3>
+                    <h3>{{$total_leads}}</h3>
                     <p>Total Leads</p>
                 </div>
                 <div class="icon">

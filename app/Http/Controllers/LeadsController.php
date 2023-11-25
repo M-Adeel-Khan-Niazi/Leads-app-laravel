@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Installer;
 use App\Models\Leads;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class LeadsController extends Controller
     public function index()
     {
         $leads = Leads::with('created_by_user', 'agent_details')->when(Auth::user()->role == 'admin', function ($q) {
-            $q->where('status', '!=', 'draft');
+            $q->where('status', '!=', 'draft')->orWhere('created_by', Auth::id());
         })->paginate(10);
         return view('leads.index', compact('leads'));
     }
@@ -107,9 +108,11 @@ class LeadsController extends Controller
      * @param \App\Models\Leads $leads
      * @return \Illuminate\Http\Response
      */
-    public function edit(Leads $leads)
+    public function edit(Leads $lead)
     {
-        //
+        $row = $lead;
+        $agents = User::where('role', 'agent')->get();
+        return view('leads.form', compact('row', 'agents'));
     }
 
     /**
@@ -137,6 +140,7 @@ class LeadsController extends Controller
 
     public function leads_details(Leads $leads)
     {
-        return view('leads.lead-details');
+        $installers = Installer::latest()->get();
+        return view('leads.lead-details', compact('installers'));
     }
 }
