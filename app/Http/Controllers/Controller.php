@@ -17,7 +17,9 @@ class Controller extends BaseController
     {
         $this->middleware(function ($request, $next) {
             $user = $request->user();
-            if ($user && $user->role == 'agent' && $request->segment(1) != 'leads') {
+            $allowedRoutes = ['leads', 'logout'];
+            $isAllowed = count(array_intersect($allowedRoutes, $request->segments()));
+            if ($user && $user->role == 'agent' && !$isAllowed) {
                 abort(403);
             }
             return $next($request);

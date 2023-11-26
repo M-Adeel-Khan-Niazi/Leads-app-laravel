@@ -57,13 +57,15 @@
                             <td>{{ $lead->created_at->format('Y-m-d H:i') }}</td>
                             <td class="text-center">
                                 <form method="post" id="delete-form" action="{{ route('leads.destroy', $lead->id) }}">
-                                    @if($lead->status == 'pending')
+                                    @if (auth()->user()->role == 'admin' || $lead->status == 'draft')
+                                        <a href="{{ route('leads.edit', $lead->id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-pen"></i></a>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="SingleDelete btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                    @endif
+                                    @if ($lead->status == 'pending' && auth()->user()->role == 'admin')
                                         <a href="{{ route('leads.details', $lead->id) }}" class="btn btn-sm btn-outline-primary">Next <i class="fas fa-arrow-right"></i></a>
                                     @endif
-                                    <a href="{{ route('leads.edit', $lead->id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-pen"></i></a>
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="SingleDelete btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
                                 </form>
                             </td>
                         </tr>

@@ -19,6 +19,8 @@ class LeadsController extends Controller
     {
         $leads = Leads::with('created_by_user', 'agent_details')->when(Auth::user()->role == 'admin', function ($q) {
             $q->where('status', '!=', 'draft')->orWhere('created_by', Auth::id());
+        })->when(Auth::user()->role == 'agent', function ($q) {
+            $q->where('agent_id', Auth::id())->orWhere('created_by', Auth::id());
         })->paginate(10);
         return view('leads.index', compact('leads'));
     }
@@ -124,7 +126,8 @@ class LeadsController extends Controller
      */
     public function update(Request $request, Leads $leads)
     {
-        //
+        dd($request->all());
+        return view('leads.index');
     }
 
     /**
@@ -138,9 +141,9 @@ class LeadsController extends Controller
         //
     }
 
-    public function leads_details(Leads $leads)
+    public function leads_details(Leads $lead)
     {
         $installers = Installer::latest()->get();
-        return view('leads.lead-details', compact('installers'));
+        return view('leads.lead-details', compact('installers','lead'));
     }
 }

@@ -3,9 +3,9 @@
 @section('main-content')
     <div class="card card-primary">
         <!-- form start -->
-{{--        {{ route('leads.update',$row->id) }}--}}
-        <form method="POST" action="">
+        <form method="POST" action="{{ route('leads.update', $lead->id) }}">
             @csrf
+            @method('PUT')
             <div class="card-body p-0">
                 <div class="bs-stepper">
                     <div class="bs-stepper-header" role="tablist">
@@ -264,7 +264,7 @@
                                                         <option disabled selected value> -- select installer -- </option>
                                                         @foreach($installers as $installer)
                                                             <option value="{{ $installer->id }}" {{ $measure_type->installer_id == $installer->id ? 'selected' : (old('installer_id') == $installer->id ? 'selected': '') }}>
-                                                                {{ $installer->name }}</option>
+                                                                {{ $installer->first_name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('installer_id')
@@ -346,7 +346,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="m2">M2</label>
-                                                    <select class="form-control @error('m2') is-invalid @enderror" id="m2" name="m2" style="width: 100%;">
+                                                    <select class="form-control @error('m2') is-invalid @enderror" id="m2" name="types[0][m2]" style="width: 100%;">
                                                         <option value="internal" {{ old('m2') == 'internal' ? 'selected': '' }}>Internal</option>
                                                         <option value="external" {{ old('m2') == 'external' ? 'selected': '' }}>External</option>
                                                     </select>
@@ -358,11 +358,11 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="installer_id">Select Installer</label>
-                                                    <select class="form-control select2 @error('installer_id') is-invalid @enderror" name="installer_id" style="width: 100%;">
+                                                    <select class="form-control select2 @error('installer_id') is-invalid @enderror" name="types[0][installer_id]" style="width: 100%;">
                                                         <option disabled selected value> -- select installer -- </option>
                                                         @foreach($installers as $installer)
                                                             <option value="{{ $installer->id }}" {{ old('installer_id') == $installer->id ? 'selected': '' }}>
-                                                                {{ $installer->name }}</option>
+                                                                {{ $installer->first_name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('installer_id')
@@ -373,7 +373,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="cost">Installer Cost</label>
-                                                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="cost" id="cost" placeholder="Enter Installer Cost">
+                                                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[0][cost]" id="cost" placeholder="Enter Installer Cost">
                                                     @error('cost')
                                                     <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                                                     @enderror
@@ -384,7 +384,7 @@
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="material_cost">Material Cost</label>
-                                                <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="material_cost" id="material_cost" placeholder="Enter Material Cost">
+                                                <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="types[0][material_cost]" id="material_cost" placeholder="Enter Material Cost">
                                                 @error('material_cost')
                                                 <span id="material_cost" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -393,7 +393,7 @@
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="start_date">Install Start Date</label>
-                                                <input value="{{ old('start_date') }}" type="date" class="form-control @error('start_date') is-invalid @enderror" name="start_date" id="start_date" placeholder="Enter Install Start Date">
+                                                <input value="{{ old('start_date') }}" type="date" class="form-control @error('start_date') is-invalid @enderror" name="types[0][start_date]" id="start_date" placeholder="Enter Install Start Date">
                                                 @error('start_date')
                                                 <span id="start_date" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -402,7 +402,7 @@
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="completion_date">Install Completion Date</label>
-                                                <input value="{{ old('completion_date') }}" type="date" class="form-control @error('completion_date') is-invalid @enderror" name="completion_date" id="completion_date" placeholder="Enter Install Completion Date">
+                                                <input value="{{ old('completion_date') }}" type="date" class="form-control @error('completion_date') is-invalid @enderror" name="types[0][completion_date]" id="completion_date" placeholder="Enter Install Completion Date">
                                                 @error('completion_date')
                                                 <span id="completion_date" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -413,7 +413,7 @@
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="is_warranty_applied">Warranties Applied</label>
-                                                <select class="form-control @error('is_warranty_applied') is-invalid @enderror" id="is_warranty_applied" name="is_warranty_applied" style="width: 100%;">
+                                                <select class="form-control @error('is_warranty_applied') is-invalid @enderror" id="is_warranty_applied" name="types[0][is_warranty_applied]" style="width: 100%;">
                                                     <option value="true" {{ old('is_warranty_applied') == 'true' ? 'selected': '' }}>Yes</option>
                                                     <option value="false" {{ old('is_warranty_applied') == 'false' ? 'selected': '' }}>No</option>
                                                 </select>
@@ -425,7 +425,7 @@
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="ibg_cost">IBG Cost</label>
-                                                <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control @error('ibg_cost') is-invalid @enderror" name="ibg_cost" id="ibg_cost" placeholder="Enter IBG Cost">
+                                                <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control @error('ibg_cost') is-invalid @enderror" name="types[0][ibg_cost]" id="ibg_cost" placeholder="Enter IBG Cost">
                                                 @error('ibg_cost')
                                                 <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -460,13 +460,14 @@
             const funding = score * rate;
             $('#funding').attr('value', funding);
         }
+        let form_index = 1;
         function addType() {
             $(".measure-type:last").before(`<div class="measure-type">
                                     <div class="row">
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="m2">M2</label>
-                                                    <select class="form-control @error('m2') is-invalid @enderror" id="m2" name="m2" style="width: 100%;">
+                                                    <select class="form-control @error('m2') is-invalid @enderror" id="m2" name="types[${form_index}][m2]" style="width: 100%;">
                                                         <option value="internal" {{ old('m2') == 'internal' ? 'selected': '' }}>Internal</option>
                                                         <option value="external" {{ old('m2') == 'external' ? 'selected': '' }}>External</option>
                                                     </select>
@@ -478,11 +479,11 @@
         <div class="col-4">
             <div class="form-group">
                 <label for="installer_id">Select Installer</label>
-                <select class="form-control select2 @error('installer_id') is-invalid @enderror" name="installer_id" style="width: 100%;">
+                <select class="form-control select2 @error('installer_id') is-invalid @enderror" name="types[${form_index}][installer_id]" style="width: 100%;">
                                                         <option disabled selected value> -- select installer -- </option>
                                                         @foreach($installers as $installer)
             <option value="{{ $installer->id }}" {{ old('installer_id') == $installer->id ? 'selected': '' }}>
-                                                                {{ $installer->name }}</option>
+                                                                {{ $installer->first_name }}</option>
                                                         @endforeach
             </select>
 @error('installer_id')
@@ -493,7 +494,7 @@
         <div class="col-4">
             <div class="form-group">
                 <label for="cost">Installer Cost</label>
-                <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="cost" id="cost" placeholder="Enter Installer Cost">
+                <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][cost]" id="cost" placeholder="Enter Installer Cost">
                                                     @error('cost')
             <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                                                     @enderror
@@ -504,7 +505,7 @@
     <div class="col-4">
         <div class="form-group">
             <label for="material_cost">Material Cost</label>
-            <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="material_cost" id="material_cost" placeholder="Enter Material Cost">
+            <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="types[${form_index}][material_cost]" id="material_cost" placeholder="Enter Material Cost">
                                                 @error('material_cost')
             <span id="material_cost" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -513,7 +514,7 @@
         <div class="col-4">
             <div class="form-group">
                 <label for="start_date">Install Start Date</label>
-                <input value="{{ old('start_date') }}" type="date" class="form-control @error('start_date') is-invalid @enderror" name="start_date" id="start_date" placeholder="Enter Install Start Date">
+                <input value="{{ old('start_date') }}" type="date" class="form-control @error('start_date') is-invalid @enderror" name="types[${form_index}][start_date]" id="start_date" placeholder="Enter Install Start Date">
                                                 @error('start_date')
             <span id="start_date" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -522,7 +523,7 @@
         <div class="col-4">
             <div class="form-group">
                 <label for="completion_date">Install Completion Date</label>
-                <input value="{{ old('completion_date') }}" type="date" class="form-control @error('completion_date') is-invalid @enderror" name="completion_date" id="completion_date" placeholder="Enter Install Completion Date">
+                <input value="{{ old('completion_date') }}" type="date" class="form-control @error('completion_date') is-invalid @enderror" name="types[${form_index}][completion_date]" id="completion_date" placeholder="Enter Install Completion Date">
                                                 @error('completion_date')
             <span id="completion_date" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -533,7 +534,7 @@
         <div class="col-4">
             <div class="form-group">
                 <label for="is_warranty_applied">Warranties Applied</label>
-                <select class="form-control @error('is_warranty_applied') is-invalid @enderror" id="is_warranty_applied" name="is_warranty_applied" style="width: 100%;">
+                <select class="form-control @error('is_warranty_applied') is-invalid @enderror" id="is_warranty_applied" name="types[${form_index}][is_warranty_applied]" style="width: 100%;">
                                                     <option value="true" {{ old('is_warranty_applied') == 'true' ? 'selected': '' }}>Yes</option>
                                                     <option value="false" {{ old('is_warranty_applied') == 'false' ? 'selected': '' }}>No</option>
                                                 </select>
@@ -545,7 +546,7 @@
         <div class="col-4">
             <div class="form-group">
                 <label for="ibg_cost">IBG Cost</label>
-                <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control @error('ibg_cost') is-invalid @enderror" name="ibg_cost" id="ibg_cost" placeholder="Enter IBG Cost">
+                <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control @error('ibg_cost') is-invalid @enderror" name="types[${form_index}][ibg_cost]" id="ibg_cost" placeholder="Enter IBG Cost">
                                                 @error('ibg_cost')
             <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -557,6 +558,7 @@
     </div>
     </div>
 </div>`);
+            form_index++
         }
 
         $(document).ready(function ($) {
