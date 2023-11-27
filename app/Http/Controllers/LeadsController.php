@@ -48,7 +48,6 @@ class LeadsController extends Controller
             $validation_rules = [
                 "agent_id" => 'nullable',
                 "source" => 'nullable',
-                "address_line_one" => 'required',
                 "house_number" => 'required',
                 "street" => 'required',
                 "town" => 'required',
@@ -77,6 +76,7 @@ class LeadsController extends Controller
                 "benefit_mid_name" => 'required_if:is_benefit_recipient,false',
                 "benefit_sur_name" => 'required_if:is_benefit_recipient,false',
                 "benefit_dob" => 'required_if:is_benefit_recipient,false',
+                "relationship" => 'required_if:is_benefit_recipient,false',
             ];
             $request->validate($validation_rules);
         }

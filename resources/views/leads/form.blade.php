@@ -45,21 +45,10 @@
                             </div>
                             @endif
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="address_line_one">First Line Address</label>
-                                        <input value="{{ old('address_line_one', isset($row) ? $row->address_line_one : '') }}" type="text" class="form-control @error('address_line_one') is-invalid @enderror" name="address_line_one" id="address_line_one" placeholder="Enter Address">
-                                        @error('address_line_one')
-                                        <span id="address_line_one" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="house_number">House#</label>
-                                        <input value="{{ old('house_number', isset($row) ? $row->house_number : '') }}" type="text" class="form-control @error('house_number') is-invalid @enderror" name="house_number" id="house_number" placeholder="Enter House#">
+                                        <label for="house_number">House# / House Name</label>
+                                        <input value="{{ old('house_number', isset($row) ? $row->house_number : '') }}" type="text" class="form-control @error('house_number') is-invalid @enderror" name="house_number" id="house_number" placeholder="Enter House# / House Name">
                                         @error('house_number')
                                         <span id="house_number" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -132,10 +121,39 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_property_check" type="checkbox" id="is_property_check" value="{{ old('is_property_check', isset($row) ? $row->is_property_check : false) }}">
+                                            <input class="custom-control-input" name="is_property_check" type="checkbox" id="is_property_check" value="{{ old('is_property_check', isset($row) && $row->is_property_check ?? 'false') }}">
                                             <label for="is_property_check" class="custom-control-label">Online Pics of Property Check</label>
                                             @error('is_property_check')
                                             <span id="is_property_check" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="property_details" style="display: none">
+                                <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">Pictures</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" multiple class="custom-file-input" name="pictures[]" id="exampleInputFile">
+                                                <label class="custom-file-label" for="exampleInputFile">Choose pictures</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Comments</label>
+                                            <textarea class="form-control @error('comment') is-invalid @enderror" id="is_flexible" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>
+                                            @error('comment')
+                                            <span id="comment" class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -156,7 +174,13 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="property_type">Property Type</label>
-                                        <input value="{{ old('property_type', isset($row) ? $row->property_type : '') }}" type="text" class="form-control @error('property_type') is-invalid @enderror" name="property_type" id="property_type" placeholder="Enter Property Type">
+                                        <select class="form-control @error('property_type') is-invalid @enderror" id="property_type" name="property_type" style="width: 100%;">
+                                            <option value="Detached" {{ isset($row) && !$row->property_type ? 'selected': (old('property_type') == 'Detached' ? 'selected': '') }}>Detached</option>
+                                            <option value="Semi Detached" {{ isset($row) && $row->property_type ? 'selected': (old('property_type') == 'Semi Detached' ? 'selected': '')}}>Semi Detached</option>
+                                            <option value="Mid Terrace" {{ isset($row) && $row->property_type ? 'selected': (old('property_type') == 'Mid Terrace' ? 'selected': '')}}>Mid Terrace</option>
+                                            <option value="End Terrace" {{ isset($row) && $row->property_type ? 'selected': (old('property_type') == 'End Terrace' ? 'selected': '')}}>End Terrace</option>
+                                            <option value="banglow" {{ isset($row) && $row->property_type ? 'selected': (old('property_type') == 'banglow' ? 'selected': '')}}>Banalow</option>
+                                        </select>
                                         @error('property_type')
                                         <span id="property_type" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -165,7 +189,21 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="main_wall_type">Main Wall Type</label>
-                                        <input value="{{ old('main_wall_type', isset($row) ? $row->main_wall_type : '') }}" type="text" class="form-control @error('main_wall_type') is-invalid @enderror" name="main_wall_type" id="main_wall_type" placeholder="Enter Main Wall Type">
+                                        <select class="form-control @error('main_wall_type') is-invalid @enderror" id="main_wall_type" name="main_wall_type" style="width: 100%;">
+                                            <option value="Solid" {{ isset($row) && !$row->main_wall_type ? 'selected': (old('main_wall_type') == 'Solid' ? 'selected': '') }}>Solid</option>
+                                            <option value="Cavity" {{ isset($row) && $row->main_wall_type ? 'selected': (old('main_wall_type') == 'Cavity' ? 'selected': '')}}>Cavity</option>
+                                            <option value="Stone" {{ isset($row) && $row->main_wall_type ? 'selected': (old('main_wall_type') == 'Stone' ? 'selected': '')}}>Stone</option>
+                                            <option value="Other" {{ isset($row) && $row->main_wall_type ? 'selected': (old('main_wall_type') == 'Other' ? 'selected': '')}}>Other</option>
+                                        </select>
+                                        @error('main_wall_type')
+                                        <span id="main_wall_type" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-4" style="display:none;" id="main_wall_other">
+                                    <div class="form-group">
+                                        <label for="main_wall_type">Other</label>
+                                        <input value="{{ old('main_wall_type', isset($row) ? $row->main_wall_type : '') }}" type="text" class="form-control @error('main_wall_type') is-invalid @enderror" name="main_wall_type" id="main_wall_type" placeholder="Enter other">
                                         @error('main_wall_type')
                                         <span id="main_wall_type" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -174,9 +212,24 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="extension_wall_type">Extension Wall Type</label>
-                                        <input value="{{ old('extension_wall_type', isset($row) ? $row->extension_wall_type : '') }}" type="text" class="form-control @error('extension_wall_type') is-invalid @enderror" name="extension_wall_type" id="extension_wall_type" placeholder="Enter Extension Wall Type">
+                                        <select class="form-control @error('extension_wall_type') is-invalid @enderror" id="extension_wall_type" name="extension_wall_type" style="width: 100%;">
+                                            <option value="Solid" {{ isset($row) && !$row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'Solid' ? 'selected': '') }}>Solid</option>
+                                            <option value="Cavity" {{ isset($row) && $row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'Cavity' ? 'selected': '')}}>Cavity</option>
+                                            <option value="Stone" {{ isset($row) && $row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'Stone' ? 'selected': '')}}>Stone</option>
+                                            <option value="N/A" {{ isset($row) && $row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'N/A' ? 'selected': '')}}>N/A</option>
+                                            <option value="Other" {{ isset($row) && $row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'Other' ? 'selected': '')}}>Other</option>
+                                        </select>
                                         @error('extension_wall_type')
                                         <span id="extension_wall_type" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-4" style="display:none;" id="extension_wall_other">
+                                    <div class="form-group">
+                                        <label for="extension_wall">Other</label>
+                                        <input value="{{ old('extension_wall', isset($row) ? $row->extension_wall : '') }}" type="text" class="form-control @error('extension_wall') is-invalid @enderror" name="extension_wall" id="extension_wall" placeholder="Enter other">
+                                        @error('extension_wall')
+                                        <span id="extension_wall" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -194,17 +247,118 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row" style="display: none" id="data_match_pic">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="data_match_pic">Pictures</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" multiple class="custom-file-input" name="data_match_pictures[]">
+                                                <label class="custom-file-label" for="data_match_pic">Choose pictures</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_proof_sent" type="checkbox" id="is_proof_sent" value="{{ isset($row) && !empty($row->is_proof_sent) ? $row->is_proof_sent : old('is_proof_sent') }}">
-                                            <label for="is_proof_sent" class="custom-control-label">Benefit Proof and Proof of address sent</label>
-                                            @error('is_proof_sent')
-                                            <span id="is_proof_sent" class="error invalid-feedback">{{ $message }}</span>
+                                            <input class="custom-control-input" name="is_benefit_proof_sent" type="checkbox" id="is_benefit_proof_sent" value="{{ isset($row) && !empty($row->is_benefit_proof_sent) ? $row->is_benefit_proof_sent : old('is_benefit_proof_sent') }}">
+                                            <label for="is_benefit_proof_sent" class="custom-control-label">Benefit proof sent</label>
+                                            @error('is_benefit_proof_sent')
+                                            <span id="is_benefit_proof_sent" class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row" style="display: none" id="benefit_proof_pic">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="benefit_proof_pic">Pictures</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" multiple class="custom-file-input" name="benefit_proof_pictures[]">
+                                                <label class="custom-file-label" for="benefit_proof_pic">Choose pictures</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" name="is_address_proof_sent" type="checkbox" id="is_address_proof_sent" value="{{ isset($row) && !empty($row->is_address_proof_sent) ? $row->is_address_proof_sent : old('is_address_proof_sent') }}">
+                                            <label for="is_address_proof_sent" class="custom-control-label">Address proof sent</label>
+                                            @error('is_address_proof_sent')
+                                            <span id="is_address_proof_sent" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="display: none" id="address_proof_pic">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="address_proof_pic">Pictures</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" multiple class="custom-file-input" name="address_proof_pictures[]">
+                                                <label class="custom-file-label" for="address_proof_pic">Choose pictures</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" name="is_other_picture" type="checkbox" id="is_other_picture" value="{{ isset($row) && !empty($row->is_other_picture) ? $row->is_other_picture : old('is_other_picture') }}">
+                                                <label for="is_other_picture" class="custom-control-label">Other picture</label>
+                                                @error('is_other_picture')
+                                                <span id="is_other_picture" class="error invalid-feedback">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="row" style="display: none" id="other_pic">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="other_pic">Pictures</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" multiple class="custom-file-input" name="other_pictures[]">
+                                                <label class="custom-file-label" for="other_pic">Choose pictures</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                            <label>Notes</label>
+                                            <textarea class="form-control @error('notes') is-invalid @enderror" id="notes" rows="4" placeholder="Enter Notes" name="notes">{{ isset($row) ? $row->notes : old('notes') }}</textarea>
+                                            @error('notes')
+                                            <span id="notes" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -331,8 +485,26 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="benefit_type">Benefit Type</label>
-                                        <input value="{{ old('benefit_type', isset($row) ? $row->benefit_type : '') }}" type="text" class="form-control @error('benefit_type') is-invalid @enderror" name="benefit_type" id="benefit_type" placeholder="Enter Benefit Type">
+                                        <label for="benefit_type">Select Benefit Type</label>
+                                        <select class="form-control @error('benefit_type') is-invalid @enderror" id="benefit_type" name="benefit_type" style="width: 100%;">
+                                            <option value="Income Base Job Seeker’s Allowance (JSA)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Income Base Job Seeker’s Allowance (JSA)' ? 'selected': '') }}>Income Base Job Seeker’s Allowance (JSA)</option>
+                                            <option value="Income Related Employment & Support Allowance (ESA)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Income Related Employment & Support Allowance (ESA)' ? 'selected': '') }}>Income Related Employment & Support Allowance (ESA)</option>
+                                            <option value="income Support (IS)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'income Support (IS)' ? 'selected': '') }}>Income Support (IS)</option>
+                                            <option value="Pension Guarantee Credit" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Pension Guarantee Credit' ? 'selected': '') }}>Pension Guarantee Credit</option>
+                                            <option value="Working Tax Credit (WTC)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Working Tax Credit (WTC)' ? 'selected': '') }}>Working Tax Credit (WTC)</option>
+                                            <option value="Child Tax Credit (CTC)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Tax Credit (CTC)' ? 'selected': '') }}>Child Tax Credit (CTC)</option>
+                                            <option value="Universal Credit (UC)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Universal Credit (UC)' ? 'selected': '') }}>Universal Credit (UC)</option>
+                                            <option value="Housing Benefit (New Eligible Benefit under EC04)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Housing Benefit (New Eligible Benefit under EC04)' ? 'selected': '') }}>Housing Benefit (New Eligible Benefit under EC04)</option>
+                                            <option value="Pension Savings Credit (New Eligible Under EC04)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Pension Savings Credit (New Eligible Under EC04)' ? 'selected': '') }}>Pension Savings Credit (New Eligible Under EC04)</option>
+                                            <option value="Single Claimant 1 Child - £19,900" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Single Claimant 1 Child - £19,900' ? 'selected': '') }}>Single Claimant 1 Child - £19,900</option>
+                                            <option value="Single Claimant 2 Child - £24,800" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Single Claimant 2 Child - £24,800' ? 'selected': '') }}>Single Claimant 2 Child - £24,800</option>
+                                            <option value="Single Claimant 3 Child - £29,600" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Single Claimant 3 Child - £29,600' ? 'selected': '') }}>Single Claimant 3 Child - £29,600</option>
+                                            <option value="Single Claimant 4 Child - £35,500" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Single Claimant 4 Child - £35,500' ? 'selected': '') }}>Single Claimant 4 Child - £35,500</option>
+                                            <option value="Multiple Claimant 1 Child - £27,500" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Multiple Claimant 1 Child - £27,500' ? 'selected': '') }}>Multiple Claimant 1 Child - £27,500</option>
+                                            <option value="Multiple Claimant 2 Child - £32,300" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Multiple Claimant 2 Child - £32,300' ? 'selected': '') }}>Multiple Claimant 2 Child - £32,300</option>
+                                            <option value="Multiple Claimant 3 Child - £37,200" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Multiple Claimant 3 Child - £37,200' ? 'selected': '') }}>Multiple Claimant 3 Child - £37,200</option>
+                                            <option value="Multiple Claimant 4 Child - £42,000" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Multiple Claimant 4 Child - £42,000' ? 'selected': '') }}>Multiple Claimant 4 Child - £42,000</option>
+                                        </select>
                                         @error('benefit_type')
                                         <span id="benefit_type" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -342,8 +514,8 @@
                                     <div class="form-group">
                                         <label for="is_benefit_recipient">Select Benefit Recipient</label>
                                         <select class="form-control @error('is_benefit_recipient') is-invalid @enderror" id="is_benefit_recipient" name="is_benefit_recipient" style="width: 100%;">
-                                            <option value="false" {{ isset($row) && !$row->is_benefit_recipient ? 'selected': (old('is_benefit_recipient') == false ? 'selected': '') }}>No</option>
-                                            <option value="true" {{ isset($row) && $row->is_benefit_recipient ? 'selected': (old('is_benefit_recipient') ? 'selected': '')}}>Yes</option>
+                                            <option value="false" {{ isset($row) && !$row->is_benefit_recipient ? 'selected': (old('is_benefit_recipient') == 'false' ? 'selected': '') }}>Other</option>
+                                            <option value="true" {{ isset($row) && $row->is_benefit_recipient ? 'selected': (old('is_benefit_recipient') == 'true' ? 'selected': '')}}>Resident</option>
                                         </select>
                                         @error('is_benefit_recipient')
                                         <span id="is_benefit_recipient" class="error invalid-feedback">{{ $message }}</span>
@@ -351,43 +523,61 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row benefit_details" style="">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="benefit_first_name">First Name</label>
-                                        <input value="{{ old('benefit_first_name', isset($row) ? $row->benefit_first_name : '') }}" type="text" class="form-control @error('benefit_first_name') is-invalid @enderror" name="benefit_first_name" id="benefit_first_name" placeholder="Enter First Name">
-                                        @error('benefit_first_name')
-                                        <span id="benefit_first_name" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
+                            <div class="benefit_details" style="">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="benefit_first_name">First Name</label>
+                                            <input value="{{ old('benefit_first_name', isset($row) ? $row->benefit_first_name : '') }}" type="text" class="form-control @error('benefit_first_name') is-invalid @enderror" name="benefit_first_name" id="benefit_first_name" placeholder="Enter First Name">
+                                            @error('benefit_first_name')
+                                            <span id="benefit_first_name" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="benefit_mid_name">Mid Name</label>
+                                            <input value="{{ old('benefit_mid_name', isset($row) ? $row->benefit_mid_name : '') }}" type="text" class="form-control @error('benefit_mid_name') is-invalid @enderror" name="benefit_mid_name" id="benefit_mid_name" placeholder="Enter Mid Name">
+                                            @error('benefit_mid_name')
+                                            <span id="benefit_mid_name" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="benefit_mid_name">Mid Name</label>
-                                        <input value="{{ old('benefit_mid_name', isset($row) ? $row->benefit_mid_name : '') }}" type="text" class="form-control @error('benefit_mid_name') is-invalid @enderror" name="benefit_mid_name" id="benefit_mid_name" placeholder="Enter Mid Name">
-                                        @error('benefit_mid_name')
-                                        <span id="benefit_mid_name" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="benefit_sur_name">Sur Name</label>
+                                            <input value="{{ old('benefit_sur_name', isset($row) ? $row->benefit_sur_name : '') }}" type="text" class="form-control @error('benefit_sur_name') is-invalid @enderror" name="benefit_sur_name" id="benefit_sur_name" placeholder="Enter Sur Name">
+                                            @error('benefit_sur_name')
+                                            <span id="benefit_sur_name" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="benefit_dob">Date of Birth</label>
+                                            <input value="{{ old('benefit_dob', isset($row) ? $row->benefit_dob : '') }}" type="date" class="form-control @error('benefit_dob') is-invalid @enderror" name="benefit_dob" id="benefit_dob" placeholder="Enter Date of Birth">
+                                            @error('benefit_dob')
+                                            <span id="benefit_dob" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row benefit_details" style="">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="benefit_sur_name">Sur Name</label>
-                                        <input value="{{ old('benefit_sur_name', isset($row) ? $row->benefit_sur_name : '') }}" type="text" class="form-control @error('benefit_sur_name') is-invalid @enderror" name="benefit_sur_name" id="benefit_sur_name" placeholder="Enter Sur Name">
-                                        @error('benefit_sur_name')
-                                        <span id="benefit_sur_name" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="benefit_dob">Date of Birth</label>
-                                        <input value="{{ old('benefit_dob', isset($row) ? $row->benefit_dob : '') }}" type="date" class="form-control @error('benefit_dob') is-invalid @enderror" name="benefit_dob" id="benefit_dob" placeholder="Enter Date of Birth">
-                                        @error('benefit_dob')
-                                        <span id="benefit_dob" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="relationship">Relationship</label>
+                                            <select class="form-control @error('relationship') is-invalid @enderror" id="relationship" name="relationship" style="width: 100%;">
+                                                <option value="father" {{ isset($row) && !$row->relationship ? 'selected': (old('relationship') == 'father' ? 'selected': '') }}>Father</option>
+                                                <option value="mother" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'mother' ? 'selected': '')}}>Mother</option>
+                                                <option value="son" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'son' ? 'selected': '')}}>Son</option>
+                                                <option value="daughter" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'daughter' ? 'selected': '')}}>Daughter</option>
+                                            </select>
+                                            @error('relationship')
+                                            <span id="relationship" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -408,31 +598,71 @@
             $(this).attr('value', 'false');
         $("#epc_details").toggle()
     });
-    $("#is_property_check").on('change', function() {
-        if ($(this).is(':checked'))
+    $("#is_property_check").on('change', function () {
+        if ($(this).is(':checked')) {
             $(this).attr('value', 'true');
-        else
+            $(".property_details").show()
+        } else {
             $(this).attr('value', 'false');
+            $(".property_details").hide()
+        }
     });
     $("#is_data_sent").on('change', function() {
-        if ($(this).is(':checked'))
+        if ($(this).is(':checked')) {
+            $("#data_match_pic").show()
             $(this).attr('value', 'true');
-        else
+        } else {
+            $("#data_match_pic").hide()
             $(this).attr('value', 'false');
+        }
         checkAll();
     });
-    $("#is_proof_sent").on('change', function() {
-        if ($(this).is(':checked'))
+    $("#is_benefit_proof_sent").on('change', function() {
+        if ($(this).is(':checked')) {
+            $("#benefit_proof_pic").show()
             $(this).attr('value', 'true');
-        else
+        } else {
+            $("#benefit_proof_pic").hide()
             $(this).attr('value', 'false');
+        }
         checkAll()
+    });
+    $("#is_address_proof_sent").on('change', function() {
+        if ($(this).is(':checked')) {
+            $("#address_proof_pic").show()
+            $(this).attr('value', 'true');
+        } else {
+            $("#address_proof_pic").hide()
+            $(this).attr('value', 'false');
+        }
+        checkAll()
+    });
+    $("#is_other_picture").on('change', function() {
+        if ($(this).is(':checked')) {
+            $("#other_pic").show()
+            $(this).attr('value', 'true');
+        } else {
+            $("#other_pic").hide()
+            $(this).attr('value', 'false');
+        }
     });
     $("#type").on('change', function() {
         if($(this).val() === 'owner')
             $("#landlord_details").hide()
         else
             $("#landlord_details").show()
+    })
+    $("#extension_wall_type").on('change', function() {
+        if($(this).val() === 'Other')
+            $("#extension_wall_other").show()
+        else
+            $("#extension_wall_other").hide()
+    })
+    $("#main_wall_type").on('change', function() {
+        if($(this).val() === 'Other')
+            $("#main_wall_other").show()
+        else
+            $("#main_wall_other").hide()
     })
     $("#is_benefit_recipient").on('change', function() {
         if($(this).val() == 'true')
@@ -441,7 +671,7 @@
             $(".benefit_details").show()
     })
     function checkAll() {
-        if ($("#is_proof_sent").val() == 'true' && $("#is_data_sent").val() == 'true')
+        if ($("#is_benefit_proof_sent").val() == 'true' && $("#is_data_sent").val() == 'true' && $("#is_address_proof_sent").val() == 'true')
             $('#submit-btn').html('Submit');
         else
             $('#submit-btn').html('Save');

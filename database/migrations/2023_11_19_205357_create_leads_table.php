@@ -40,22 +40,27 @@ class CreateLeadsTable extends Migration
             $table->string('benefit_mid_name')->nullable();
             $table->string('benefit_sur_name')->nullable();
             $table->date('benefit_dob')->nullable();
+            $table->string('relationship')->nullable();
             //
             $table->boolean('is_prev_epc')->default(false);
-            // Yes per
             $table->integer('epc_rating')->nullable();
             $table->date('epc_date')->nullable();
+            //
             $table->boolean('is_property_check')->default(false);
+            $table->string('comment')->nullable();
+
             $table->string('gas_safe_results')->nullable();
             $table->string('property_type')->nullable();
             $table->string('main_wall_type')->nullable();
             $table->string('extension_wall_type')->nullable();
             $table->boolean('is_data_sent')->default(false);
-            $table->boolean('is_proof_sent')->default(false);
+            $table->boolean('is_benefit_proof_sent')->default(false);
+            $table->boolean('is_address_proof_sent')->default(false);
             //
             $table->string('source')->nullable();
             $table->enum('status', ['draft', 'pending', 'stop', 'in-progress', 'completed'])->default('draft');
             $table->integer('agent_id')->nullable();
+            $table->string('notes')->nullable();
             $table->integer('created_by');
             $table->timestamps();
         });

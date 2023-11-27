@@ -64,7 +64,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label>Comments</label>
-                                        <textarea class="form-control @error('comment') is-invalid @enderror" id="is_flexible" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>
+                                        <textarea class="form-control @error('comment') is-invalid @enderror" id="comment" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>
                                         @error('comment')
                                         <span id="comment" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror

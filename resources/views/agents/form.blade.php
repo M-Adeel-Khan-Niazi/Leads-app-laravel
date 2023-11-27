@@ -52,6 +52,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="share">Shares</label>
+                            <input type="number" name="share" class="form-control @error('share') is-invalid @enderror" id="share" placeholder="Enter Share" value="{{ old('share', isset($row) && $row->share ?? 0) }}">
+                            @error('share')
+                            <span id="share" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Comments</label>
+                            <textarea class="form-control @error('comment') is-invalid @enderror" id="is_flexible" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>
+                            @error('comment')
+                            <span id="comment" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
