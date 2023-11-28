@@ -2,13 +2,11 @@
 @section('title', isset($row) ? 'Edit Lead': 'Create Lead')
 @section('main-content')
         <!-- form start -->
-        @if(isset($row))
-            <form method="POST" action="{{ route('leads.update', $row->id) }}" enctype="multipart/form-data">
-                @method('PUT')
-        @else
             <form method="POST" action="{{ route('leads.store') }}" enctype="multipart/form-data">
-        @endif
             @csrf
+            @if(isset($row))
+                <input type="hidden" name="lead_id" value="{{$row->id}}" />
+            @endif
             <div class="row">
                 <div class="col-6">
                     <div class="card card-gray">

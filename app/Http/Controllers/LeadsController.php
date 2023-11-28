@@ -96,7 +96,13 @@ class LeadsController extends Controller
         }
         DB::beginTransaction();
         try {
-            $lead = new Leads($request->except('is_benefit_recipient', 'is_property_check', 'is_prev_epc', 'is_benefit_proof_sent', 'is_address_proof_sent', 'is_data_sent'));
+            $except = $request->except('is_benefit_recipient', 'is_property_check', 'is_prev_epc', 'is_benefit_proof_sent', 'is_address_proof_sent', 'is_data_sent');
+            if ($request->lead_id) {
+                $lead = Leads::find($request->lead_id);
+                $lead->fill($except);
+            } else {
+                $lead = new Leads($except);
+            }
             if ($is_all_checked)
                 $lead->status = 'pending';
             $lead->is_benefit_recipient = (boolean)$request->is_benefit_recipient;
@@ -105,7 +111,7 @@ class LeadsController extends Controller
             $lead->is_benefit_proof_sent = (boolean)$request->is_benefit_proof_sent;
             $lead->is_address_proof_sent = (boolean)$request->is_address_proof_sent;
             $lead->is_data_sent = (boolean)$request->is_data_sent;
-            $lead->address_line_one = $request->house_number. '-'.$request->postal_code;
+            $lead->address_line_one = $request->house_number . '-' . $request->postal_code;
             $lead->created_by = Auth::id();
             $lead->save();
             if ($lead->is_property_check && $request->hasFile('property_check_pictures')) {
