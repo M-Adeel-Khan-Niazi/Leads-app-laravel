@@ -3,10 +3,10 @@
 @section('main-content')
         <!-- form start -->
         @if(isset($row))
-            <form method="POST" action="{{ route('leads.update', $row->id) }}">
+            <form method="POST" action="{{ route('leads.update', $row->id) }}" enctype="multipart/form-data">
                 @method('PUT')
         @else
-            <form method="POST" action="{{ route('leads.store') }}">
+            <form method="POST" action="{{ route('leads.store') }}" enctype="multipart/form-data">
         @endif
             @csrf
             <div class="row">
@@ -88,7 +88,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_prev_epc" type="checkbox" id="is_prev_epc" value="{{ old('is_prev_epc', isset($row) ? $row->is_prev_epc : false) }}">
+                                            <input class="custom-control-input" name="is_prev_epc" type="checkbox" id="is_prev_epc" value="" {{ old('is_prev_epc') == 'true' ? 'checked' : (isset($row) && $row->is_prev_epc == 'true' ? 'checked' : '') }}>
                                             <label for="is_prev_epc" class="custom-control-label">Any Previous EPC's</label>
                                             @error('is_prev_epc')
                                                 <span id="is_prev_epc" class="error invalid-feedback">{{ $message }}</span>
@@ -121,7 +121,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_property_check" type="checkbox" id="is_property_check" value="{{ old('is_property_check', isset($row) && $row->is_property_check ?? 'false') }}">
+                                            <input class="custom-control-input" name="is_property_check" type="checkbox" id="is_property_check" value="" {{ old('is_property_check') == 'true' ? 'checked' : (isset($row) && $row->is_property_check == 'true' ? 'checked' : '') }}>
                                             <label for="is_property_check" class="custom-control-label">Online Pics of Property Check</label>
                                             @error('is_property_check')
                                             <span id="is_property_check" class="error invalid-feedback">{{ $message }}</span>
@@ -134,11 +134,11 @@
                                 <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="exampleInputFile">Pictures</label>
+                                        <label for="property_check_pic">Pictures</label>
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" multiple class="custom-file-input" name="pictures[]" id="exampleInputFile">
-                                                <label class="custom-file-label" for="exampleInputFile">Choose pictures</label>
+                                                <input type="file" multiple class="custom-file-input" name="property_check_pictures[]" id="property_check_pic">
+                                                <label class="custom-file-label" for="property_check_pic">Choose pictures</label>
                                             </div>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Upload</span>
@@ -238,7 +238,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_data_sent" type="checkbox" id="is_data_sent" value="{{ old('is_data_sent', isset($row) ? $row->is_data_sent : false) }}">
+                                            <input class="custom-control-input" name="is_data_sent" type="checkbox" id="is_data_sent" value="" {{ old('is_data_sent') == 'true' ? 'checked' : (isset($row) && $row->is_data_sent == 'true' ? 'checked' : '') }}>
                                             <label for="is_data_sent" class="custom-control-label">Data match sent to Simple Green</label>
                                             @error('is_data_sent')
                                             <span id="is_data_sent" class="error invalid-feedback">{{ $message }}</span>
@@ -267,7 +267,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_benefit_proof_sent" type="checkbox" id="is_benefit_proof_sent" value="{{ isset($row) && !empty($row->is_benefit_proof_sent) ? $row->is_benefit_proof_sent : old('is_benefit_proof_sent') }}">
+                                            <input class="custom-control-input" name="is_benefit_proof_sent" type="checkbox" id="is_benefit_proof_sent" value="" {{ old('is_benefit_proof_sent') == 'true' ? 'checked' : (isset($row) && $row->is_benefit_proof_sent == 'true' ? 'checked' : '') }}>
                                             <label for="is_benefit_proof_sent" class="custom-control-label">Benefit proof sent</label>
                                             @error('is_benefit_proof_sent')
                                             <span id="is_benefit_proof_sent" class="error invalid-feedback">{{ $message }}</span>
@@ -296,7 +296,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_address_proof_sent" type="checkbox" id="is_address_proof_sent" value="{{ isset($row) && !empty($row->is_address_proof_sent) ? $row->is_address_proof_sent : old('is_address_proof_sent') }}">
+                                            <input class="custom-control-input" name="is_address_proof_sent" type="checkbox" id="is_address_proof_sent" value="" {{ old('is_address_proof_sent') == 'true' ? 'checked' : (isset($row) && $row->is_address_proof_sent == 'true' ? 'checked' : '') }}>
                                             <label for="is_address_proof_sent" class="custom-control-label">Address proof sent</label>
                                             @error('is_address_proof_sent')
                                             <span id="is_address_proof_sent" class="error invalid-feedback">{{ $message }}</span>
@@ -325,7 +325,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                             <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" name="is_other_picture" type="checkbox" id="is_other_picture" value="{{ isset($row) && !empty($row->is_other_picture) ? $row->is_other_picture : old('is_other_picture') }}">
+                                                <input class="custom-control-input" name="is_other_picture" type="checkbox" id="is_other_picture" value="" {{ old('is_other_picture') == 'true' ? 'checked' : (isset($row) && $row->is_other_picture == 'true' ? 'checked' : '') }}>
                                                 <label for="is_other_picture" class="custom-control-label">Other picture</label>
                                                 @error('is_other_picture')
                                                 <span id="is_other_picture" class="error invalid-feedback">{{ $message }}</span>
@@ -592,12 +592,14 @@
 @push('scripts')
 <script>
     $("#is_prev_epc").on('change', function() {
-        if ($(this).is(':checked'))
+        if ($(this).is(':checked')) {
             $(this).attr('value', 'true');
-        else
+            $("#epc_details").show()
+        } else {
             $(this).attr('value', 'false');
-        $("#epc_details").toggle()
-    });
+            $("#epc_details").hide()
+        }
+    }).change();
     $("#is_property_check").on('change', function () {
         if ($(this).is(':checked')) {
             $(this).attr('value', 'true');
@@ -606,7 +608,7 @@
             $(this).attr('value', 'false');
             $(".property_details").hide()
         }
-    });
+    }).change();
     $("#is_data_sent").on('change', function() {
         if ($(this).is(':checked')) {
             $("#data_match_pic").show()
@@ -616,7 +618,7 @@
             $(this).attr('value', 'false');
         }
         checkAll();
-    });
+    }).change();
     $("#is_benefit_proof_sent").on('change', function() {
         if ($(this).is(':checked')) {
             $("#benefit_proof_pic").show()
@@ -626,7 +628,7 @@
             $(this).attr('value', 'false');
         }
         checkAll()
-    });
+    }).change();
     $("#is_address_proof_sent").on('change', function() {
         if ($(this).is(':checked')) {
             $("#address_proof_pic").show()
@@ -636,7 +638,7 @@
             $(this).attr('value', 'false');
         }
         checkAll()
-    });
+    }).change();
     $("#is_other_picture").on('change', function() {
         if ($(this).is(':checked')) {
             $("#other_pic").show()
@@ -645,7 +647,7 @@
             $("#other_pic").hide()
             $(this).attr('value', 'false');
         }
-    });
+    }).change();
     $("#type").on('change', function() {
         if($(this).val() === 'owner')
             $("#landlord_details").hide()
@@ -657,19 +659,19 @@
             $("#extension_wall_other").show()
         else
             $("#extension_wall_other").hide()
-    })
+    }).change();
     $("#main_wall_type").on('change', function() {
         if($(this).val() === 'Other')
             $("#main_wall_other").show()
         else
             $("#main_wall_other").hide()
-    })
+    }).change();
     $("#is_benefit_recipient").on('change', function() {
         if($(this).val() == 'true')
             $(".benefit_details").hide()
         else
             $(".benefit_details").show()
-    })
+    }).change();
     function checkAll() {
         if ($("#is_benefit_proof_sent").val() == 'true' && $("#is_data_sent").val() == 'true' && $("#is_address_proof_sent").val() == 'true')
             $('#submit-btn').html('Submit');

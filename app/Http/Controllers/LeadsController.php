@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FileUploads;
 use App\Models\Installer;
 use App\Models\Leads;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class LeadsController extends Controller
 {
@@ -44,7 +48,8 @@ class LeadsController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->is_data_sent && $request->is_proof_sent) {
+        $is_all_checked = ($request->is_data_sent && $request->is_benefit_proof_sent && $request->is_address_proof_sent);
+        if ($is_all_checked) {
             $validation_rules = [
                 "agent_id" => 'nullable',
                 "source" => 'nullable',
@@ -56,6 +61,7 @@ class LeadsController extends Controller
                 "epc_rating" => 'required_if:is_prev_epc,true',
                 "epc_date" => 'required_if:is_prev_epc,true',
                 "is_property_check" => 'nullable',
+                'property_check_pictures.*' => 'required_if:is_property_check,true|mimes:jpeg,png|max:2048',
                 "gas_safe_results" => 'required',
                 "property_type" => 'required',
                 "main_wall_type" => 'required',
@@ -77,20 +83,58 @@ class LeadsController extends Controller
                 "benefit_sur_name" => 'required_if:is_benefit_recipient,false',
                 "benefit_dob" => 'required_if:is_benefit_recipient,false',
                 "relationship" => 'required_if:is_benefit_recipient,false',
+                "is_data_sent" => 'nullable',
+                'data_match_pictures.*' => 'required_if:is_data_sent,true|mimes:jpeg,png|max:2048',
+                "is_benefit_proof_sent" => 'nullable',
+                'benefit_proof_pictures.*' => 'required_if:is_benefit_proof_sent,true|mimes:jpeg,png|max:2048',
+                "is_address_proof_sent" => 'nullable',
+                'address_proof_pictures.*' => 'required_if:is_address_proof_sent,true|mimes:jpeg,png|max:2048',
+                "is_other_picture" => 'nullable',
+                'other_pictures.*' => 'required_if:is_other_picture,true|mimes:jpeg,png|max:2048',
             ];
             $request->validate($validation_rules);
         }
-        $lead = new Leads($request->except('is_benefit_recipient', 'is_property_check', 'is_prev_epc', 'is_proof_sent', 'is_data_sent'));
-        if ($request->is_data_sent && $request->is_proof_sent)
-            $lead->status = 'pending';
-        $lead->is_benefit_recipient = (boolean)$request->is_benefit_recipient;
-        $lead->is_property_check = (boolean)$request->is_property_check;
-        $lead->is_prev_epc = (boolean)$request->is_prev_epc;
-        $lead->is_proof_sent = (boolean)$request->is_proof_sent;
-        $lead->is_data_sent = (boolean)$request->is_data_sent;
-        $lead->created_by = Auth::id();
-        $lead->save();
-        return redirect()->route('leads.index');
+        DB::beginTransaction();
+        try {
+            $lead = new Leads($request->except('is_benefit_recipient', 'is_property_check', 'is_prev_epc', 'is_benefit_proof_sent', 'is_address_proof_sent', 'is_data_sent'));
+            if ($is_all_checked)
+                $lead->status = 'pending';
+            $lead->is_benefit_recipient = (boolean)$request->is_benefit_recipient;
+            $lead->is_property_check = (boolean)$request->is_property_check;
+            $lead->is_prev_epc = (boolean)$request->is_prev_epc;
+            $lead->is_benefit_proof_sent = (boolean)$request->is_benefit_proof_sent;
+            $lead->is_address_proof_sent = (boolean)$request->is_address_proof_sent;
+            $lead->is_data_sent = (boolean)$request->is_data_sent;
+            $lead->address_line_one = $request->house_number. '-'.$request->postal_code;
+            $lead->created_by = Auth::id();
+            $lead->save();
+            if ($lead->is_property_check && $request->hasFile('property_check_pictures')) {
+                $data = $this->uploadFiles($request->file('property_check_pictures'), 'property_check');
+                $lead->property_check_pictures()->saveMany($data);
+            }
+            if ($lead->is_benefit_proof_sent && $request->hasFile('benefit_proof_pictures')) {
+                $data = $this->uploadFiles($request->file('benefit_proof_pictures'), 'benefit_proof');
+                $lead->benefit_proof_pictures()->saveMany($data);
+            }
+            if ($lead->is_data_sent && $request->hasFile('data_match_pictures')) {
+                $data = $this->uploadFiles($request->file('data_match_pictures'), 'data_match');
+                $lead->data_match_pictures()->saveMany($data);
+            }
+            if ($lead->is_address_proof_sent && $request->hasFile('address_proof_pictures')) {
+                $data = $this->uploadFiles($request->file('address_proof_pictures'), 'address_proof');
+                $lead->address_proof_pictures()->saveMany($data);
+            }
+            if ((boolean)$request->is_other_picture && $request->hasFile('other_pictures')) {
+                $data = $this->uploadFiles($request->file('other_pictures'), 'other');
+                $lead->other_pictures()->saveMany($data);
+            }
+            DB::commit();
+            return redirect()->route('leads.index');
+        } catch (\Exception $error) {
+            DB::rollBack();
+            dd($error->getMessage());
+            return redirect()->back()->with('error', $error->getMessage());
+        }
     }
 
     /**
@@ -144,6 +188,18 @@ class LeadsController extends Controller
     public function leads_details(Leads $lead)
     {
         $installers = Installer::latest()->get();
-        return view('leads.lead-details', compact('installers','lead'));
+        return view('leads.lead-details', compact('installers', 'lead'));
+    }
+
+    private function uploadFiles($files, $type)
+    {
+        $data = [];
+        foreach ($files as $file) {
+            $path = 'uploads/' . $type . '/';
+            $fileName = Str::random(20) . '.' . $file->getClientOriginalExtension();
+            Storage::putFileAs($path, $file, $fileName);
+            $data[] = new FileUploads(['file_path' => $path . $fileName, 'name' => $fileName, 'type' => $type]);
+        }
+        return $data;
     }
 }
