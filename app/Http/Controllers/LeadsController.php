@@ -64,8 +64,8 @@ class LeadsController extends Controller
                 'property_check_pictures.*' => 'required_if:is_property_check,true|mimes:jpeg,png|max:2048',
                 "gas_safe_results" => 'required',
                 "property_type" => 'required',
-                "main_wall_type" => 'required',
-                "extension_wall_type" => 'required',
+                "main_wall_type" => 'nullable',
+                "extension_wall_type" => 'nullable',
                 "resident_first_name" => 'required',
                 "resident_mid_name" => 'required',
                 "resident_sur_name" => 'required',
@@ -113,6 +113,8 @@ class LeadsController extends Controller
             $lead->is_data_sent = (boolean)$request->is_data_sent;
             $lead->address_line_one = $request->house_number . '-' . $request->postal_code;
             $lead->created_by = Auth::id();
+            $lead->extension_wall_type = $request->extension_wall_type ?? $request->extension_wall_type_other;
+            $lead->extension_wall_type = $request->extension_wall_type ?? $request->extension_wall_type_other;
             $lead->save();
             if ($lead->is_property_check && $request->hasFile('property_check_pictures')) {
                 $data = $this->uploadFiles($request->file('property_check_pictures'), 'property_check');

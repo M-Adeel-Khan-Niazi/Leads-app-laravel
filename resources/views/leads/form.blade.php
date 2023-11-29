@@ -86,7 +86,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_prev_epc" type="checkbox" id="is_prev_epc" value="" {{ old('is_prev_epc') == 'true' ? 'checked' : (isset($row) && $row->is_prev_epc == 'true' ? 'checked' : '') }}>
+                                            <input class="custom-control-input" name="is_prev_epc" type="checkbox" id="is_prev_epc" value="" {{ old('is_prev_epc') == 'true' ? 'checked' : (isset($row) && $row->is_prev_epc ? 'checked' : '') }}>
                                             <label for="is_prev_epc" class="custom-control-label">Any Previous EPC's</label>
                                             @error('is_prev_epc')
                                                 <span id="is_prev_epc" class="error invalid-feedback">{{ $message }}</span>
@@ -119,7 +119,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_property_check" type="checkbox" id="is_property_check" value="" {{ old('is_property_check') == 'true' ? 'checked' : (isset($row) && $row->is_property_check == 'true' ? 'checked' : '') }}>
+                                            <input class="custom-control-input" name="is_property_check" type="checkbox" id="is_property_check" value="" {{ old('is_property_check') == 'true' ? 'checked' : (isset($row) && $row->is_property_check ? 'checked' : '') }}>
                                             <label for="is_property_check" class="custom-control-label">Online Pics of Property Check</label>
                                             @error('is_property_check')
                                             <span id="is_property_check" class="error invalid-feedback">{{ $message }}</span>
@@ -200,10 +200,10 @@
                                 </div>
                                 <div class="col-4" style="display:none;" id="main_wall_other">
                                     <div class="form-group">
-                                        <label for="main_wall_type">Other</label>
-                                        <input value="{{ old('main_wall_type', isset($row) ? $row->main_wall_type : '') }}" type="text" class="form-control @error('main_wall_type') is-invalid @enderror" name="main_wall_type" id="main_wall_type" placeholder="Enter other">
-                                        @error('main_wall_type')
-                                        <span id="main_wall_type" class="error invalid-feedback">{{ $message }}</span>
+                                        <label for="main_wall_type_other">Other</label>
+                                        <input value="{{ old('main_wall_type_other', isset($row) ? $row->main_wall_type_other : '') }}" type="text" class="form-control @error('main_wall_type_other') is-invalid @enderror" name="main_wall_type_other" id="main_wall_type_other" placeholder="Enter other">
+                                        @error('main_wall_type_other')
+                                        <span id="main_wall_type_other" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -224,10 +224,10 @@
                                 </div>
                                 <div class="col-4" style="display:none;" id="extension_wall_other">
                                     <div class="form-group">
-                                        <label for="extension_wall">Other</label>
-                                        <input value="{{ old('extension_wall', isset($row) ? $row->extension_wall : '') }}" type="text" class="form-control @error('extension_wall') is-invalid @enderror" name="extension_wall" id="extension_wall" placeholder="Enter other">
-                                        @error('extension_wall')
-                                        <span id="extension_wall" class="error invalid-feedback">{{ $message }}</span>
+                                        <label for="extension_wall_other">Other</label>
+                                        <input value="{{ old('extension_wall_other', isset($row) ? $row->extension_wall_other : '') }}" type="text" class="form-control @error('extension_wall_other') is-invalid @enderror" name="extension_wall_other" id="extension_wall_other" placeholder="Enter other">
+                                        @error('extension_wall_other')
+                                        <span id="extension_wall_other" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_data_sent" type="checkbox" id="is_data_sent" value="" {{ old('is_data_sent') == 'true' ? 'checked' : (isset($row) && $row->is_data_sent == 'true' ? 'checked' : '') }}>
+                                            <input class="custom-control-input" name="is_data_sent" type="checkbox" id="is_data_sent" value="" {{ old('is_data_sent') == 'true' ? 'checked' : (isset($row) && $row->is_data_sent ? 'checked' : '') }}>
                                             <label for="is_data_sent" class="custom-control-label">Data match sent to Simple Green</label>
                                             @error('is_data_sent')
                                             <span id="is_data_sent" class="error invalid-feedback">{{ $message }}</span>
@@ -265,7 +265,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_benefit_proof_sent" type="checkbox" id="is_benefit_proof_sent" value="" {{ old('is_benefit_proof_sent') == 'true' ? 'checked' : (isset($row) && $row->is_benefit_proof_sent == 'true' ? 'checked' : '') }}>
+                                            <input class="custom-control-input" name="is_benefit_proof_sent" type="checkbox" id="is_benefit_proof_sent" value="" {{ old('is_benefit_proof_sent') == 'true' ? 'checked' : (isset($row) && $row->is_benefit_proof_sent ? 'checked' : '') }}>
                                             <label for="is_benefit_proof_sent" class="custom-control-label">Benefit proof sent</label>
                                             @error('is_benefit_proof_sent')
                                             <span id="is_benefit_proof_sent" class="error invalid-feedback">{{ $message }}</span>
@@ -294,7 +294,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_address_proof_sent" type="checkbox" id="is_address_proof_sent" value="" {{ old('is_address_proof_sent') == 'true' ? 'checked' : (isset($row) && $row->is_address_proof_sent == 'true' ? 'checked' : '') }}>
+                                            <input class="custom-control-input" name="is_address_proof_sent" type="checkbox" id="is_address_proof_sent" value="" {{ old('is_address_proof_sent') == 'true' ? 'checked' : (isset($row) && $row->is_address_proof_sent ? 'checked' : '') }}>
                                             <label for="is_address_proof_sent" class="custom-control-label">Address proof sent</label>
                                             @error('is_address_proof_sent')
                                             <span id="is_address_proof_sent" class="error invalid-feedback">{{ $message }}</span>
@@ -323,7 +323,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                             <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" name="is_other_picture" type="checkbox" id="is_other_picture" value="" {{ old('is_other_picture') == 'true' ? 'checked' : (isset($row) && $row->is_other_picture == 'true' ? 'checked' : '') }}>
+                                                <input class="custom-control-input" name="is_other_picture" type="checkbox" id="is_other_picture" value="" {{ old('is_other_picture') == 'true' ? 'checked' : (isset($row) && count($row->other_pictures) ? 'checked' : '') }}>
                                                 <label for="is_other_picture" class="custom-control-label">Other picture</label>
                                                 @error('is_other_picture')
                                                 <span id="is_other_picture" class="error invalid-feedback">{{ $message }}</span>
@@ -637,6 +637,10 @@
         }
         checkAll()
     }).change();
+    $('input:file').change(function(e) {
+        const fileNames = Object.values(e.target.files).map(file => file.name).join(', ');
+        $(this).siblings().html(fileNames)
+    });
     $("#is_other_picture").on('change', function() {
         if ($(this).is(':checked')) {
             $("#other_pic").show()
@@ -651,7 +655,7 @@
             $("#landlord_details").hide()
         else
             $("#landlord_details").show()
-    })
+    }).change()
     $("#extension_wall_type").on('change', function() {
         if($(this).val() === 'Other')
             $("#extension_wall_other").show()
