@@ -244,7 +244,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('Non Condensing Boiler Replacement')" name="is_boiler_replacement" type="checkbox" id="is_boiler_replacement" value="" {{ old('is_boiler_replacement') == 'true' ? 'checked' : (isset($row) && $row->is_boiler_replacement ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('Non Condensing Boiler Replacement')" name="is_boiler_replacement" type="checkbox" id="is_boiler_replacement" {{ old('is_boiler_replacement') == 'true' ? 'checked' : (isset($row) && $row->is_boiler_replacement ? 'checked' : '') }}>
                                             <label for="is_boiler_replacement" class="custom-control-label">Non Condensing Boiler Replacement</label>
                                             @error('is_boiler_replacement')
                                             <span id="is_boiler_replacement" class="error invalid-feedback">{{ $message }}</span>
@@ -255,7 +255,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('External wall insulation')" name="is_external_wall_insulation" type="checkbox" id="is_external_wall_insulation" value="" {{ old('is_external_wall_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_external_wall_insulation ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('External wall insulation')" name="is_external_wall_insulation" type="checkbox" id="is_external_wall_insulation" {{ old('is_external_wall_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_external_wall_insulation ? 'checked' : '') }}>
                                             <label for="is_external_wall_insulation" class="custom-control-label">External wall insulation</label>
                                             @error('is_external_wall_insulation')
                                             <span id="is_external_wall_insulation" class="error invalid-feedback">{{ $message }}</span>
@@ -266,7 +266,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('First Time Central Heating')" name="is_first_time_central_heating" type="checkbox" id="is_first_time_central_heating" value="" {{ old('is_first_time_central_heating') == 'true' ? 'checked' : (isset($row) && $row->is_first_time_central_heating ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('First Time Central Heating')" name="is_first_time_central_heating" type="checkbox" id="is_first_time_central_heating" {{ old('is_first_time_central_heating') == 'true' ? 'checked' : (isset($row) && $row->is_first_time_central_heating ? 'checked' : '') }}>
                                             <label for="is_first_time_central_heating" class="custom-control-label">First Time Central Heating</label>
                                             @error('is_first_time_central_heating')
                                             <span id="is_first_time_central_heating" class="error invalid-feedback">{{ $message }}</span>
@@ -277,7 +277,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('Internal wall insulation')" name="is_internal_wall_insulation" type="checkbox" id="is_internal_wall_insulation" value="" {{ old('is_internal_wall_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_internal_wall_insulation ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('Internal wall insulation')" name="is_internal_wall_insulation" type="checkbox" id="is_internal_wall_insulation" {{ old('is_internal_wall_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_internal_wall_insulation ? 'checked' : '') }}>
                                             <label for="is_internal_wall_insulation" class="custom-control-label">Internal wall insulation</label>
                                             @error('is_internal_wall_insulation')
                                             <span id="is_internal_wall_insulation" class="error invalid-feedback">{{ $message }}</span>
@@ -290,7 +290,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('Cavity Wall insulation')" name="is_cavity_wall_insulation" type="checkbox" id="is_cavity_wall_insulation" value="" {{ old('is_cavity_wall_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_cavity_wall_insulation ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('Cavity Wall insulation')" name="is_cavity_wall_insulation" type="checkbox" id="is_cavity_wall_insulation" {{ old('is_cavity_wall_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_cavity_wall_insulation ? 'checked' : '') }}>
                                             <label for="is_cavity_wall_insulation" class="custom-control-label">Cavity Wall insulation</label>
                                             @error('is_cavity_wall_insulation')
                                             <span id="is_cavity_wall_insulation" class="error invalid-feedback">{{ $message }}</span>
@@ -301,7 +301,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('Under Floor insulation')" name="is_under_floor_insulation" type="checkbox" id="is_under_floor_insulation" value="" {{ old('is_under_floor_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('Under Floor insulation')" name="is_under_floor_insulation" type="checkbox" id="is_under_floor_insulation" {{ old('is_under_floor_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
                                             <label for="is_under_floor_insulation" class="custom-control-label">Under Floor insulation</label>
                                             @error('is_under_floor_insulation')
                                             <span id="is_under_floor_insulation" class="error invalid-feedback">{{ $message }}</span>
@@ -312,7 +312,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('Loft insulation')" name="is_loft_insulation" type="checkbox" id="is_loft_insulation" value="" {{ old('is_loft_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('Loft insulation')" name="is_loft_insulation" type="checkbox" id="is_loft_insulation" {{ old('is_loft_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
                                             <label for="is_loft_insulation" class="custom-control-label">Loft insulation</label>
                                             @error('is_loft_insulation')
                                             <span id="is_loft_insulation" class="error invalid-feedback">{{ $message }}</span>
@@ -323,7 +323,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('Heating controls')" name="is_heating_controls" type="checkbox" id="is_heating_controls" value="" {{ old('is_heating_controls') == 'true' ? 'checked' : (isset($row) && $row->is_heating_controls ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('Heating controls')" name="is_heating_controls" type="checkbox" id="is_heating_controls" {{ old('is_heating_controls') == 'true' ? 'checked' : (isset($row) && $row->is_heating_controls ? 'checked' : '') }}>
                                             <label for="is_heating_controls" class="custom-control-label">Heating controls</label>
                                             @error('is_heating_controls')
                                             <span id="is_heating_controls" class="error invalid-feedback">{{ $message }}</span>
@@ -336,7 +336,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('Solar PV')" name="is_solar_pv" type="checkbox" id="is_solar_pv" value="" {{ old('is_solar_pv') == 'true' ? 'checked' : (isset($row) && $row->is_solar_pv ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('Solar PV')" name="is_solar_pv" type="checkbox" id="is_solar_pv" {{ old('is_solar_pv') == 'true' ? 'checked' : (isset($row) && $row->is_solar_pv ? 'checked' : '') }}>
                                             <label for="is_solar_pv" class="custom-control-label">Solar PV</label>
                                             @error('is_solar_pv')
                                             <span id="is_solar_pv" class="error invalid-feedback">{{ $message }}</span>
@@ -347,7 +347,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('Air Source Heat pump')" name="is_air_source" type="checkbox" id="is_air_source" value="" {{ old('is_air_source') == 'true' ? 'checked' : (isset($row) && $row->is_air_source ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('Air Source Heat pump')" name="is_air_source" type="checkbox" id="is_air_source" {{ old('is_air_source') == 'true' ? 'checked' : (isset($row) && $row->is_air_source ? 'checked' : '') }}>
                                             <label for="is_air_source" class="custom-control-label">Air Source Heat pump</label>
                                             @error('is_air_source')
                                             <span id="is_air_source" class="error invalid-feedback">{{ $message }}</span>
@@ -358,7 +358,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('Storage Heater')" name="is_storage_heater" type="checkbox" id="is_storage_heater" value="" {{ old('is_storage_heater') == 'true' ? 'checked' : (isset($row) && $row->is_storage_heater ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('Storage Heater')" name="is_storage_heater" type="checkbox" id="is_storage_heater" {{ old('is_storage_heater') == 'true' ? 'checked' : (isset($row) && $row->is_storage_heater ? 'checked' : '') }}>
                                             <label for="is_storage_heater" class="custom-control-label">Storage Heater</label>
                                             @error('is_storage_heater')
                                             <span id="is_storage_heater" class="error invalid-feedback">{{ $message }}</span>
@@ -369,7 +369,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" onchange="addMeasureForm('RIR')" name="is_rir" type="checkbox" id="is_rir" value="" {{ old('is_rir') == 'true' ? 'checked' : (isset($row) && $row->is_rir ? 'checked' : '') }}>
+                                            <input class="custom-control-input" onchange="addMeasureForm('RIR')" name="is_rir" type="checkbox" id="is_rir" {{ old('is_rir') == 'true' ? 'checked' : (isset($row) && $row->is_rir ? 'checked' : '') }}>
                                             <label for="is_rir" class="custom-control-label">RIR</label>
                                             @error('is_rir')
                                             <span id="is_rir" class="error invalid-feedback">{{ $message }}</span>
@@ -623,15 +623,18 @@
             $('#funding').attr('value', funding);
         }
         let form_index = 0;
-        let material_index = 0;
-        let installer_index = 0;
+        let material_index = [];
+        let installer_index = [];
         function addMaterial(id) {
-            material_index++
+            console.log(id);
+            console.log(material_index);
+            console.log(material_index[`${id}`]);
+            material_index[`${id}`]++;
             $("#" + id + " .materials:last").after(`<div class="row materials">
                                         <div class="col-5">
                                             <div class="form-group">
                                                 <label for="material_name">Material</label>
-                                                <input value="{{ old('material_name') }}" type="text" class="form-control @error('material_name') is-invalid @enderror" name="types[${form_index}][materials][${material_index}][title]" id="material_name" placeholder="Enter Material Name">
+                                                <input value="{{ old('material_name') }}" type="text" class="form-control @error('material_name') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][title]" id="material_name" placeholder="Enter Material Name">
                                                 @error('material_name')
             <span id="material_name" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -640,7 +643,7 @@
         <div class="col-5">
             <div class="form-group">
                 <label for="material_cost">Material Cost</label>
-                <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index}][cost]" id="material_cost" placeholder="Enter Material Cost">
+                <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][cost]" id="material_cost" placeholder="Enter Material Cost">
                                                 @error('material_cost')
             <span id="material_cost" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -652,12 +655,12 @@
     </div>`);
         }
         function addInstaller(id) {
-            installer_index++
+            installer_index[`${id}`]++;
             $("#" + id + " .installers:last").after(`<div class="row installers">
                                         <div class="col-5">
                 <div class="form-group">
                     <label for="title">Installer</label>
-                    <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="types[${form_index}][installers][${installer_index}][title]" id="installer_title" placeholder="Enter Installer">
+                    <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][title]" id="installer_title" placeholder="Enter Installer">
                                                         @error('title')
             <span id="title" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
@@ -666,7 +669,7 @@
         <div class="col-5">
             <div class="form-group">
                 <label for="cost">Installer Cost</label>
-                <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
+                <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
                                                         @error('cost')
             <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
@@ -685,6 +688,9 @@
 
         function addMeasureForm(type) {
             const slug = convertToSlug(type);
+            material_index[`${slug}`] = 0;
+            installer_index[`${slug}`] = 0;
+            form_index = $("#measure-type .card-outline").length;
             if ($('#' + slug).length) {
                 $('#' + slug).remove()
                 form_index--
@@ -766,7 +772,7 @@
             <div class="col-5">
                 <div class="form-group">
                     <label for="title">Material</label>
-                    <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name=" types[${form_index}][materials][${material_index}][title]" id="material_title" placeholder="Enter Material Name">
+                    <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name=" types[${form_index}][materials][${material_index[`${slug}`]}][title]" id="material_title" placeholder="Enter Material Name">
                                                         @error('title')
                 <span id="title" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
@@ -775,7 +781,7 @@
             <div class="col-5">
                 <div class="form-group">
                     <label for="cost">Material Cost</label>
-                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index}][cost]" id="material_cost" placeholder="Enter Material Cost">
+                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[`${slug}`]}][cost]" id="material_cost" placeholder="Enter Material Cost">
                                                         @error('cost')
                 <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
@@ -789,7 +795,7 @@
             <div class="col-5">
                 <div class="form-group">
                     <label for="title">Installer</label>
-                    <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="types[${form_index}][installers][${installer_index}][title]" id="installer_title" placeholder="Enter Installer">
+                    <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][title]" id="installer_title" placeholder="Enter Installer">
                                                         @error('title')
                 <span id="title" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
@@ -798,7 +804,7 @@
             <div class="col-5">
                 <div class="form-group">
                     <label for="cost">Installer Cost</label>
-                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index}][cost]" id="cost" placeholder="Enter Installer Cost">
+                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][cost]" id="cost" placeholder="Enter Installer Cost">
                                                         @error('cost')
                 <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
@@ -810,7 +816,6 @@
         </div>
     </div>
     </div>`)
-                form_index++
             }
         }
 

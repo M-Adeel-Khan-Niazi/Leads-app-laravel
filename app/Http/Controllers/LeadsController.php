@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\FileUploads;
 use App\Models\Installer;
+use App\Models\LeadDetails;
+use App\Models\LeadMeasureCategories;
+use App\Models\LeadMeasureCategoryTypes;
 use App\Models\Leads;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -140,7 +143,6 @@ class LeadsController extends Controller
             return redirect()->route('leads.index');
         } catch (\Exception $error) {
             DB::rollBack();
-            dd($error->getMessage());
             return redirect()->back()->with('error', $error->getMessage());
         }
     }
@@ -176,10 +178,63 @@ class LeadsController extends Controller
      * @param \App\Models\Leads $leads
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Leads $leads)
+    public function update(Request $request, Leads $lead)
     {
-        dd($request->all());
-        return view('leads.index');
+        DB::beginTransaction();
+        try {
+            $details = new LeadDetails($request->except('types'));
+            $details->lead_id = $lead->id;
+            $details->is_flexible = (boolean)$request->is_flexible;
+            $details->is_match_sent = (boolean)$request->is_match_sent;
+            $details->is_rfa_complete = (boolean)$request->is_rfa_complete;
+            if (!$details->is_flexible || $request->regs_check_result == 'un_verified') {
+                $lead->status = 'stop';
+                $lead->save();
+                $details->save();
+                DB::commit();
+                return redirect()->route('leads.index');
+            }
+            $details->funding = $request->abs_score * $request->rate;
+            $details->is_boiler_replacement = $request->is_boiler_replacement == 'on';
+            $details->is_external_wall_insulation = $request->is_external_wall_insulation == 'on';
+            $details->is_first_time_central_heating = $request->is_first_time_central_heating == 'on';
+            $details->is_internal_wall_insulation = $request->is_internal_wall_insulation == 'on';
+            $details->is_cavity_wall_insulation = $request->is_cavity_wall_insulation == 'on';
+            $details->is_under_floor_insulation = $request->is_under_floor_insulation == 'on';
+            $details->is_loft_insulation = $request->is_loft_insulation == 'on';
+            $details->is_heating_controls = $request->is_heating_controls == 'on';
+            $details->is_solar_pv = $request->is_solar_pv == 'on';
+            $details->is_air_source = $request->is_air_source == 'on';
+            $details->is_storage_heater = $request->is_storage_heater == 'on';
+            $details->is_rir = $request->is_rir == 'on';
+            $details->is_completed_submission = $request->is_completed_submission == 'on';
+            $details->save();
+            foreach ($request->types as $category) {
+                $lead_category = new LeadMeasureCategories($category);
+                $lead_category->is_warranty_applied = (boolean)$category['is_warranty_applied'];
+                $details->measure_categories()->save($lead_category);
+                foreach ($category['materials'] as $material) {
+                    $category_material = new LeadMeasureCategoryTypes($material);
+                    $category_material->type = 'material';
+                    $category_material->lead_id = $lead->id;
+                    $lead_category->category_types()->save($category_material);
+                }
+                foreach ($category['installers'] as $installer) {
+                    $category_installer = new LeadMeasureCategoryTypes($installer);
+                    $category_installer->type = 'installer';
+                    $category_installer->lead_id = $lead->id;
+                    $lead_category->category_types()->save($category_installer);
+                }
+            }
+            $lead->status = 'completed';
+            $lead->save();
+            DB::commit();
+            return redirect()->route('leads.index');
+        } catch (\Exception $error) {
+            DB::rollBack();
+            dd($error->getMessage());
+            return redirect()->back()->with('error', $error->getMessage());
+        }
     }
 
     /**

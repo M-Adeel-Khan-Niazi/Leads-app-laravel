@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLeadMeasureTypesTable extends Migration
+class CreateLeadMeasureCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateLeadMeasureTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lead_measure_types', function (Blueprint $table) {
+        Schema::create('lead_measure_categories', function (Blueprint $table) {
             $table->id();
             $table->string('m2')->nullable();
-            $table->integer('cost')->default(0);
-            $table->integer('material_cost')->default(0);
+            $table->string('category')->nullable();
             $table->date('start_date')->nullable();
             $table->date('completion_date')->nullable();
             $table->boolean('is_warranty_applied')->default(false);
             $table->integer('ibg_cost')->default(0);
             $table->integer('lead_id');
+            $table->integer('installer_id');
             $table->timestamps();
         });
     }
