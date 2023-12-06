@@ -243,9 +243,13 @@ class LeadsController extends Controller
      * @param \App\Models\Leads $leads
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Leads $leads)
+    public function destroy(Request $request,Leads $lead)
     {
-        //
+        if ($request->ajax()) {
+            $lead->delete();
+            return response()->json(['deleted' => true]);
+        }
+        return response()->json(['deleted' => false]);
     }
 
     public function leads_details(Leads $lead)
