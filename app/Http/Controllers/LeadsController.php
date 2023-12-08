@@ -182,11 +182,13 @@ class LeadsController extends Controller
     {
         DB::beginTransaction();
         try {
-            $details = new LeadDetails($request->except('types'));
+            $details = new LeadDetails($request->except('types', 'is_boiler_replacement', 'is_external_wall_insulation',
+                'is_first_time_central_heating', 'is_internal_wall_insulation', 'is_cavity_wall_insulation', 'is_under_floor_insulation',
+                'is_loft_insulation', 'is_heating_controls', 'is_solar_pv', 'is_air_source', 'is_storage_heater', 'is_rir', 'is_completed_submission'));
             $details->lead_id = $lead->id;
-            $details->is_flexible = (boolean)$request->is_flexible;
-            $details->is_match_sent = (boolean)$request->is_match_sent;
-            $details->is_rfa_complete = (boolean)$request->is_rfa_complete;
+            $details->is_flexible = filter_var($request->is_flexible, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $details->is_match_sent = filter_var($request->is_match_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $details->is_rfa_complete = filter_var($request->is_rfa_complete, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
             if (!$details->is_flexible || $request->regs_check_result == 'un_verified') {
                 $lead->status = 'stop';
                 $lead->save();
@@ -211,7 +213,7 @@ class LeadsController extends Controller
             $details->save();
             foreach ($request->types as $category) {
                 $lead_category = new LeadMeasureCategories($category);
-                $lead_category->is_warranty_applied = (boolean)$category['is_warranty_applied'];
+                $lead_category->is_warranty_applied = filter_var($category['is_warranty_applied'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
                 $details->measure_categories()->save($lead_category);
                 foreach ($category['materials'] as $material) {
                     $category_material = new LeadMeasureCategoryTypes($material);
@@ -243,7 +245,7 @@ class LeadsController extends Controller
      * @param \App\Models\Leads $leads
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,Leads $lead)
+    public function destroy(Request $request, Leads $lead)
     {
         if ($request->ajax()) {
             $lead->delete();

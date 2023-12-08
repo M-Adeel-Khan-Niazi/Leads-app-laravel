@@ -2,6 +2,11 @@
 @section('title', isset($row) ? 'Edit Lead': 'Create Lead')
 @section('main-content')
         <!-- form start -->
+            @if(Session::has('error'))
+                <div class="alert alert-danger">
+                    {{ Session::get('error')}}
+                </div>
+            @endif
             <form method="POST" action="{{ route('leads.store') }}" enctype="multipart/form-data">
             @csrf
             @if(isset($row))
@@ -136,7 +141,11 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="property_check_pictures[]" id="property_check_pic">
-                                                <label class="custom-file-label" for="property_check_pic">Choose pictures</label>
+                                                @if(isset($row) && $row->property_check_pictures)
+                                                    <label class="custom-file-label" for="property_check_pic">{{ collect($row->property_check_pictures)->pluck('name')->join(', ') }}</label>
+                                                @else
+                                                    <label class="custom-file-label" for="property_check_pic">Choose pictures</label>
+                                                @endif
                                             </div>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Upload</span>
@@ -252,7 +261,11 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="data_match_pictures[]">
-                                                <label class="custom-file-label" for="data_match_pic">Choose pictures</label>
+                                                @if(isset($row) && $row->data_match_pictures)
+                                                    <label class="custom-file-label" for="data_match_pic">{{ collect($row->data_match_pictures)->pluck('name')->join(', ') }}</label>
+                                                @else
+                                                    <label class="custom-file-label" for="data_match_pic">Choose pictures</label>
+                                                @endif
                                             </div>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Upload</span>
@@ -281,7 +294,11 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="benefit_proof_pictures[]">
-                                                <label class="custom-file-label" for="benefit_proof_pic">Choose pictures</label>
+                                                @if(isset($row) && $row->benefit_proof_pictures)
+                                                    <label class="custom-file-label" for="benefit_proof_pic">{{ collect($row->benefit_proof_pictures)->pluck('name')->join(', ') }}</label>
+                                                @else
+                                                    <label class="custom-file-label" for="benefit_proof_pic">Choose pictures</label>
+                                                @endif
                                             </div>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Upload</span>
@@ -310,7 +327,11 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="address_proof_pictures[]">
-                                                <label class="custom-file-label" for="address_proof_pic">Choose pictures</label>
+                                                @if(isset($row) && $row->address_proof_pictures)
+                                                    <label class="custom-file-label" for="address_proof_pic">{{ collect($row->address_proof_pictures)->pluck('name')->join(', ') }}</label>
+                                                @else
+                                                    <label class="custom-file-label" for="address_proof_pic">Choose pictures</label>
+                                                @endif
                                             </div>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Upload</span>
@@ -339,7 +360,11 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="other_pictures[]">
-                                                <label class="custom-file-label" for="other_pic">Choose pictures</label>
+                                                @if(isset($row) && $row->other_pictures)
+                                                    <label class="custom-file-label" for="other_pic">{{ collect($row->other_pictures)->pluck('name')->join(', ') }}</label>
+                                                @else
+                                                    <label class="custom-file-label" for="other_pic">Choose pictures</label>
+                                                @endif
                                             </div>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Upload</span>

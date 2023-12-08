@@ -3,6 +3,11 @@
 @section('main-content')
     <div class="card card-primary">
         <!-- form start -->
+        @if(Session::has('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error')}}
+            </div>
+        @endif
         <form method="POST" action="{{ route('leads.update', $lead->id) }}">
             @csrf
             @method('PUT')
