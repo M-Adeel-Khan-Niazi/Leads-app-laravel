@@ -197,7 +197,9 @@ class LeadsController extends Controller
                 return redirect()->route('leads.index');
             }
             $details->funding = $request->abs_score * $request->rate;
-            $details->is_boiler_replacement = $request->is_boiler_replacement == 'on';
+            $details->is_pibi = $request->is_pibi == 'on';
+            $details->is_design = $request->is_design == 'on';
+            $details->is_tech_survey = $request->is_tech_survey == 'on';
             $details->is_external_wall_insulation = $request->is_external_wall_insulation == 'on';
             $details->is_first_time_central_heating = $request->is_first_time_central_heating == 'on';
             $details->is_internal_wall_insulation = $request->is_internal_wall_insulation == 'on';

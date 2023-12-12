@@ -752,10 +752,45 @@
                                         <div class="card-body">
                                             <input type="hidden" name="types[${form_index}][category]" value="${type}"/>
                                             <div class="row">
-                                                <div class="col-4">
-                                                    <div class="form-group">
-                                                        <label for="m2">M2</label>
-                                                        <input value="{{ old('m2') }}" type="text" class="form-control @error('m2') is-invalid @enderror" name="types[${form_index}][m2]" id="m2" placeholder="Enter M2">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"  name="types[${form_index}][is_pibi]" type="checkbox" id="is_pibi" {{ old('is_pibi') == 'true' ? 'checked' : (isset($row) && $row->is_pibi ? 'checked' : '') }}>
+                                            <label for="is_pibi" class="custom-control-label">PIBI</label>
+                                            @error('is_pibi')
+                <span id="is_pibi" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input"  name="types[${form_index}][is_design]" type="checkbox" id="is_design" {{ old('is_design') == 'true' ? 'checked' : (isset($row) && $row->is_design ? 'checked' : '') }}>
+                                            <label for="is_design" class="custom-control-label">Design</label>
+                                            @error('is_design')
+                <span id="is_design" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" name="types[${form_index}][is_tech_survey]" type="checkbox" id="is_tech_survey" {{ old('is_tech_survey') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
+                                            <label for="is_tech_survey" class="custom-control-label">Tech Survey</label>
+                                            @error('is_tech_survey')
+                <span id="is_tech_survey" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                </div>
+            </div>
+        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="m2">M2</label>
+                                <input value="{{ old('m2') }}" type="text" class="form-control @error('m2') is-invalid @enderror" name="types[${form_index}][m2]" id="m2" placeholder="Enter M2">
                                                         @error('m2')
                 <span id="m2" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
