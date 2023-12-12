@@ -32,7 +32,7 @@
                         <div class="step" data-target="#part-3">
                             <button type="button" class="step-trigger" role="tab" aria-controls="part-3" id="part-3-trigger">
                                 <span class="bs-stepper-circle">3</span>
-                                <span class="bs-stepper-label">Data Matched result</span>
+                                <span class="bs-stepper-label">Retrofit Assessment / Findings</span>
                             </button>
                         </div>
                         <div class="line"></div>
@@ -84,13 +84,22 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="is_match_sent">Data Matched sent</label>
+                                        <label for="is_match_sent">Land Reg</label>
                                         <select class="form-control @error('is_match_sent') is-invalid @enderror" id="is_match_sent" name="is_match_sent" style="width: 100%;">
                                             <option value="true" {{ isset($row) && $row->is_match_sent ? 'selected' : (old('is_match_sent') ? 'selected': '')}}>Yes</option>
                                             <option value="false" {{ isset($row) && !$row->is_match_sent ? 'selected' : (old('is_match_sent') == 'false' ? 'selected': '') }}>No</option>
                                         </select>
                                         @error('is_match_sent')
                                         <span id="is_match_sent" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="land_reg">Land Reg</label>
+                                        <input value="{{ old('land_reg', isset($row) ? $row->land_reg : '') }}" type="text" class="form-control @error('land_reg') is-invalid @enderror" name="land_reg" id="land_reg" placeholder="Enter Land Reg">
+                                        @error('land_reg')
+                                        <span id="land_reg" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -483,6 +492,26 @@
                             @else
                                 <div id="measure-type"></div>
                             @endif
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="total_material">Total Material Cost</label>
+                                        <input value="0" type="number" min="0" readonly class="form-control" id="total_material">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="total_installer">Total Installer Cost</label>
+                                        <input value="0" type="number" min="0" readonly class="form-control" id="total_installer">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="sub_total">Sub Total</label>
+                                        <input value="0" type="number" min="0" readonly class="form-control" id="sub_total">
+                                    </div>
+                                </div>
+                            </div>
                             <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="button" class="btn btn-primary" onclick="stepper.next()">Next</button>
                         </div>
@@ -594,7 +623,7 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label for="is_completed_submission">All docs completed for submission</label>
+                                        <label for="is_completed_submission">Docs ready to prepare</label>
                                         <select class="form-control @error('is_completed_submission') is-invalid @enderror" id="is_completed_submission" name="is_completed_submission" style="width: 100%;">
                                             <option value="true" {{ isset($row) && $row->is_completed_submission ? 'selected' : (old('is_completed_submission') == 'true' ? 'selected': '')}}>Yes</option>
                                             <option value="false" {{ isset($row) && !$row->is_completed_submission ? 'selected' : (old('is_completed_submission') == 'false' ? 'selected': '') }}>No</option>
@@ -631,9 +660,9 @@
         let material_index = [];
         let installer_index = [];
         function addMaterial(id) {
-            console.log(id);
-            console.log(material_index);
-            console.log(material_index[`${id}`]);
+            // console.log(id);
+            // console.log(material_index);
+            // console.log(material_index[`${id}`]);
             material_index[`${id}`]++;
             $("#" + id + " .materials:last").after(`<div class="row materials">
                                         <div class="col-5">
@@ -648,16 +677,24 @@
         <div class="col-5">
             <div class="form-group">
                 <label for="material_cost">Material Cost</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                     </div>
                 <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][cost]" id="material_cost" placeholder="Enter Material Cost">
                                                 @error('material_cost')
             <span id="material_cost" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
+            <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
+                </div>
             </div>
         </div>
-        <div class="col-2 d-flex justify-content-center align-items-center mt-2">
-            <button type="button" class="btn btn-danger mx-2 remove_material"><i class="fas fa-trash"></i></button>
-        </div>
-    </div>`);
+    </div>
+    <div class="col-2 d-flex justify-content-center align-items-center mt-2">
+        <button type="button" class="btn btn-danger mx-2 remove_material"><i class="fas fa-trash"></i></button>
+    </div>
+</div>`);
         }
         function addInstaller(id) {
             installer_index[`${id}`]++;
@@ -674,15 +711,23 @@
         <div class="col-5">
             <div class="form-group">
                 <label for="cost">Installer Cost</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                     </div>
                 <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
                                                         @error('cost')
             <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
+            <div class="input-group-append">
+                <span class="input-group-text">.00</span>
+            </div>
             </div>
         </div>
-    <div class="col-2 d-flex justify-content-center align-items-center mt-2">
-        <button type="button" class="btn btn-danger mx-2 remove_installer"><i class="fas fa-trash"></i></button>
     </div>
+<div class="col-2 d-flex justify-content-center align-items-center mt-2">
+    <button type="button" class="btn btn-danger mx-2 remove_installer"><i class="fas fa-trash"></i></button>
+</div>
 </div>`);
         }
         function convertToSlug(Text) {
@@ -765,19 +810,27 @@
             </div>
             <div class="col-4">
                 <div class="form-group">
-                    <label for="ibg_cost">IBG Cost</label>
+                <label for="ibg_cost">IBG Cost</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                     </div>
                     <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control @error('ibg_cost') is-invalid @enderror" name="types[${form_index}][ibg_cost]" id="ibg_cost" placeholder="Enter IBG Cost">
                                                         @error('ibg_cost')
-                <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
+                    <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
+                    <div class="input-group-append">
+                        <span class="input-group-text">.00</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row materials">
-            <div class="col-5">
-                <div class="form-group">
-                    <label for="title">Material</label>
-                    <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name=" types[${form_index}][materials][${material_index[`${slug}`]}][title]" id="material_title" placeholder="Enter Material Name">
+    </div>
+    <div class="row materials">
+        <div class="col-5">
+            <div class="form-group">
+                <label for="title">Material</label>
+                <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name=" types[${form_index}][materials][${material_index[`${slug}`]}][title]" id="material_title" placeholder="Enter Material Name">
                                                         @error('title')
                 <span id="title" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
@@ -785,15 +838,23 @@
             </div>
             <div class="col-5">
                 <div class="form-group">
-                    <label for="cost">Material Cost</label>
+                <label for="cost">Material Cost</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                     </div>
                     <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[`${slug}`]}][cost]" id="material_cost" placeholder="Enter Material Cost">
                                                         @error('cost')
                 <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
+                <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
                 </div>
             </div>
-            <div class="col-2 d-flex justify-content-center align-items-center mt-2">
-                <button type="button" class="btn btn-primary mx-2" onclick="addMaterial('${slug}')"><i class="fas fa-plus-square"></i></button>
+            </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center mt-2">
+            <button type="button" class="btn btn-primary mx-2" onclick="addMaterial('${slug}')"><i class="fas fa-plus-square"></i></button>
             </div>
         </div>
         <div class="row installers">
@@ -809,14 +870,22 @@
             <div class="col-5">
                 <div class="form-group">
                     <label for="cost">Installer Cost</label>
-                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][cost]" id="cost" placeholder="Enter Installer Cost">
+                    <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                     </div>
+                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
                                                         @error('cost')
                 <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                                                         @enderror
+                <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
                 </div>
             </div>
-             <div class="col-2 d-flex justify-content-center align-items-center mt-2">
-                <button type="button" class="btn btn-primary mx-2" onclick="addInstaller('${slug}')"><i class="fas fa-plus-square"></i></button>
+            </div>
+        </div>
+         <div class="col-2 d-flex justify-content-center align-items-center mt-2">
+            <button type="button" class="btn btn-primary mx-2" onclick="addInstaller('${slug}')"><i class="fas fa-plus-square"></i></button>
             </div>
         </div>
     </div>
@@ -852,6 +921,29 @@
                     $(".submit_btn_3").hide()
                 }
             }).change();
+            // let totalMaterial = 0;
+            // let totalInstaller = 0;
+            // $('#material_cost').blur(function () {
+            //     totalMaterial = $.map($('input[id^="material_cost"]'), function (elem, i) {
+            //         return parseInt(elem.value, 10) || 0;
+            //     }).reduce(function (a, b) {
+            //         return a + b;
+            //     }, 0)
+            //     $("#total_material").attr('value', totalMaterial)
+            //     $("#sub_total").attr('value', totalMaterial + totalInstaller)
+            //     // $('#material_cost').each(function() {
+            //     //     totalMaterial += Number($(this).val());
+            //     //     console.log(totalMaterial);
+            //     // });
+            // });
+            // $('#installer_cost').blur(function () {
+            //     $('#installer_cost').each(function() {
+            //         totalInstaller += Number($(this).val());
+            //         console.log(totalInstaller);
+            //         $("#total_installer").attr('value', totalInstaller)
+            //         $("#sub_total").attr('value', totalMaterial + totalInstaller)
+            //     });
+            // });
         });
     </script>
 @endpush
