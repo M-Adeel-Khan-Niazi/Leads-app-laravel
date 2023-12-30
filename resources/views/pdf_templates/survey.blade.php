@@ -111,21 +111,21 @@
     <p style="position:absolute;top:271px;left:84px;white-space:nowrap" class="ft23"><b>2.&#160;</b></p>
     <p style="position:absolute;top:267px;left:106px;white-space:nowrap" class="ft20">Assessor&#160;/&#160;</p>
     <p style="position:absolute;top:294px;left:106px;white-space:nowrap" class="ft20">Operative:&#160;</p>
-    <p style="position:absolute;top:230px;left:233px;white-space:nowrap" class="ft20">Name:&#160;</p>
+    <p style="position:absolute;top:230px;left:233px;white-space:nowrap" class="ft20">Name:&#160;{{ $data->agent_details->name }}</p>
     <p style="position:absolute;top:262px;left:233px;white-space:nowrap" class="ft20">Company&#160;name:&#160;</p>
     <p style="position:absolute;top:294px;left:233px;white-space:nowrap" class="ft20">Tel:&#160;</p>
-    <p style="position:absolute;top:326px;left:233px;white-space:nowrap" class="ft20">Email:&#160;&#160;</p>
+    <p style="position:absolute;top:326px;left:233px;white-space:nowrap" class="ft20">Email:&#160;&#160; {{ $data->agent_details->email }}</p>
     <p style="position:absolute;top:363px;left:84px;white-space:nowrap" class="ft23"><b>3.&#160;</b></p>
     <p style="position:absolute;top:358px;left:106px;white-space:nowrap" class="ft20">Name&#160;of&#160;</p>
-    <p style="position:absolute;top:386px;left:106px;white-space:nowrap" class="ft20">customer:&#160;</p>
+    <p style="position:absolute;top:386px;left:106px;white-space:nowrap" class="ft20">customer:&#160; {{ $data->resident_first_name.' '.$data->resident_mid_name.' '.$data->resident_sur_name }}</p>
     <p style="position:absolute;top:358px;left:233px;white-space:nowrap" class="ft20">&#160;</p>
     <p style="position:absolute;top:419px;left:84px;white-space:nowrap" class="ft23"><b>4.&#160;</b></p>
     <p style="position:absolute;top:414px;left:106px;white-space:nowrap" class="ft20">Address&#160;of&#160;</p>
-    <p style="position:absolute;top:441px;left:106px;white-space:nowrap" class="ft20">installation:&#160;</p>
+    <p style="position:absolute;top:441px;left:106px;white-space:nowrap" class="ft20">installation:&#160; {{ $data->address_line_one }}</p>
     <p style="position:absolute;top:414px;left:233px;white-space:nowrap" class="ft20">&#160;</p>
     <p style="position:absolute;top:441px;left:233px;white-space:nowrap" class="ft20">&#160;</p>
     <p style="position:absolute;top:474px;left:84px;white-space:nowrap" class="ft23"><b>5.&#160;</b></p>
-    <p style="position:absolute;top:469px;left:106px;white-space:nowrap" class="ft20">Post&#160;code:&#160;</p>
+    <p style="position:absolute;top:469px;left:106px;white-space:nowrap" class="ft20">Post&#160;code:&#160; {{ $data->postal_code }}</p>
     <p style="position:absolute;top:469px;left:233px;white-space:nowrap" class="ft20">&#160;</p>
     <p style="position:absolute;top:505px;left:84px;white-space:nowrap" class="ft23"><b>6.&#160;</b></p>
     <p style="position:absolute;top:501px;left:106px;white-space:nowrap" class="ft20">Property&#160;type:</p>

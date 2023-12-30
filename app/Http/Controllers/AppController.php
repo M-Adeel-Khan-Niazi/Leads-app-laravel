@@ -22,7 +22,7 @@ class AppController extends Controller
 
     public function survey_pdf($id)
     {
-        $data = Leads::find($id);
+        $data = Leads::with('details', 'agent_details')->find($id);
         $pdf = PDF::loadView('pdf_templates.survey', compact('data'));
         $name = now() . '_survey.pdf';
         return $pdf->stream($name);

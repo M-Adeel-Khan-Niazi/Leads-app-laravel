@@ -16,6 +16,11 @@ class Leads extends Model
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
+    public function details()
+    {
+        return $this->belongsTo(LeadDetails::class, 'id', 'lead_id');
+    }
+
     public function agent_details()
     {
         return $this->belongsTo(User::class, 'agent_id', 'id');
