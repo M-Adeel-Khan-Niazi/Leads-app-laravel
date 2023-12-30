@@ -30,4 +30,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('funders', FunderController::class);
     Route::resource('leads', LeadsController::class);
     Route::get('leads-details/{lead}', [LeadsController::class, 'leads_details'])->name('leads.details');
+    Route::get('generate/{id}/survey-pdf', [AppController::class, 'survey_pdf'])->name('survey.pdf');
+    Route::get('generate', function () {
+        return view('pdf_templates.test');
+    });
 });

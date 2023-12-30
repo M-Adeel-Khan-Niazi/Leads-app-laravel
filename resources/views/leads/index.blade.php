@@ -66,6 +66,9 @@
                                     @if ($lead->status == 'pending' && auth()->user()->role == 'admin')
                                         <a href="{{ route('leads.details', $lead->id) }}" class="btn btn-sm btn-outline-primary">Next <i class="fas fa-arrow-right"></i></a>
                                     @endif
+                                    @if($lead->status == 'completed')
+                                        <a href="{{ route('survey.pdf', $lead->id) }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf"></i></a>
+                                    @endif
                                 </form>
                             </td>
                         </tr>
