@@ -18,14 +18,14 @@
                         <div class="step" data-target="#part-1">
                             <button type="button" class="step-trigger" role="tab" aria-controls="part-1" id="part-1-trigger">
                                 <span class="bs-stepper-circle">1</span>
-                                <span class="bs-stepper-label">Building Regs check</span>
+                                <span class="bs-stepper-label">Lead Status</span>
                             </button>
                         </div>
                         <div class="line"></div>
                         <div class="step" data-target="#part-2">
                             <button type="button" class="step-trigger" role="tab" aria-controls="part-2" id="part-2-trigger">
                                 <span class="bs-stepper-circle">2</span>
-                                <span class="bs-stepper-label">Data Matched sent</span>
+                                <span class="bs-stepper-label">Data Match & Land Registry</span>
                             </button>
                         </div>
                         <div class="line"></div>
@@ -44,9 +44,16 @@
                         </div>
                         <div class="line"></div>
                         <div class="step" data-target="#part-5">
-                            <button type="button" class="step-trigger" role="tab" aria-controls="part-" id="part--trigger">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="part-5" id="part-5-trigger">
                                 <span class="bs-stepper-circle">5</span>
-                                <span class="bs-stepper-label">Finalize</span>
+                                <span class="bs-stepper-label">Additional Costs</span>
+                            </button>
+                        </div>
+                        <div class="line"></div>
+                        <div class="step" data-target="#part-6">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="part-6" id="part-6-trigger">
+                                <span class="bs-stepper-circle">6</span>
+                                <span class="bs-stepper-label">Summary</span>
                             </button>
                         </div>
                     </div>
@@ -84,7 +91,33 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="is_match_sent">Land Reg</label>
+                                        <label for="land_reg_check">Land Registry Check</label>
+                                        <select class="form-control @error('land_reg_check') is-invalid @enderror" id="land_reg_check" name="land_reg_check" style="width: 100%;">
+                                            <option value="Downloaded" {{ isset($row) && $row->land_reg_check == 'Downloaded' ? 'selected' : (old('land_reg_check') == 'Downloaded' ? 'selected': '')}}>Downloaded</option>
+                                            <option value="Not Available" {{ isset($row) && $row->land_reg_check == 'Not Available' ? 'selected' : (old('land_reg_check') == 'Not Available' ? 'selected': '') }}>Not Available</option>
+                                        </select>
+                                        @error('land_reg_check')
+                                        <span id="land_reg_check" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="land_reg_matched">Land Registry Matched</label>
+                                        <select class="form-control @error('land_reg_matched') is-invalid @enderror" id="land_reg_matched" name="land_reg_matched" style="width: 100%;">
+                                            <option value="true" {{ isset($row) && $row->land_reg_matched ? 'selected' : (old('land_reg_matched') ? 'selected': '')}}>Yes</option>
+                                            <option value="false" {{ isset($row) && !$row->land_reg_matched ? 'selected' : (old('land_reg_matched') == 'false' ? 'selected': '') }}>No</option>
+                                        </select>
+                                        @error('land_reg_matched')
+                                        <span id="land_reg_matched" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="is_match_sent">Data Match Request Sent</label>
                                         <select class="form-control @error('is_match_sent') is-invalid @enderror" id="is_match_sent" name="is_match_sent" style="width: 100%;">
                                             <option value="true" {{ isset($row) && $row->is_match_sent ? 'selected' : (old('is_match_sent') ? 'selected': '')}}>Yes</option>
                                             <option value="false" {{ isset($row) && !$row->is_match_sent ? 'selected' : (old('is_match_sent') == 'false' ? 'selected': '') }}>No</option>
@@ -96,10 +129,14 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="land_reg">Land Reg</label>
-                                        <input value="{{ old('land_reg', isset($row) ? $row->land_reg : '') }}" type="text" class="form-control @error('land_reg') is-invalid @enderror" name="land_reg" id="land_reg" placeholder="Enter Land Reg">
-                                        @error('land_reg')
-                                        <span id="land_reg" class="error invalid-feedback">{{ $message }}</span>
+                                        <label for="data_match_result">Data Match Result</label>
+                                        <select class="form-control @error('data_match_result') is-invalid @enderror" id="data_match_result" name="data_match_result" style="width: 100%;">
+                                            <option value="Awaiting" {{ isset($row) && $row->data_match_result == 'Awaiting' ? 'selected' : (old('data_match_result') == 'Awaiting' ? 'selected': '')}}>Awaiting</option>
+                                            <option value="Matched" {{ isset($row) && $row->data_match_result == 'Matched' ? 'selected' : (old('data_match_result') == 'Matched' ? 'selected': '')}}>Matched</option>
+                                            <option value="Unmatched" {{ isset($row) && $row->data_match_result == 'Unmatched' ? 'selected' : (old('data_match_result') == 'Unmatched' ? 'selected': '')}}>Unmatched</option>
+                                        </select>
+                                        @error('data_match_result')
+                                        <span id="data_match_result" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -112,29 +149,27 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="regs_check_result">Building Regs check Result</label>
-                                        <select class="form-control @error('regs_check_result') is-invalid @enderror" id="regs_check_result" name="regs_check_result" style="width: 100%;">
-                                            <option value="matched" {{ isset($row) && $row->regs_check_result == 'matched' ? 'selected' : (old('regs_check_result') == 'matched' ? 'selected': '') }}>Matched</option>
-                                            <option value="un_matched" {{ isset($row) && $row->regs_check_result == 'un_matched' ? 'selected' : (old('regs_check_result') == 'un_matched' ? 'selected': '')}}>Un Matched</option>
-                                            <option value="un_verified" {{ isset($row) && $row->regs_check_result == 'un_verified' ? 'selected' : (old('regs_check_result') == 'un_verified' ? 'selected': '')}}>Un Verified</option>
-                                        </select>
-                                        @error('regs_check_result')
-                                        <span id="regs_check_result" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-6 regs_details" style="">
-                                    <div class="form-group">
-                                        <label for="ra_name">RA Name</label>
-                                        <input value="{{ old('ra_name', isset($row) ? $row->ra_name : '') }}" type="text" class="form-control @error('ra_name') is-invalid @enderror" name="ra_name" id="ra_name" placeholder="Enter RA Name">
+                                        <label for="ra_name">Retrofit Assessor Assigned</label>
+                                        <input value="{{ old('ra_name', isset($row) ? $row->ra_name : '') }}" type="text" class="form-control @error('ra_name') is-invalid @enderror" name="ra_name" id="ra_name" placeholder="Enter Retrofit Assessor Assigned">
                                         @error('ra_name')
                                         <span id="ra_name" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="is_rfa_complete">RFA Complete</label>
+                                        <select class="form-control @error('is_rfa_complete') is-invalid @enderror" id="is_rfa_complete" name="is_rfa_complete" style="width: 100%;">
+                                            <option value="false" {{ isset($row) && !$row->is_rfa_complete ? 'selected' : (old('is_rfa_complete') == 'false' ? 'selected': '') }}>No</option>
+                                            <option value="true" {{ isset($row) && $row->is_rfa_complete ? 'selected' : (old('is_rfa_complete') ? 'selected': '')}}>Yes</option>
+                                        </select>
+                                        @error('is_rfa_complete')
+                                        <span id="is_rfa_complete" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                            <div class="regs_details" style="">
-                                <div class="row">
+                            <div class="row">
                                     <div class="col-4">
                                         <div class="form-group">
                                             <label for="rfa_booked_date">RFA Booked Date</label>
@@ -154,103 +189,101 @@
                                         </div>
                                     </div>
                                     <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="is_rfa_complete">RFA Complete</label>
-                                            <select class="form-control @error('is_rfa_complete') is-invalid @enderror" id="is_rfa_complete" name="is_rfa_complete" style="width: 100%;">
-                                                <option value="false" {{ isset($row) && !$row->is_rfa_complete ? 'selected' : (old('is_rfa_complete') == 'false' ? 'selected': '') }}>No</option>
-                                                <option value="true" {{ isset($row) && $row->is_rfa_complete ? 'selected' : (old('is_rfa_complete') ? 'selected': '')}}>Yes</option>
-                                            </select>
-                                            @error('is_rfa_complete')
-                                            <span id="is_rfa_complete" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="pre_epr_result">Pre EPR Result</label>
+                                        <input value="{{ old('pre_epr_result', isset($row) ? $row->pre_epr_result : '') }}" type="text" class="form-control @error('pre_epr_result') is-invalid @enderror" name="pre_epr_result" id="pre_epr_result" placeholder="Enter Pre EPR Result">
+                                        @error('pre_epr_result')
+                                        <span id="pre_epr_result" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="pre_epr_result">Pre EPR Result</label>
-                                            <input value="{{ old('pre_epr_result', isset($row) ? $row->pre_epr_result : '') }}" type="text" class="form-control @error('pre_epr_result') is-invalid @enderror" name="pre_epr_result" id="pre_epr_result" placeholder="Enter Pre EPR Result">
-                                            @error('pre_epr_result')
-                                            <span id="pre_epr_result" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="post_epr_result">Post EPR Result</label>
-                                            <input value="{{ old('post_epr_result', isset($row) ? $row->post_epr_result : '') }}" type="text" class="form-control @error('post_epr_result') is-invalid @enderror" name="post_epr_result" id="post_epr_result" placeholder="Enter Post EPR Result">
-                                            @error('post_epr_result')
-                                            <span id="post_epr_result" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="floor_area">Floor Area</label>
-                                            <input value="{{ old('floor_area', isset($row) ? $row->floor_area : '') }}" type="text" class="form-control @error('floor_area') is-invalid @enderror" name="floor_area" id="floor_area" placeholder="Enter Floor Area">
-                                            @error('floor_area')
-                                            <span id="floor_area" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="abs_score">ABS Score</label>
-                                            <input value="{{ old('abs_score', isset($row) ? $row->abs_score : 0) }}" oninput="fundingCal()" type="number" min="0" class="form-control @error('abs_score') is-invalid @enderror" name="abs_score" id="abs_score" placeholder="Enter ABS Score">
-                                            @error('abs_score')
-                                            <span id="abs_score" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="rate">Rate</label>
-                                            <input value="{{ old('rate', isset($row) ? $row->rate : 0) }}" type="number" min="0" oninput="fundingCal()" class="form-control @error('rate') is-invalid @enderror" name="rate" id="rate" placeholder="Enter Rate">
-                                            @error('rate')
-                                            <span id="rate" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="funding">Funding</label>
-                                            <input value="{{ old('funding', isset($row) ? $row->funding : 0) }}" type="number" disabled class="form-control @error('funding') is-invalid @enderror" name="funding" id="funding" placeholder="Enter Funding">
-                                            @error('funding')
-                                            <span id="funding" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
+                            </div>
+                            <div class="row">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="rc_name">RC Full Name</label>
-                                        <input value="{{ old('rc_name', isset($row) ? $row->rc_name : '') }}" type="text" class="form-control @error('rc_name') is-invalid @enderror" name="rc_name" id="rc_name" placeholder="Enter RC Full Name">
-                                        @error('rc_name')
-                                        <span id="rc_name" class="error invalid-feedback">{{ $message }}</span>
+                                        <label for="post_epr_result">Post EPR Result</label>
+                                        <input value="{{ old('post_epr_result', isset($row) ? $row->post_epr_result : '') }}" type="text" class="form-control @error('post_epr_result') is-invalid @enderror" name="post_epr_result" id="post_epr_result" placeholder="Enter Post EPR Result">
+                                        @error('post_epr_result')
+                                        <span id="post_epr_result" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="wall_type">Wall Type</label>
-                                        <select class="form-control @error('wall_type') is-invalid @enderror" id="wall_type" name="wall_type" style="width: 100%;">
-                                            <option value="solid_wall" {{ isset($row) && $row->wall_type == 'solid_wall' ? 'selected' : (old('wall_type') == 'solid_wall' ? 'selected': '') }}>Solid Wall</option>
-                                            <option value="non_solid_wall" {{ isset($row) && $row->wall_type == 'non_solid_wall' ? 'selected' : (old('wall_type') == 'non_solid_wall' ? 'selected': '')}}>Non Solid Wall</option>
+                                        <label for="floor_area">Floor Area</label>
+                                        <input value="{{ old('floor_area', isset($row) ? $row->floor_area : '') }}" type="text" class="form-control @error('floor_area') is-invalid @enderror" name="floor_area" id="floor_area" placeholder="Enter Floor Area">
+                                        @error('floor_area')
+                                        <span id="floor_area" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="is_floor_plan_created">Floor Plan Created</label>
+                                        <select class="form-control @error('is_floor_plan_created') is-invalid @enderror" id="is_floor_plan_created" name="is_floor_plan_created" style="width: 100%;">
+                                            <option value="false" {{ isset($row) && !$row->is_floor_plan_created ? 'selected' : (old('is_floor_plan_created') == 'false' ? 'selected': '') }}>No</option>
+                                            <option value="true" {{ isset($row) && $row->is_floor_plan_created ? 'selected' : (old('is_floor_plan_created') ? 'selected': '')}}>Yes</option>
                                         </select>
-                                        @error('wall_type')
-                                        <span id="wall_type" class="error invalid-feedback">{{ $message }}</span>
+                                        @error('is_floor_plan_created')
+                                        <span id="is_floor_plan_created" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="abs_score">ABS Score</label>
+                                        <input value="{{ old('abs_score', isset($row) ? $row->abs_score : 0) }}" oninput="fundingCal()" type="number" min="0" class="form-control @error('abs_score') is-invalid @enderror" name="abs_score" id="abs_score" placeholder="Enter ABS Score">
+                                        @error('abs_score')
+                                        <span id="abs_score" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="rate">Rate</label>
+                                        <input value="{{ old('rate', isset($row) ? $row->rate : 0) }}" type="number" min="0" oninput="fundingCal()" class="form-control @error('rate') is-invalid @enderror" name="rate" id="rate" placeholder="Enter Rate">
+                                        @error('rate')
+                                        <span id="rate" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="funding">Funding</label>
+                                        <input value="{{ old('funding', isset($row) ? $row->funding : 0) }}" type="number" disabled class="form-control @error('funding') is-invalid @enderror" name="funding" id="funding" placeholder="Enter Funding">
+                                        @error('funding')
+                                        <span id="funding" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
+                            <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="rc_name">RC Full Name</label>
+                                    <input value="{{ old('rc_name', isset($row) ? $row->rc_name : '') }}" type="text" class="form-control @error('rc_name') is-invalid @enderror" name="rc_name" id="rc_name" placeholder="Enter RC Full Name">
+                                    @error('rc_name')
+                                    <span id="rc_name" class="error invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="wall_type">Wall Type</label>
+                                    <select class="form-control @error('wall_type') is-invalid @enderror" id="wall_type" name="wall_type" style="width: 100%;">
+                                        <option value="solid_wall" {{ isset($row) && $row->wall_type == 'solid_wall' ? 'selected' : (old('wall_type') == 'solid_wall' ? 'selected': '') }}>Solid Wall</option>
+                                        <option value="non_solid_wall" {{ isset($row) && $row->wall_type == 'non_solid_wall' ? 'selected' : (old('wall_type') == 'non_solid_wall' ? 'selected': '')}}>Non Solid Wall</option>
+                                    </select>
+                                    @error('wall_type')
+                                    <span id="wall_type" class="error invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                            <button type="button" class="btn btn-primary next_btn_3" onclick="stepper.next()" style="">Next</button>
-                            <button type="submit" class="btn btn-primary submit_btn_3" style="display: none">Submit</button>
+                            <button type="button" class="btn btn-primary" onclick="stepper.next()" style="">Next</button>
                         </div>
                         <!-- PART 4 -->
                         <div id="part-4" class="content" role="tabpanel" aria-labelledby="part-4-trigger">
@@ -512,7 +545,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="button" class="btn btn-primary" onclick="stepper.next()">Next</button>
                         </div>
                         <!-- PART 5 -->
@@ -635,6 +668,98 @@
                                 </div>
                             </div>
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="summary_calculate()" style="">Next</button>
+                        </div>
+                        <!-- PART 6 -->
+                        <div id="part-6" class="content" role="tabpanel" aria-labelledby="part-6-trigger">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="funding">Funding</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">£</span>
+                                            </div>
+                                            <input value="0" type="number" disabled class="form-control" id="funding_summary">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="total_cost">Total Cost of Job</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">£</span>
+                                            </div>
+                                            <input value="0" type="number" name="total_cost" disabled class="form-control" id="total_cost">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="gross_profit">Gross Profit</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">£</span>
+                                            </div>
+                                            <input value="0" type="number" disabled class="form-control" name="gross_profit" id="gross_profit">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="introducer_share">Introducer Share</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                            <input value="0" type="number" name="introducer_share" min="0" max="100" class="form-control" id="introducer_share">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="introducer_fee">Introducer Fee Payable</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">£</span>
+                                            </div>
+                                            <input value="0" type="number" disabled class="form-control" name="introducer_fee" id="introducer_fee">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="net_profit">Net Profit</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">£</span>
+                                            </div>
+                                            <input value="0" type="number" disabled class="form-control" name="net_profit" id="net_profit">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
@@ -655,23 +780,41 @@
             const rate = $("#rate").val();
             const funding = score * rate;
             $('#funding').attr('value', funding);
+            $('#funding_summary').attr('value', funding);
+        }
+        function summary_calculate() {
+            const funding = parseInt($("#funding").val());
+            const sub_total = parseInt($("#sub_total").val());
+            const trickle_vents = parseInt($("#trickle_vents").val());
+            const air_brick = parseInt($("#air_brick").val());
+            const fans = parseInt($("#fans").val());
+            const minor_work_cert = parseInt($("#minor_work_cert").val());
+            const roof_vents = parseInt($("#roof_vents").val());
+            const door_undercut = parseInt($("#door_undercut").val());
+            const other_ventilation = parseInt($("#other_ventilation").val());
+            const gas_safe_reg = parseInt($("#gas_safe_reg").val());
+            const retrofit_coordinator_cost = parseInt($("#retrofit_coordinator_cost").val());
+            const retrofit_assessor_cost = parseInt($("#retrofit_assessor_cost").val());
+            const total_cost = sub_total + trickle_vents + air_brick + fans + minor_work_cert + roof_vents + door_undercut + other_ventilation + gas_safe_reg + retrofit_assessor_cost + retrofit_coordinator_cost;
+            const gross_profit = total_cost - funding;
+            $('#total_cost').attr('value', total_cost);
+            $('#gross_profit').attr('value', gross_profit);
+            $('#net_profit').attr('value', gross_profit);
+            stepper.next();
         }
         let form_index = 0;
         let material_index = [];
         let installer_index = [];
         function addMaterial(id) {
-            // console.log(id);
-            // console.log(material_index);
-            // console.log(material_index[`${id}`]);
             material_index[`${id}`]++;
             $("#" + id + " .materials:last").after(`<div class="row materials">
-                                        <div class="col-5">
-                                            <div class="form-group">
-                                                <label for="material_name">Material</label>
-                                                <input value="{{ old('material_name') }}" type="text" class="form-control @error('material_name') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][title]" id="material_name" placeholder="Enter Material Name">
-                                                @error('material_name')
+    <div class="col-5">
+        <div class="form-group">
+            <label for="material_name">Material</label>
+            <input value="{{ old('material_name') }}" type="text" class="form-control @error('material_name') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][title]" id="material_name" placeholder="Enter Material Name">
+            @error('material_name')
             <span id="material_name" class="error invalid-feedback">{{ $message }}</span>
-                                                @enderror
+            @enderror
             </div>
         </div>
         <div class="col-5">
@@ -679,33 +822,33 @@
                 <label for="material_cost">Material Cost</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                     </div>
-                <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][cost]" id="material_cost" placeholder="Enter Material Cost">
-                                                @error('material_cost')
+                        <span class="input-group-text">£</span>
+                    </div>
+                    <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][cost]" id="material_cost" placeholder="Enter Material Cost">
+                @error('material_cost')
             <span id="material_cost" class="error invalid-feedback">{{ $message }}</span>
-                                                @enderror
+                @enderror
             <div class="input-group-append">
-                    <span class="input-group-text">.00</span>
-                </div>
+                <span class="input-group-text">.00</span>
             </div>
         </div>
     </div>
-    <div class="col-2 d-flex justify-content-center align-items-center mt-2">
-        <button type="button" class="btn btn-danger mx-2 remove_material"><i class="fas fa-trash"></i></button>
-    </div>
+</div>
+<div class="col-2 d-flex justify-content-center align-items-center mt-2">
+    <button type="button" class="btn btn-danger mx-2 remove_material"><i class="fas fa-trash"></i></button>
+</div>
 </div>`);
         }
         function addInstaller(id) {
             installer_index[`${id}`]++;
             $("#" + id + " .installers:last").after(`<div class="row installers">
-                                        <div class="col-5">
-                <div class="form-group">
-                    <label for="title">Installer</label>
-                    <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][title]" id="installer_title" placeholder="Enter Installer">
-                                                        @error('title')
+    <div class="col-5">
+        <div class="form-group">
+            <label for="title">Installer</label>
+            <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][title]" id="installer_title" placeholder="Enter Installer">
+            @error('title')
             <span id="title" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+            @enderror
             </div>
         </div>
         <div class="col-5">
@@ -713,18 +856,18 @@
                 <label for="cost">Installer Cost</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                     </div>
-                <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
-                                                        @error('cost')
+                        <span class="input-group-text">£</span>
+                    </div>
+                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
+                @error('cost')
             <span id="cost" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+                @enderror
             <div class="input-group-append">
                 <span class="input-group-text">.00</span>
             </div>
-            </div>
         </div>
     </div>
+</div>
 <div class="col-2 d-flex justify-content-center align-items-center mt-2">
     <button type="button" class="btn btn-danger mx-2 remove_installer"><i class="fas fa-trash"></i></button>
 </div>
@@ -746,78 +889,108 @@
                 form_index--
             } else {
                 $("#measure-type").append(`<div class="card-outline card-primary" id="${slug}">
-                                        <div class="card-header">
-                                            <h3 class="card-title">${type}</h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <input type="hidden" name="types[${form_index}][category]" value="${type}"/>
-                                            <div class="row">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input"  name="types[${form_index}][is_pibi]" type="checkbox" id="is_pibi" {{ old('is_pibi') == 'true' ? 'checked' : (isset($row) && $row->is_pibi ? 'checked' : '') }}>
-                                            <label for="is_pibi" class="custom-control-label">PIBI</label>
-                                            @error('is_pibi')
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 m-auto">
+                <h3 class="card-title">${type}</h3>
+            </div>
+            <div class="col-6">
+                <div class="form-group m-auto">
+                    <select class="form-control @error('types[${form_index}][measure_status]') is-invalid @enderror" name="types[${form_index}][measure_status]" style="width: 100%;">
+                        <option value="Not Started" {{ old('measure_status') == 'Not Started' ? 'selected': '' }}>Not Started</option>
+                        <option value="Started" {{ old('measure_status') == 'Started' ? 'selected': '' }}>Started</option>
+                        <option value="Completed" {{ old('measure_status') == 'Completed' ? 'selected': '' }}>Completed</option>
+                    </select>
+                    @error('types[${form_index}][measure_status]')
+                <span id="types[${form_index}][measure_status]" class="error invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body">
+        <input type="hidden" name="types[${form_index}][category]" value="${type}" />
+        <div class="row">
+            <div class="col-3 m-auto">
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" name="types[${form_index}][is_pibi]" type="checkbox" id="is_pibi" {{ old('is_pibi') == 'true' ? 'checked' : (isset($row) && $row->is_pibi ? 'checked' : '') }}>
+                        <label for="is_pibi" class="custom-control-label">PIBI</label>
+                        @error('is_pibi')
                 <span id="is_pibi" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
+                        @enderror
                 </div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3 m-auto">
             <div class="form-group">
                 <div class="custom-control custom-checkbox">
-                    <input class="custom-control-input"  name="types[${form_index}][is_design]" type="checkbox" id="is_design" {{ old('is_design') == 'true' ? 'checked' : (isset($row) && $row->is_design ? 'checked' : '') }}>
-                                            <label for="is_design" class="custom-control-label">Design</label>
-                                            @error('is_design')
+                    <input class="custom-control-input" name="types[${form_index}][is_design]" type="checkbox" id="is_design" {{ old('is_design') == 'true' ? 'checked' : (isset($row) && $row->is_design ? 'checked' : '') }}>
+                        <label for="is_design" class="custom-control-label">Design</label>
+                        @error('is_design')
                 <span id="is_design" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
+                        @enderror
                 </div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3 m-auto">
             <div class="form-group">
                 <div class="custom-control custom-checkbox">
                     <input class="custom-control-input" name="types[${form_index}][is_tech_survey]" type="checkbox" id="is_tech_survey" {{ old('is_tech_survey') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
-                                            <label for="is_tech_survey" class="custom-control-label">Tech Survey</label>
-                                            @error('is_tech_survey')
+                        <label for="is_tech_survey" class="custom-control-label">Tech Survey</label>
+                        @error('is_tech_survey')
                 <span id="is_tech_survey" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
+                        @enderror
                 </div>
             </div>
         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="m2">M2</label>
-                                <input value="{{ old('m2') }}" type="text" class="form-control @error('m2') is-invalid @enderror" name="types[${form_index}][m2]" id="m2" placeholder="Enter M2">
-                                                        @error('m2')
+        <div class="col-3">
+            <div class="form-group">
+                <label for="is_customer_informed">Customer Informed of Start</label>
+                <select class="form-control @error('is_customer_informed') is-invalid @enderror" id="is_customer_informed" name="is_customer_informed" style="width: 100%;">
+                        <option value="true" {{ isset($row) && $row->is_customer_informed ? 'selected' : (old('is_customer_informed') ? 'selected': '')}}>Yes</option>
+                        <option value="false" {{ isset($row) && !$row->is_customer_informed ? 'selected' : (old('is_customer_informed') == 'false' ? 'selected': '') }}>No</option>
+                    </select>
+                    @error('is_customer_informed')
+                <span id="is_customer_informed" class="error invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="m2">M2</label>
+                    <input value="{{ old('m2') }}" type="text" class="form-control @error('m2') is-invalid @enderror" name="types[${form_index}][m2]" id="m2" placeholder="Enter M2">
+                    @error('m2')
                 <span id="m2" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+                    @enderror
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
                     <label for="installer_id">Select Installer</label>
                     <select class="form-control select2 @error('installer_id') is-invalid @enderror" name="types[${form_index}][installer_id]" style="width: 100%;">
-                                                            <option disabled selected value> -- select installer -- </option>
-                                                            @foreach($installers as $installer)
+                        <option disabled selected value> -- select installer -- </option>
+                        @foreach($installers as $installer)
                 <option value="{{ $installer->id }}" {{ old('installer_id') == $installer->id ? 'selected': '' }}>
-                                                                    {{ $installer->first_name }}</option>
-                                                            @endforeach
+                            {{ $installer->first_name }}
+                </option>
+@endforeach
                 </select>
 @error('installer_id')
                 <span id="installer_id" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+                    @enderror
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
                     <label for="start_date">Install Start Date</label>
                     <input value="{{ old('start_date') }}" type="date" class="form-control @error('start_date') is-invalid @enderror" name="types[${form_index}][start_date]" id="start_date" placeholder="Enter Install Start Date">
-                                                        @error('start_date')
+                    @error('start_date')
                 <span id="start_date" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+                    @enderror
                 </div>
             </div>
         </div>
@@ -826,70 +999,70 @@
                 <div class="form-group">
                     <label for="completion_date">Install Completion Date</label>
                     <input value="{{ old('completion_date') }}" type="date" class="form-control @error('completion_date') is-invalid @enderror" name="types[${form_index}][completion_date]" id="completion_date" placeholder="Enter Install Completion Date">
-                                                        @error('completion_date')
+                    @error('completion_date')
                 <span id="completion_date" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+                    @enderror
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
                     <label for="is_warranty_applied">Warranties Applied</label>
                     <select class="form-control @error('is_warranty_applied') is-invalid @enderror" id="is_warranty_applied" name="types[${form_index}][is_warranty_applied]" style="width: 100%;">
-                                                            <option value="true" {{ old('is_warranty_applied') == 'true' ? 'selected': '' }}>Yes</option>
-                                                            <option value="false" {{ old('is_warranty_applied') == 'false' ? 'selected': '' }}>No</option>
-                                                        </select>
-                                                        @error('is_warranty_applied')
+                        <option value="true" {{ old('is_warranty_applied') == 'true' ? 'selected': '' }}>Yes</option>
+                        <option value="false" {{ old('is_warranty_applied') == 'false' ? 'selected': '' }}>No</option>
+                    </select>
+                    @error('is_warranty_applied')
                 <span id="is_warranty_applied" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+                    @enderror
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
-                <label for="ibg_cost">IBG Cost</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                     </div>
-                    <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control @error('ibg_cost') is-invalid @enderror" name="types[${form_index}][ibg_cost]" id="ibg_cost" placeholder="Enter IBG Cost">
-                                                        @error('ibg_cost')
-                    <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
-                    <div class="input-group-append">
-                        <span class="input-group-text">.00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row materials">
-        <div class="col-5">
-            <div class="form-group">
-                <label for="title">Material</label>
-                <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name=" types[${form_index}][materials][${material_index[`${slug}`]}][title]" id="material_title" placeholder="Enter Material Name">
-                                                        @error('title')
-                <span id="title" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
-                </div>
-            </div>
-            <div class="col-5">
-                <div class="form-group">
-                <label for="cost">Material Cost</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                     </div>
-                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[`${slug}`]}][cost]" id="material_cost" placeholder="Enter Material Cost">
-                                                        @error('cost')
-                <span id="cost" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+                    <label for="ibg_cost">IBG Cost</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">£</span>
+                        </div>
+                        <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control @error('ibg_cost') is-invalid @enderror" name="types[${form_index}][ibg_cost]" id="ibg_cost" placeholder="Enter IBG Cost">
+                        @error('ibg_cost')
+                <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
+                        @enderror
                 <div class="input-group-append">
                     <span class="input-group-text">.00</span>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="row materials">
+    <div class="col-5">
+        <div class="form-group">
+            <label for="title">Material</label>
+            <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name=" types[${form_index}][materials][${material_index[`${slug}`]}][title]" id="material_title" placeholder="Enter Material Name">
+                    @error('title')
+                <span id="title" class="error invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="form-group">
+                    <label for="cost">Material Cost</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">£</span>
+                        </div>
+                        <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[`${slug}`]}][cost]" id="material_cost" placeholder="Enter Material Cost">
+                        @error('cost')
+                <span id="cost" class="error invalid-feedback">{{ $message }}</span>
+                        @enderror
+                <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
+                </div>
             </div>
         </div>
-        <div class="col-2 d-flex justify-content-center align-items-center mt-2">
-            <button type="button" class="btn btn-primary mx-2" onclick="addMaterial('${slug}')"><i class="fas fa-plus-square"></i></button>
+    </div>
+    <div class="col-2 d-flex justify-content-center align-items-center mt-2">
+        <button type="button" class="btn btn-primary mx-2" onclick="addMaterial('${slug}')"><i class="fas fa-plus-square"></i></button>
             </div>
         </div>
         <div class="row installers">
@@ -897,34 +1070,34 @@
                 <div class="form-group">
                     <label for="title">Installer</label>
                     <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][title]" id="installer_title" placeholder="Enter Installer">
-                                                        @error('title')
+                    @error('title')
                 <span id="title" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+                    @enderror
                 </div>
             </div>
             <div class="col-5">
                 <div class="form-group">
                     <label for="cost">Installer Cost</label>
                     <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                     </div>
-                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
-                                                        @error('cost')
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">£</span>
+                        </div>
+                        <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
+                        @error('cost')
                 <span id="cost" class="error invalid-feedback">{{ $message }}</span>
-                                                        @enderror
+                        @enderror
                 <div class="input-group-append">
                     <span class="input-group-text">.00</span>
                 </div>
             </div>
-            </div>
         </div>
-         <div class="col-2 d-flex justify-content-center align-items-center mt-2">
-            <button type="button" class="btn btn-primary mx-2" onclick="addInstaller('${slug}')"><i class="fas fa-plus-square"></i></button>
+    </div>
+    <div class="col-2 d-flex justify-content-center align-items-center mt-2">
+        <button type="button" class="btn btn-primary mx-2" onclick="addInstaller('${slug}')"><i class="fas fa-plus-square"></i></button>
             </div>
         </div>
     </div>
-    </div>`)
+</div>`)
             }
         }
 
@@ -945,17 +1118,14 @@
                     $(".submit_btn").hide()
                 }
             }).change();
-            $("#regs_check_result").on('change', function () {
-                if ($(this).val() == 'un_verified') {
-                    $(".regs_details").hide()
-                    $(".submit_btn_3").show()
-                    $(".next_btn_3").hide()
-                } else {
-                    $(".regs_details").show()
-                    $(".next_btn_3").show()
-                    $(".submit_btn_3").hide()
-                }
+            $("#introducer_share").on('change', function () {
+                const value = $(this).val()
+                const gross_profit = parseInt($("#gross_profit").val());
+                const fee = (((value / 100) * gross_profit)).toFixed(2);
+                $('#introducer_fee').attr('value', fee);
+                $('#net_profit').attr('value', (gross_profit - fee).toFixed(2));
             }).change();
+
             // let totalMaterial = 0;
             // let totalInstaller = 0;
             // $('#material_cost').blur(function () {
@@ -984,4 +1154,9 @@
 @endpush
 @push('styles')
     <link rel="stylesheet" href="{{ asset('plugins/bs-stepper/css/bs-stepper.min.css') }}">
+    <style>
+        .bs-stepper-label {
+            font-size: 14px;
+        }
+    </style>
 @endpush
