@@ -28,12 +28,14 @@
                                         <option {{request()->input('status') == 'installationBooked' ? 'selected' : ''}} value="installationBooked">Installation Booked</option>
                                         <option {{request()->input('status') == 'installationStarted' ? 'selected' : ''}} value="installationStarted">Installation Started</option>
                                         <option {{request()->input('status') == 'installationCompleted' ? 'selected' : ''}} value="installationCompleted">Installation Completed</option>
+                                        <option {{request()->input('status') == 'installationCompleted' ? 'selected' : ''}} value="installationCompleted">Hanover Pending</option>
                                         <option {{request()->input('status') == 'hanoverCompleted' ? 'selected' : ''}} value="hanoverCompleted">Hanover Completed</option>
                                         <option {{request()->input('status') == 'paperworkSubmitted' ? 'selected' : ''}} value="paperworkSubmitted">Funder Paperwork Submitted</option>
                                         <option {{request()->input('status') == 'paperworkError' ? 'selected' : ''}} value="paperworkError">Funder Paperwork Error</option>
                                         <option {{request()->input('status') == 'paperworkAccepted' ? 'selected' : ''}} value="paperworkAccepted">Funder Paperwork Accepted</option>
                                         <option {{request()->input('status') == 'invoicePaid' ? 'selected' : ''}} value="invoicePaid">Invoice Paid</option>
                                         @if(request()->user()->role == 'admin')
+                                            <option {{request()->input('status') == 'invoicePaid' ? 'selected' : ''}} value="invoicePaid">Agent Awaiting Invoice</option>
                                             <option {{request()->input('status') == 'agentPaid' ? 'selected' : ''}} value="agentPaid">Agent Paid</option>
                                         @endif
                                     </select>
@@ -41,7 +43,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input value="{{ old('search') }}" type="text" class="form-control" name="search" placeholder="Enter Search">
+                                    <input value="{{ request()->search ?? old('search') }}" type="text" class="form-control" name="search" placeholder="Enter Search">
                                 </div>
                             </div>
                             <div class="col-md-1">

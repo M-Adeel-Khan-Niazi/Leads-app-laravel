@@ -45,6 +45,11 @@ class LeadsController extends Controller
                 });
             else
                 $q->where('status', request()->status);
+        })->when(request()->has('search') && !empty(request('search')), function ($q) {
+            $q->where(function ($query) {
+                $query->orWhere('house_number', request('search'))->orWhere('street', request('search'))
+                    ->orWhere('postal_code', request('search'))->orWhere('town', request('search'));
+            });
         })->paginate(10);
         return view('leads.index', compact('leads'));
     }
