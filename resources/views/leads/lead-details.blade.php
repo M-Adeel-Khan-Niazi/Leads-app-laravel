@@ -18,14 +18,14 @@
                         <div class="step" data-target="#part-1">
                             <button type="button" class="step-trigger" role="tab" aria-controls="part-1" id="part-1-trigger">
                                 <span class="bs-stepper-circle">1</span>
-                                <span class="bs-stepper-label">Lead Status</span>
+                                <span class="bs-stepper-label">Data Match & Land Registry</span>
                             </button>
                         </div>
                         <div class="line"></div>
                         <div class="step" data-target="#part-2">
                             <button type="button" class="step-trigger" role="tab" aria-controls="part-2" id="part-2-trigger">
                                 <span class="bs-stepper-circle">2</span>
-                                <span class="bs-stepper-label">Data Match & Land Registry</span>
+                                <span class="bs-stepper-label">Lead Status</span>
                             </button>
                         </div>
                         <div class="line"></div>
@@ -60,34 +60,6 @@
                     <div class="bs-stepper-content">
                         <!-- PART 1 -->
                         <div id="part-1" class="content" role="tabpanel" aria-labelledby="part-1-trigger">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="is_flexible">Flexible check</label>
-                                        <select class="form-control @error('is_flexible') is-invalid @enderror" id="is_flexible" name="is_flexible" style="width: 100%;">
-                                            <option value="true" {{ isset($row) && $row->is_flexible ? 'selected' : (old('is_flexible') ? 'selected': '')}}>Flexible</option>
-                                            <option value="false" {{ isset($row) && !$row->is_flexible ? 'selected' : (old('is_flexible') == 'false' ? 'selected': '') }}>Non Flexible</option>
-                                        </select>
-                                        @error('is_flexible')
-                                        <span id="is_flexible" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>Comments</label>
-                                        <textarea class="form-control @error('comment') is-invalid @enderror" id="comment" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>
-                                        @error('comment')
-                                        <span id="comment" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-primary next_btn" onclick="stepper.next()" style="">Next</button>
-                            <button type="submit" class="btn btn-primary submit_btn" style="display: none">Submit</button>
-                        </div>
-                        <!-- PART 2 -->
-                        <div id="part-2" class="content" role="tabpanel" aria-labelledby="part-2-trigger">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -134,6 +106,7 @@
                                             <option value="Awaiting" {{ isset($row) && $row->data_match_result == 'Awaiting' ? 'selected' : (old('data_match_result') == 'Awaiting' ? 'selected': '')}}>Awaiting</option>
                                             <option value="Matched" {{ isset($row) && $row->data_match_result == 'Matched' ? 'selected' : (old('data_match_result') == 'Matched' ? 'selected': '')}}>Matched</option>
                                             <option value="Unmatched" {{ isset($row) && $row->data_match_result == 'Unmatched' ? 'selected' : (old('data_match_result') == 'Unmatched' ? 'selected': '')}}>Unmatched</option>
+                                            <option value="Unverified" {{ isset($row) && $row->data_match_result == 'Unverified' ? 'selected' : (old('data_match_result') == 'Unverified' ? 'selected': '')}}>Unverified</option>
                                         </select>
                                         @error('data_match_result')
                                         <span id="data_match_result" class="error invalid-feedback">{{ $message }}</span>
@@ -141,147 +114,41 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="button" class="btn btn-primary" onclick="stepper.next()" style="">Next</button>
+                        </div>
+                        <!-- PART 2 -->
+                        <div id="part-2" class="content" role="tabpanel" aria-labelledby="part-2-trigger">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="status">Lead Status</label>
+                                        <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" style="width: 100%;">
+                                            <option value="Approved" {{ isset($row) && $row->status == 'Approved' ? 'selected' : (old('status') == 'Approved' ? 'selected': '')}}>Approved</option>
+                                            <option value="Rejected" {{ isset($row) && $row->status == 'Rejected' ? 'selected' : (old('status') == 'Rejected' ? 'selected': '') }}>Rejected</option>
+                                            <option value="On Hold" {{ isset($row) && $row->status == 'On Hold' ? 'selected' : (old('status') == 'On Hold' ? 'selected': '') }}>On Hold</option>
+                                        </select>
+                                        @error('status')
+                                        <span id="status" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Comments</label>
+                                        <textarea class="form-control @error('comment') is-invalid @enderror" id="comment" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>
+                                        @error('comment')
+                                        <span id="comment" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                            <button type="button" class="btn btn-primary next_btn" onclick="stepper.next()" style="">Next</button>
+                            <button type="submit" class="btn btn-primary submit_btn" style="display: none">Submit</button>
                         </div>
                         <!-- PART 3 -->
                         <div id="part-3" class="content" role="tabpanel" aria-labelledby="part-3-trigger">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="ra_name">Retrofit Assessor Assigned</label>
-                                        <input value="{{ old('ra_name', isset($row) ? $row->ra_name : '') }}" type="text" class="form-control @error('ra_name') is-invalid @enderror" name="ra_name" id="ra_name" placeholder="Enter Retrofit Assessor Assigned">
-                                        @error('ra_name')
-                                        <span id="ra_name" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="is_rfa_complete">RFA Complete</label>
-                                        <select class="form-control @error('is_rfa_complete') is-invalid @enderror" id="is_rfa_complete" name="is_rfa_complete" style="width: 100%;">
-                                            <option value="false" {{ isset($row) && !$row->is_rfa_complete ? 'selected' : (old('is_rfa_complete') == 'false' ? 'selected': '') }}>No</option>
-                                            <option value="true" {{ isset($row) && $row->is_rfa_complete ? 'selected' : (old('is_rfa_complete') ? 'selected': '')}}>Yes</option>
-                                        </select>
-                                        @error('is_rfa_complete')
-                                        <span id="is_rfa_complete" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="rfa_booked_date">RFA Booked Date</label>
-                                            <input value="{{ old('rfa_booked_date', isset($row) ? $row->rfa_booked_date : '') }}" type="date" class="form-control @error('rfa_booked_date') is-invalid @enderror" name="rfa_booked_date" id="rfa_booked_date" placeholder="Enter RFA Booked Date">
-                                            @error('rfa_booked_date')
-                                            <span id="rfa_booked_date" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="rfa_booked_time">RFA Booked Time</label>
-                                            <input value="{{ old('rfa_booked_time', isset($row) ? $row->rfa_booked_time : '') }}" type="time" class="form-control @error('rfa_booked_time') is-invalid @enderror" name="rfa_booked_time" id="rfa_booked_time" placeholder="Enter RFA Booked Time">
-                                            @error('rfa_booked_time')
-                                            <span id="rfa_booked_time" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="pre_epr_result">Pre EPR Result</label>
-                                        <input value="{{ old('pre_epr_result', isset($row) ? $row->pre_epr_result : '') }}" type="text" class="form-control @error('pre_epr_result') is-invalid @enderror" name="pre_epr_result" id="pre_epr_result" placeholder="Enter Pre EPR Result">
-                                        @error('pre_epr_result')
-                                        <span id="pre_epr_result" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="post_epr_result">Post EPR Result</label>
-                                        <input value="{{ old('post_epr_result', isset($row) ? $row->post_epr_result : '') }}" type="text" class="form-control @error('post_epr_result') is-invalid @enderror" name="post_epr_result" id="post_epr_result" placeholder="Enter Post EPR Result">
-                                        @error('post_epr_result')
-                                        <span id="post_epr_result" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="floor_area">Floor Area</label>
-                                        <input value="{{ old('floor_area', isset($row) ? $row->floor_area : '') }}" type="text" class="form-control @error('floor_area') is-invalid @enderror" name="floor_area" id="floor_area" placeholder="Enter Floor Area">
-                                        @error('floor_area')
-                                        <span id="floor_area" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="is_floor_plan_created">Floor Plan Created</label>
-                                        <select class="form-control @error('is_floor_plan_created') is-invalid @enderror" id="is_floor_plan_created" name="is_floor_plan_created" style="width: 100%;">
-                                            <option value="false" {{ isset($row) && !$row->is_floor_plan_created ? 'selected' : (old('is_floor_plan_created') == 'false' ? 'selected': '') }}>No</option>
-                                            <option value="true" {{ isset($row) && $row->is_floor_plan_created ? 'selected' : (old('is_floor_plan_created') ? 'selected': '')}}>Yes</option>
-                                        </select>
-                                        @error('is_floor_plan_created')
-                                        <span id="is_floor_plan_created" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="abs_score">ABS Score</label>
-                                        <input value="{{ old('abs_score', isset($row) ? $row->abs_score : 0) }}" oninput="fundingCal()" type="number" min="0" class="form-control @error('abs_score') is-invalid @enderror" name="abs_score" id="abs_score" placeholder="Enter ABS Score">
-                                        @error('abs_score')
-                                        <span id="abs_score" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="rate">Rate</label>
-                                        <input value="{{ old('rate', isset($row) ? $row->rate : 0) }}" type="number" min="0" oninput="fundingCal()" class="form-control @error('rate') is-invalid @enderror" name="rate" id="rate" placeholder="Enter Rate">
-                                        @error('rate')
-                                        <span id="rate" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="funding">Funding</label>
-                                        <input value="{{ old('funding', isset($row) ? $row->funding : 0) }}" type="number" disabled class="form-control @error('funding') is-invalid @enderror" name="funding" id="funding" placeholder="Enter Funding">
-                                        @error('funding')
-                                        <span id="funding" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="rc_name">RC Full Name</label>
-                                    <input value="{{ old('rc_name', isset($row) ? $row->rc_name : '') }}" type="text" class="form-control @error('rc_name') is-invalid @enderror" name="rc_name" id="rc_name" placeholder="Enter RC Full Name">
-                                    @error('rc_name')
-                                    <span id="rc_name" class="error invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="wall_type">Wall Type</label>
-                                    <select class="form-control @error('wall_type') is-invalid @enderror" id="wall_type" name="wall_type" style="width: 100%;">
-                                        <option value="solid_wall" {{ isset($row) && $row->wall_type == 'solid_wall' ? 'selected' : (old('wall_type') == 'solid_wall' ? 'selected': '') }}>Solid Wall</option>
-                                        <option value="non_solid_wall" {{ isset($row) && $row->wall_type == 'non_solid_wall' ? 'selected' : (old('wall_type') == 'non_solid_wall' ? 'selected': '')}}>Non Solid Wall</option>
-                                    </select>
-                                    @error('wall_type')
-                                    <span id="wall_type" class="error invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
+
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="button" class="btn btn-primary" onclick="stepper.next()" style="">Next</button>
                         </div>
@@ -509,7 +376,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="ibg_cost">IBG Cost</label>
-                                                    <input value="{{ old('ibg_cost', $measure_type->ibg_cost) }}" type="number" min="0" class="form-control @error('ibg_cost') is-invalid @enderror" name="ibg_cost" id="ibg_cost" placeholder="Enter IBG Cost">
+                                                    <input value="{{ old('ibg_cost', $measure_type->ibg_cost) }}" type="number" min="0" class="ibg_cost form-control @error('ibg_cost') is-invalid @enderror" name="ibg_cost" id="ibg_cost" placeholder="Enter IBG Cost">
                                                     @error('ibg_cost')
                                                     <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
                                                     @enderror
@@ -522,6 +389,7 @@
                                         </div>
                                     </div>
                                 @endforeach
+
                             @else
                                 <div id="measure-type"></div>
                             @endif
@@ -529,19 +397,19 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="total_material">Total Material Cost</label>
-                                        <input value="0" type="number" min="0" readonly class="form-control" id="total_material">
+                                        <input value="0" type="number" min="0" readonly class="form-control" id="total_material" name="total_material">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="total_installer">Total Installer Cost</label>
-                                        <input value="0" type="number" min="0" readonly class="form-control" id="total_installer">
+                                        <input value="0" type="number" min="0" readonly class="form-control" id="total_installer" name="total_installer">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="sub_total">Sub Total</label>
-                                        <input value="0" type="number" min="0" readonly class="form-control" id="sub_total">
+                                        <input value="0" type="number" min="0" readonly class="form-control" id="sub_total" name="sub_total">
                                     </div>
                                 </div>
                             </div>
@@ -656,10 +524,13 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label for="is_completed_submission">Docs ready to prepare</label>
-                                        <select class="form-control @error('is_completed_submission') is-invalid @enderror" id="is_completed_submission" name="is_completed_submission" style="width: 100%;">
-                                            <option value="true" {{ isset($row) && $row->is_completed_submission ? 'selected' : (old('is_completed_submission') == 'true' ? 'selected': '')}}>Yes</option>
-                                            <option value="false" {{ isset($row) && !$row->is_completed_submission ? 'selected' : (old('is_completed_submission') == 'false' ? 'selected': '') }}>No</option>
+                                        <label for="status">Funder Paper Work</label>
+                                        <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" style="width: 100%;">
+                                            <option value="" {{ isset($row) && $row->is_completed_submission ? 'selected' : (old('is_completed_submission') == 'true' ? 'selected': '')}}>N/A</option>
+                                            <option value="true" {{ isset($row) && $row->is_completed_submission ? 'selected' : (old('is_completed_submission') == 'true' ? 'selected': '')}}>Pending</option>
+                                            <option value="false" {{ isset($row) && !$row->is_completed_submission ? 'selected' : (old('is_completed_submission') == 'false' ? 'selected': '') }}>Submitted</option>
+                                            <option value="false" {{ isset($row) && !$row->is_completed_submission ? 'selected' : (old('is_completed_submission') == 'false' ? 'selected': '') }}>Error</option>
+                                            <option value="false" {{ isset($row) && !$row->is_completed_submission ? 'selected' : (old('is_completed_submission') == 'false' ? 'selected': '') }}>Accepted</option>
                                         </select>
                                         @error('is_completed_submission')
                                         <span id="is_completed_submission" class="error invalid-feedback">{{ $message }}</span>
@@ -694,7 +565,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">£</span>
                                             </div>
-                                            <input value="0" type="number" name="total_cost" disabled class="form-control" id="total_cost">
+                                            <input value="0" type="number" name="total_cost" readonly class="form-control" id="total_cost">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
@@ -710,7 +581,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">£</span>
                                             </div>
-                                            <input value="0" type="number" disabled class="form-control" name="gross_profit" id="gross_profit">
+                                            <input value="0" type="number" readonly class="form-control" name="gross_profit" id="gross_profit">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
@@ -737,7 +608,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">£</span>
                                             </div>
-                                            <input value="0" type="number" disabled class="form-control" name="introducer_fee" id="introducer_fee">
+                                            <input value="0" type="number" readonly class="form-control" name="introducer_fee" id="introducer_fee">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
@@ -751,7 +622,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">£</span>
                                             </div>
-                                            <input value="0" type="number" disabled class="form-control" name="net_profit" id="net_profit">
+                                            <input value="0" type="number" readonly class="form-control" name="net_profit" id="net_profit">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
@@ -795,7 +666,12 @@
             const gas_safe_reg = parseInt($("#gas_safe_reg").val());
             const retrofit_coordinator_cost = parseInt($("#retrofit_coordinator_cost").val());
             const retrofit_assessor_cost = parseInt($("#retrofit_assessor_cost").val());
-            const total_cost = sub_total + trickle_vents + air_brick + fans + minor_work_cert + roof_vents + door_undercut + other_ventilation + gas_safe_reg + retrofit_assessor_cost + retrofit_coordinator_cost;
+            let total_ibg_cost = 0;
+            $(".ibg_cost").each(function() {
+                total_ibg_cost += parseFloat(this.value);
+            });
+
+            const total_cost = sub_total + trickle_vents + air_brick + fans + minor_work_cert + roof_vents + door_undercut + other_ventilation + gas_safe_reg + retrofit_assessor_cost + retrofit_coordinator_cost + total_ibg_cost;
             const gross_profit = total_cost - funding;
             $('#total_cost').attr('value', total_cost);
             $('#gross_profit').attr('value', gross_profit);
@@ -824,7 +700,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">£</span>
                     </div>
-                    <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control @error('material_cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][cost]" id="material_cost" placeholder="Enter Material Cost">
+                    <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control m-cost @error('material_cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][cost]" id="material_cost" placeholder="Enter Material Cost">
                 @error('material_cost')
             <span id="material_cost" class="error invalid-feedback">{{ $message }}</span>
                 @enderror
@@ -858,7 +734,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">£</span>
                     </div>
-                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
+                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control i-cost @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
                 @error('cost')
             <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                 @enderror
@@ -897,7 +773,8 @@
             <div class="col-6">
                 <div class="form-group m-auto">
                     <select class="form-control @error('types[${form_index}][measure_status]') is-invalid @enderror" name="types[${form_index}][measure_status]" style="width: 100%;">
-                        <option value="Not Started" {{ old('measure_status') == 'Not Started' ? 'selected': '' }}>Not Started</option>
+                        <option value="Awaiting Installation" {{ old('measure_status') == 'Awaiting Installation' ? 'selected': '' }}>Awaiting Installation</option>
+                        <option value="Booked" {{ old('measure_status') == 'Booked' ? 'selected': '' }}>Booked</option>
                         <option value="Started" {{ old('measure_status') == 'Started' ? 'selected': '' }}>Started</option>
                         <option value="Completed" {{ old('measure_status') == 'Completed' ? 'selected': '' }}>Completed</option>
                     </select>
@@ -1023,7 +900,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">£</span>
                         </div>
-                        <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control @error('ibg_cost') is-invalid @enderror" name="types[${form_index}][ibg_cost]" id="ibg_cost" placeholder="Enter IBG Cost">
+                        <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control ibg_cost @error('ibg_cost') is-invalid @enderror" name="types[${form_index}][ibg_cost]" id="ibg_cost" placeholder="Enter IBG Cost">
                         @error('ibg_cost')
                 <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -1051,7 +928,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">£</span>
                         </div>
-                        <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[`${slug}`]}][cost]" id="material_cost" placeholder="Enter Material Cost">
+                        <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control m-cost @error('cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[`${slug}`]}][cost]" id="material_cost" placeholder="Enter Material Cost">
                         @error('cost')
                 <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -1082,7 +959,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">£</span>
                         </div>
-                        <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
+                        <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control i-cost @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
                         @error('cost')
                 <span id="cost" class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -1108,9 +985,9 @@
             $(this).parents('div.installers').remove();
         });
         $(document).ready(function ($) {
-            $("#is_flexible").on('change', function () {
+            $("#status").on('change', function () {
                 const flex_check = $(this).val()
-                if (flex_check == 'false') {
+                if (flex_check != 'Approved') {
                     $(".next_btn").hide()
                     $(".submit_btn").show()
                 } else {
@@ -1125,30 +1002,26 @@
                 $('#introducer_fee').attr('value', fee);
                 $('#net_profit').attr('value', (gross_profit - fee).toFixed(2));
             }).change();
-
-            // let totalMaterial = 0;
-            // let totalInstaller = 0;
-            // $('#material_cost').blur(function () {
-            //     totalMaterial = $.map($('input[id^="material_cost"]'), function (elem, i) {
-            //         return parseInt(elem.value, 10) || 0;
-            //     }).reduce(function (a, b) {
-            //         return a + b;
-            //     }, 0)
-            //     $("#total_material").attr('value', totalMaterial)
-            //     $("#sub_total").attr('value', totalMaterial + totalInstaller)
-            //     // $('#material_cost').each(function() {
-            //     //     totalMaterial += Number($(this).val());
-            //     //     console.log(totalMaterial);
-            //     // });
-            // });
-            // $('#installer_cost').blur(function () {
-            //     $('#installer_cost').each(function() {
-            //         totalInstaller += Number($(this).val());
-            //         console.log(totalInstaller);
-            //         $("#total_installer").attr('value', totalInstaller)
-            //         $("#sub_total").attr('value', totalMaterial + totalInstaller)
-            //     });
-            // });
+            $('body').on('input', '.m-cost', function() {
+                var m_price = 0;
+                $('.m-cost').each(function(index, el) {
+                    const price = parseInt($(el).val());
+                    m_price = m_price+price
+                });
+                $('#total_material').val(m_price)
+                const total_installer = parseInt($("#total_installer").val());
+                $('#sub_total').val(m_price + total_installer)
+            });
+            $('body').on('input', '.i-cost', function() {
+                var i_price = 0;
+                $('.i-cost').each(function(index, el) {
+                    const price = parseInt($(el).val());
+                    i_price = i_price+price
+                });
+                $('#total_installer').val(i_price)
+                const total_material = parseInt($("#total_material").val());
+                $('#sub_total').val(i_price + total_material)
+            });
         });
     </script>
 @endpush

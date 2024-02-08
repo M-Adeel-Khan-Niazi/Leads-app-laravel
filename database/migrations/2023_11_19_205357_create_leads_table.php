@@ -58,7 +58,7 @@ class CreateLeadsTable extends Migration
             $table->boolean('is_address_proof_sent')->default(false);
             //
             $table->string('source')->nullable();
-            $table->enum('status', ['draft', 'pending', 'stop', 'in-progress', 'completed'])->default('draft');
+            $table->string('status')->default('draft');
             $table->integer('agent_id')->nullable();
             $table->string('notes')->nullable();
             $table->integer('created_by');

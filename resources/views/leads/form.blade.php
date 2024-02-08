@@ -13,7 +13,7 @@
                 <input type="hidden" name="lead_id" value="{{$row->id}}" />
             @endif
             <div class="row">
-                <div class="col-6">
+                <div class="col-md-6 col-12">
                     <div class="card card-gray">
                         <div class="card-header">
                             <h3 class="card-title">Lead Details</h3>
@@ -21,7 +21,7 @@
                         <div class="card-body">
                             @if(auth()->user()->role == 'admin')
                                 <div class="row">
-                                <div class="col-6">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="agent_id">Select Agent</label>
                                         <select class="form-control select2 @error('agent_id') is-invalid @enderror" name="agent_id" style="width: 100%;">
@@ -36,7 +36,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="source">Other Source</label>
                                         <input value="{{ old('source', isset($row) ? $row->source : '') }}" type="text" class="form-control @error('source') is-invalid @enderror" name="source" id="source" placeholder="Enter Other Source">
@@ -246,7 +246,7 @@
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
                                             <input class="custom-control-input" name="is_data_sent" type="checkbox" id="is_data_sent" value="" {{ old('is_data_sent') == 'true' ? 'checked' : (isset($row) && $row->is_data_sent ? 'checked' : '') }}>
-                                            <label for="is_data_sent" class="custom-control-label">Data match sent to Simple Green</label>
+                                            <label for="is_data_sent" class="custom-control-label">Data match sent to Simpli Green</label>
                                             @error('is_data_sent')
                                             <span id="is_data_sent" class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -391,7 +391,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6 col-12">
                     <div class="card card-gray">
                         <div class="card-header">
                             <h3 class="card-title">Resident Details</h3>
@@ -596,9 +596,19 @@
                                                 <option value="mother" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'mother' ? 'selected': '')}}>Mother</option>
                                                 <option value="son" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'son' ? 'selected': '')}}>Son</option>
                                                 <option value="daughter" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'daughter' ? 'selected': '')}}>Daughter</option>
+                                                <option value="other" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'other' ? 'selected': '')}}>Other</option>
                                             </select>
                                             @error('relationship')
                                             <span id="relationship" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12" id="relationship-other" style="display: none">
+                                        <div class="form-group">
+                                            <label for="other_relationship">Other</label>
+                                            <input value="{{ old('other_relationship', isset($row) ? $row->other_relationship : '') }}" type="text" class="form-control @error('other_relationship') is-invalid @enderror" name="other_relationship" placeholder="Enter Other">
+                                            @error('other_relationship')
+                                            <span id="other_relationship" class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -692,6 +702,12 @@
             $("#main_wall_other").show()
         else
             $("#main_wall_other").hide()
+    }).change();
+    $("#relationship").on('change', function() {
+        if($(this).val() === 'other')
+            $("#relationship-other").show()
+        else
+            $("#relationship-other").hide()
     }).change();
     $("#is_benefit_recipient").on('change', function() {
         if($(this).val() == 'true')

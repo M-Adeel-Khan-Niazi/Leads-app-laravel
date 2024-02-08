@@ -18,6 +18,7 @@ class CreateInstallersTable extends Migration
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('type');
+            $table->string('comment');
             $table->string('phone_number');
             $table->string('education');
             $table->timestamps();

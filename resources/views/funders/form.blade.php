@@ -52,6 +52,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input value="{{ old('phone', isset($row) ? $row->phone : '') }}" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" placeholder="Enter Phone">
+                            @error('phone')
+                            <span id="phone" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Comments</label>
+                            <textarea class="form-control @error('comment') is-invalid @enderror" id="is_flexible" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>
+                            @error('comment')
+                            <span id="comment" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">

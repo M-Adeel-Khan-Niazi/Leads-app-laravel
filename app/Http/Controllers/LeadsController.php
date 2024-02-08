@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\FileUploads;
 use App\Models\Installer;
+use App\Models\LeadDataMatches;
 use App\Models\LeadDetails;
 use App\Models\LeadMeasureCategories;
 use App\Models\LeadMeasureCategoryTypes;
+use App\Models\LeadRetrofit;
 use App\Models\Leads;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -28,6 +30,8 @@ class LeadsController extends Controller
             $q->where('status', '!=', 'draft')->orWhere('created_by', Auth::id());
         })->when(Auth::user()->role == 'agent', function ($q) {
             $q->where('agent_id', Auth::id())->orWhere('created_by', Auth::id());
+        })->when(request()->has('status'), function ($q) {
+            $q->where('status', request()->status);
         })->paginate(10);
         return view('leads.index', compact('leads'));
     }
@@ -184,19 +188,22 @@ class LeadsController extends Controller
         try {
             $details = new LeadDetails($request->except('types', 'is_boiler_replacement', 'is_external_wall_insulation',
                 'is_first_time_central_heating', 'is_internal_wall_insulation', 'is_cavity_wall_insulation', 'is_under_floor_insulation',
-                'is_loft_insulation', 'is_heating_controls', 'is_solar_pv', 'is_air_source', 'is_storage_heater', 'is_rir', 'is_completed_submission'));
+                'is_loft_insulation', 'is_heating_controls', 'is_solar_pv', 'is_air_source', 'is_storage_heater', 'is_rir'));
             $details->lead_id = $lead->id;
             $details->is_flexible = filter_var($request->is_flexible, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-            $details->is_match_sent = filter_var($request->is_match_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $details->is_floor_plan_created = filter_var($request->is_floor_plan_created, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
             $details->is_rfa_complete = filter_var($request->is_rfa_complete, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-            if (!$details->is_flexible || $request->regs_check_result == 'un_verified') {
+            $details->is_customer_informed = filter_var($request->is_customer_informed, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $details->is_match_sent = filter_var($request->is_match_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $details->land_reg_matched = filter_var($request->land_reg_matched, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $details->is_completed_submission = filter_var($request->is_completed_submission, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            if (!$details->is_flexible) {
                 $lead->status = 'stop';
                 $lead->save();
                 $details->save();
                 DB::commit();
                 return redirect()->route('leads.index');
             }
-            $details->funding = $request->abs_score * $request->rate;
             $details->is_pibi = $request->is_pibi == 'on';
             $details->is_design = $request->is_design == 'on';
             $details->is_tech_survey = $request->is_tech_survey == 'on';
@@ -211,7 +218,6 @@ class LeadsController extends Controller
             $details->is_air_source = $request->is_air_source == 'on';
             $details->is_storage_heater = $request->is_storage_heater == 'on';
             $details->is_rir = $request->is_rir == 'on';
-            $details->is_completed_submission = $request->is_completed_submission == 'on';
             $details->save();
             foreach ($request->types as $category) {
                 $lead_category = new LeadMeasureCategories($category);
@@ -258,8 +264,143 @@ class LeadsController extends Controller
 
     public function leads_details(Leads $lead)
     {
-        $installers = Installer::latest()->get();
-        return view('leads.lead-details', compact('installers', 'lead'));
+//        if ($lead->status == 'pending') {
+//            $row = $lead->data_matched()->first();
+//            return view('leads.data-matched-form', compact('row'));
+//        } elseif (in_array($lead->status, ['approved', 'raBooked', 'raCompleted'])) {
+//            $row = $lead->retrofit()->first();
+//            return view('leads.retrofit-form', compact('row'));
+//        } elseif ($lead->status == 'raLodged') {
+//            $installers = Installer::latest()->get();
+//            $row = LeadDetails::where('lead_id', $lead->id)->first();
+//            $categories = LeadMeasureCategories::with('category_types')->where('lead_id', $lead->id)->get();
+//            return view('leads.measure-form', compact('installers', 'row', 'categories'));
+//        }
+        $total_ibg = LeadMeasureCategories::where('lead_id', $lead->id)->sum('ibg_cost');
+        return view('leads.lead-summary', compact('lead', 'total_ibg'));
+    }
+
+    public function data_matched(Request $request, $id)
+    {
+        $request->validate([
+            'land_reg_check' => 'required',
+            'land_reg_matched' => 'required',
+            'is_match_sent' => 'required',
+            'data_match_result' => 'required',
+            'status' => 'required',
+        ]);
+        $lead = Leads::find($id);
+        $lead->status = $request->status;
+        $lead->save();
+
+        $data = new LeadDataMatches($request->except('_token'));
+        $data->is_match_sent = filter_var($request->is_match_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $data->is_land_reg_matched = filter_var($request->is_land_reg_matched, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $data->lead_id = $id;
+        $data->save();
+        return redirect()->route('leads.index');
+    }
+
+    public function retrofit(Request $request, $id)
+    {
+        $lead = Leads::find($id);
+        if ($lead->retrofit()->exists())
+            $retrofit = LeadRetrofit::where('lead_id', $id)->first()->fill($request->except('_token'));
+        else $retrofit = new LeadRetrofit($request->except('_token'));
+        $retrofit->is_floor_plan_created = filter_var($request->is_floor_plan_created, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $retrofit->is_rfa_lodged = filter_var($request->is_rfa_lodged, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $retrofit->is_rfa_complete = filter_var($request->is_rfa_complete, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $retrofit->lead_id = $id;
+        $retrofit->save();
+
+        if ($retrofit->rfa_booked_time && $retrofit->rfa_booked_date)
+            $lead->status = 'raBooked';
+        if ($retrofit->is_rfa_complete)
+            $lead->status = 'raCompleted';
+        if ($retrofit->is_rfa_lodged)
+            $lead->status = 'raLodged';
+        $lead->save();
+        return redirect()->route('leads.index');
+    }
+
+    public function measures(Request $request, $id)
+    {
+        dd($request->all());
+        DB::beginTransaction();
+        try {
+            $lead = Leads::find($id);
+
+            foreach ($request->types as $category) {
+                $lead_category = new LeadMeasureCategories($category);
+                $lead_category->is_customer_informed = filter_var($category['is_customer_informed'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                $lead_category->is_warranty_applied = filter_var($category['is_warranty_applied'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                $lead_category->is_pibi = isset($category['is_pibi']) == 'on';
+                $lead_category->is_design = isset($category['is_design']) == 'on';
+                $lead_category->is_tech_survey = isset($category['is_tech_survey']) == 'on';
+                $lead_category->lead_id = $id;
+                $lead_category->save();
+                foreach ($category['materials'] as $material) {
+                    $category_material = new LeadMeasureCategoryTypes($material);
+                    $category_material->type = 'material';
+                    $category_material->lead_id = $id;
+                    $category_material->measure_category_id = $lead_category->id;
+                    $category_material->save();
+                }
+                foreach ($category['installers'] as $installer) {
+                    $category_installer = new LeadMeasureCategoryTypes($installer);
+                    $category_installer->type = 'installer';
+                    $category_installer->lead_id = $id;
+                    $category_installer->measure_category_id = $lead_category->id;;
+                    $category_installer->save();
+                }
+            }
+            // Pending: Update the lead status in the behalf of checking of measures statuses
+            if ($lead->details()->exists())
+                $details = $lead->details()->first();
+            else $details = new LeadDetails();
+            $details->is_boiler_replacement = $request->is_boiler_replacement == 'on';
+            $details->is_external_wall_insulation = $request->is_external_wall_insulation == 'on';
+            $details->is_first_time_central_heating = $request->is_first_time_central_heating == 'on';
+            $details->is_internal_wall_insulation = $request->is_internal_wall_insulation == 'on';
+            $details->is_cavity_wall_insulation = $request->is_cavity_wall_insulation == 'on';
+            $details->is_under_floor_insulation = $request->is_under_floor_insulation == 'on';
+            $details->is_loft_insulation = $request->is_loft_insulation == 'on';
+            $details->is_heating_controls = $request->is_heating_controls == 'on';
+            $details->is_solar_pv = $request->is_solar_pv == 'on';
+            $details->is_air_source = $request->is_air_source == 'on';
+            $details->is_storage_heater = $request->is_storage_heater == 'on';
+            $details->is_rir = $request->is_rir == 'on';
+            $details->total_material = $request->total_material;
+            $details->total_installer = $request->total_installer;
+            $details->sub_total = $request->sub_total;
+            $details->lead_id = $id;
+            $details->save();
+            DB::commit();
+            return redirect()->route('leads.index');
+        } catch (\Exception $error) {
+            DB::rollBack();
+            dd($error->getMessage());
+            return redirect()->back()->with('error', $error->getMessage());
+        }
+
+    }
+
+    public function lead_summary(Request $request, $id)
+    {
+        $detail = LeadDetails::where('lead_id', $id)->first();
+        $detail->fill($request->except('_token'));
+        $detail->is_agent_paid = filter_var($request->is_agent_paid, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $detail->is_invoice_paid = filter_var($request->is_invoice_paid, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $detail->save();
+        $lead = Leads::find($id);
+        if ($request->handover_on)
+            $lead->status = 'hanoverCompleted';
+        if ($request->status)
+            $lead->status = $request->status;
+        if ($detail->is_invoice_paid)
+            $lead->status = 'invoicePaid';
+        $lead->save();
+        return redirect()->route('leads.index');
     }
 
     private function uploadFiles($files, $type)

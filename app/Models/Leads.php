@@ -21,6 +21,16 @@ class Leads extends Model
         return $this->belongsTo(LeadDetails::class, 'id', 'lead_id');
     }
 
+    public function data_matched()
+    {
+        return $this->belongsTo(LeadDataMatches::class, 'id', 'lead_id');
+    }
+
+    public function retrofit()
+    {
+        return $this->belongsTo(LeadRetrofit::class, 'id', 'lead_id');
+    }
+
     public function agent_details()
     {
         return $this->belongsTo(User::class, 'agent_id', 'id');

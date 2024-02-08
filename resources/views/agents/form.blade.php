@@ -12,7 +12,7 @@
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group">
                             <label for="full_name">Full Name</label>
                             <input value="{{ old('name', isset($row) ? $row->name : '') }}" type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="full_name" placeholder="Enter Full name">
@@ -21,12 +21,21 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input value="{{ old('email', isset($row) ? $row->email : '') }}" type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="Enter Email">
                             @error('email')
                                 <span id="email" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input value="{{ old('phone', isset($row) ? $row->phone : '') }}" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" placeholder="Enter Phone">
+                            @error('phone')
+                            <span id="phone" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>

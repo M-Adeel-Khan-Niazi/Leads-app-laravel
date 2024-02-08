@@ -15,17 +15,19 @@ class CreateLeadMeasureCategoriesTable extends Migration
     {
         Schema::create('lead_measure_categories', function (Blueprint $table) {
             $table->id();
+            $table->integer('lead_id');
+            $table->integer('installer_id');
             $table->string('m2')->nullable();
+            $table->string('measure_status')->nullable();
             $table->string('category')->nullable();
             $table->date('start_date')->nullable();
             $table->date('completion_date')->nullable();
+            $table->boolean('is_customer_informed')->default(false);
             $table->boolean('is_warranty_applied')->default(false);
+            $table->integer('ibg_cost')->default(0);
             $table->boolean('is_pibi')->nullable();
             $table->boolean('is_design')->nullable();
             $table->boolean('is_tech_survey')->nullable();
-            $table->integer('ibg_cost')->default(0);
-            $table->integer('lead_id');
-            $table->integer('installer_id');
             $table->timestamps();
         });
     }

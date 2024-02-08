@@ -56,12 +56,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-6">
                         <div class="form-group">
                             <label for="education">Education</label>
                             <input value="{{ old('education', isset($row) ? $row->education : '') }}" type="text" class="form-control @error('education') is-invalid @enderror" name="education" id="education" placeholder="Enter Education">
                             @error('education')
                             <span id="education" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Comments</label>
+                            <textarea class="form-control @error('comment') is-invalid @enderror" id="is_flexible" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>
+                            @error('comment')
+                            <span id="comment" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>

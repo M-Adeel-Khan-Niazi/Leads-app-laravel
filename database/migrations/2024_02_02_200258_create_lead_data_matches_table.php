@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateLeadDataMatchesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('lead_data_matches', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone')->unique();
-            $table->string('password');
-            $table->string('share')->nullable();
+            $table->integer('lead_id');
+            $table->string('land_reg_check')->nullable();
+            $table->boolean('is_land_reg_matched')->nullable();
+            $table->boolean('is_match_sent')->nullable();
+            $table->string('data_match_result')->nullable();
             $table->string('comment')->nullable();
-            $table->enum('role', ['admin', 'agent']);
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -34,6 +32,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('lead_data_matches');
     }
 }
