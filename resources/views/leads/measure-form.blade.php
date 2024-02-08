@@ -396,11 +396,9 @@
 @endsection
 @push('scripts')
 <script>
-    let form_index = 0;
+    let form_index = {{ count($categories) ?? 0 }};
     let material_index = [];
     let installer_index = [];
-    const count = {{ count($categories) }};
-    console.log(count,' count');
 
     function addMaterial(id) {
         material_index[`${id}`]++;

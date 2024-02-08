@@ -7,10 +7,10 @@
                 <div class="card-header">
                     <form action="{{route('leads.index')}}">
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <h3 class="card-title py-2">Leads List</h3>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <select class="form-control" name="status" id="featured">
                                         <option {{is_null(request()->input('status')) ? 'selected' : ''}} value=""> All</option>
@@ -18,7 +18,10 @@
                                         <option {{request()->input('status') == 'rejected' ? 'selected' : ''}} value="rejected">Lead Rejected</option>
                                         <option {{request()->input('status') == 'onHold' ? 'selected' : ''}} value="onHold">Lead On Hold</option>
                                         <option {{request()->input('status') == 'approved' ? 'selected' : ''}} value="approved">Lead Approved</option>
-                                        <option {{request()->input('status') == 'dataMatched' ? 'selected' : ''}} value="dataMatched">Awaiting Data Matched</option>
+                                        <option {{request()->input('status') == 'Awaiting' ? 'selected' : ''}} value="Awaiting">Awaiting Data Matched</option>
+                                        <option {{request()->input('status') == 'Matched' ? 'selected' : ''}} value="Matched">Data Matched Sent</option>
+                                        <option {{request()->input('status') == 'Unverified' ? 'selected' : ''}} value="Unverified">Data Matched Un-Verified</option>
+                                        <option {{request()->input('status') == 'Unmatched' ? 'selected' : ''}} value="Unmatched">Data Un-Matched</option>
                                         <option {{request()->input('status') == 'raBooked' ? 'selected' : ''}} value="raBooked">RA Booked</option>
                                         <option {{request()->input('status') == 'raCompleted' ? 'selected' : ''}} value="raCompleted">RA Completed</option>
                                         <option {{request()->input('status') == 'raLodged' ? 'selected' : ''}} value="raLodged">RA Lodged</option>
@@ -30,7 +33,15 @@
                                         <option {{request()->input('status') == 'paperworkError' ? 'selected' : ''}} value="paperworkError">Funder Paperwork Error</option>
                                         <option {{request()->input('status') == 'paperworkAccepted' ? 'selected' : ''}} value="paperworkAccepted">Funder Paperwork Accepted</option>
                                         <option {{request()->input('status') == 'invoicePaid' ? 'selected' : ''}} value="invoicePaid">Invoice Paid</option>
+                                        @if(request()->user()->role == 'admin')
+                                            <option {{request()->input('status') == 'agentPaid' ? 'selected' : ''}} value="agentPaid">Agent Paid</option>
+                                        @endif
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input value="{{ old('search') }}" type="text" class="form-control" name="search" placeholder="Enter Search">
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -49,9 +60,9 @@
                         <tr>
                             <th style="width: 10px">#</th>
                             <th>Agent Name</th>
-                            <th>Source</th>
+                            <th>Address</th>
+                            <th>Phone</th>
                             <th>Status</th>
-                            <th>Created By</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -61,7 +72,8 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $lead->agent_details ? $lead->agent_details->name : 'N/A' }}</td>
-                            <td>{{ $lead->source ?? 'N/A' }}</td>
+                            <td>{{ $lead->address_line_one ?? 'N/A' }}</td>
+                            <td>{{ $lead->resident_contact ?? 'N/A' }}</td>
                             <td>
                                 @switch($lead->status)
                                     @case('draft')<button type="button" class="btn btn-block btn-dark btn-sm">Draft</button>@break
@@ -86,7 +98,6 @@
                                     @case('invoicePaid')<button type="button" class="btn btn-block btn-success btn-sm">Invoice Paid</button>@break
                                 @endswitch
                             </td>
-                            <td>{{ $lead->created_by_user ? $lead->created_by_user->name : 'N/A' }}</td>
                             <td>{{ $lead->created_at->format('Y-m-d H:i') }}</td>
                             <td class="text-center">
                                 <form method="post" id="delete-form" action="{{ route('leads.destroy', $lead->id) }}">

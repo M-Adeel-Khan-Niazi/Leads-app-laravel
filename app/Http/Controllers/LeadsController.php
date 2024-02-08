@@ -26,12 +26,25 @@ class LeadsController extends Controller
      */
     public function index()
     {
-        $leads = Leads::with('created_by_user', 'agent_details')->when(Auth::user()->role == 'admin', function ($q) {
-            $q->where('status', '!=', 'draft')->orWhere('created_by', Auth::id());
-        })->when(Auth::user()->role == 'agent', function ($q) {
-            $q->where('agent_id', Auth::id())->orWhere('created_by', Auth::id());
-        })->when(request()->has('status'), function ($q) {
-            $q->where('status', request()->status);
+        $leads = Leads::with('created_by_user', 'agent_details');
+        if (Auth::user()->role == 'admin') {
+            $leads = $leads->where(function ($query) {
+                $query->where('status', '!=', 'draft')
+                    ->orWhere('created_by', Auth::id());
+            });
+        } elseif (Auth::user()->role == 'agent') {
+            $leads = $leads->where(function ($query) {
+                $query->where('agent_id', Auth::id())
+                    ->orWhere('created_by', Auth::id());
+            });
+        }
+        $leads = $leads->when(request()->has('status') && !empty(request('status')), function ($q) {
+            if (in_array(request()->status, ['Awaiting', 'Matched', 'Unverified', 'Unmatched']))
+                $q->whereHas('data_matched', function ($q) {
+                    $q->where('data_match_result', request()->status);
+                });
+            else
+                $q->where('status', request()->status);
         })->paginate(10);
         return view('leads.index', compact('leads'));
     }
@@ -121,7 +134,7 @@ class LeadsController extends Controller
             $lead->address_line_one = $request->house_number . '-' . $request->postal_code;
             $lead->created_by = Auth::id();
             $lead->extension_wall_type = $request->extension_wall_type ?? $request->extension_wall_type_other;
-            $lead->extension_wall_type = $request->extension_wall_type ?? $request->extension_wall_type_other;
+            $lead->relationship = $request->relationship ?? $request->other_relationship;
             $lead->save();
             if ($lead->is_property_check && $request->hasFile('property_check_pictures')) {
                 $data = $this->uploadFiles($request->file('property_check_pictures'), 'property_check');
@@ -264,20 +277,21 @@ class LeadsController extends Controller
 
     public function leads_details(Leads $lead)
     {
-//        if ($lead->status == 'pending') {
-//            $row = $lead->data_matched()->first();
-//            return view('leads.data-matched-form', compact('row'));
-//        } elseif (in_array($lead->status, ['approved', 'raBooked', 'raCompleted'])) {
-//            $row = $lead->retrofit()->first();
-//            return view('leads.retrofit-form', compact('row'));
-//        } elseif ($lead->status == 'raLodged') {
-//            $installers = Installer::latest()->get();
-//            $row = LeadDetails::where('lead_id', $lead->id)->first();
-//            $categories = LeadMeasureCategories::with('category_types')->where('lead_id', $lead->id)->get();
-//            return view('leads.measure-form', compact('installers', 'row', 'categories'));
-//        }
-        $total_ibg = LeadMeasureCategories::where('lead_id', $lead->id)->sum('ibg_cost');
-        return view('leads.lead-summary', compact('lead', 'total_ibg'));
+        if ($lead->status == 'pending') {
+            $row = $lead->data_matched()->first();
+            return view('leads.data-matched-form', compact('row'));
+        } elseif (in_array($lead->status, ['approved', 'raBooked', 'raCompleted'])) {
+            $row = $lead->retrofit()->first();
+            return view('leads.retrofit-form', compact('row'));
+        } elseif (in_array($lead->status, ['raLodged', 'installationBooked', 'installationStarted'])) {
+            $installers = Installer::latest()->get();
+            $row = LeadDetails::where('lead_id', $lead->id)->first();
+            $categories = LeadMeasureCategories::with('category_types')->where('lead_id', $lead->id)->get();
+            return view('leads.measure-form', compact('installers', 'row', 'categories'));
+        } elseif (in_array($lead->status, ['installationCompleted', 'handoverCompleted', 'paperWorkSubmitted', 'paperWorkAccepted', 'paperWorkError'])) {
+            $total_ibg = LeadMeasureCategories::where('lead_id', $lead->id)->sum('ibg_cost');
+            return view('leads.lead-summary', compact('lead', 'total_ibg'));
+        }
     }
 
     public function data_matched(Request $request, $id)

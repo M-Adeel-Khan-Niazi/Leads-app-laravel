@@ -257,6 +257,13 @@
         $('body').on('input', function() {
             summary_calculate()
         })
+        $("#introducer_share").on('change', function () {
+            const value = $(this).val()
+            const gross_profit = parseInt($("#gross_profit").val());
+            const fee = (((value / 100) * gross_profit)).toFixed(2);
+            $('#introducer_fee').attr('value', fee);
+            $('#net_profit').attr('value', (gross_profit - fee).toFixed(2));
+        }).change();
         function summary_calculate(){
             const funding = {{ $lead->retrofit->funding }};
             const sub_total = {{ $lead->details->sub_total }};
