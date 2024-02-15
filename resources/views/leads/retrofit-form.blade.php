@@ -105,35 +105,6 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="abs_score">ABS Score</label>
-                            <input value="{{ old('abs_score', isset($row) ? $row->abs_score : 0) }}" oninput="fundingCal()" type="number" min="0" class="form-control @error('abs_score') is-invalid @enderror" name="abs_score" id="abs_score" placeholder="Enter ABS Score">
-                            @error('abs_score')
-                            <span id="abs_score" class="error invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="rate">Rate</label>
-                            <input value="{{ old('rate', isset($row) ? $row->rate : 0) }}" type="number" min="0" oninput="fundingCal()" class="form-control @error('rate') is-invalid @enderror" name="rate" id="rate" placeholder="Enter Rate">
-                            @error('rate')
-                            <span id="rate" class="error invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="funding">Funding</label>
-                            <input value="{{ old('funding', isset($row) ? $row->funding : 0) }}" type="number" readonly class="form-control @error('funding') is-invalid @enderror" name="funding" id="funding" placeholder="Enter Funding">
-                            @error('funding')
-                            <span id="funding" class="error invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <div class="form-group">
                             <label for="rc_name">RC Full Name</label>
                             <input value="{{ old('rc_name', isset($row) ? $row->rc_name : '') }}" type="text" class="form-control @error('rc_name') is-invalid @enderror" name="rc_name" id="rc_name" placeholder="Enter RC Full Name">
                             @error('rc_name')
@@ -166,12 +137,5 @@
 @endsection
 @push('scripts')
 <script>
-    function fundingCal() {
-        const score = $("#abs_score").val();
-        const rate = $("#rate").val();
-        const funding = score * rate;
-        $('#funding').attr('value', funding);
-        $('#funding_summary').attr('value', funding);
-    }
 </script>
 @endpush

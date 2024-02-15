@@ -262,35 +262,6 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="is_warranty_applied">Warranties Applied</label>
-                                            <select class="form-control @error('is_warranty_applied') is-invalid @enderror" id="is_warranty_applied" name="types[{{$key}}][is_warranty_applied]" style="width: 100%;">
-                                                <option value="true" {{ $measure_type->is_warranty_applied ? 'selected': '' }}>Yes</option>
-                                                <option value="false" {{ !$measure_type->is_warranty_applied ? 'selected': '' }}>No</option>
-                                            </select>
-                                            @error('is_warranty_applied')
-                                            <span id="is_warranty_applied" class="error invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="ibg_cost">IBG Cost</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">£</span>
-                                                </div>
-                                                <input value="{{ $measure_type->ibg_cost ?? 0 }}" type="number" min="0" class="form-control ibg_cost @error('ibg_cost') is-invalid @enderror" name="types[{{$key}}][ibg_cost]" id="ibg_cost" placeholder="Enter IBG Cost">
-                                                @error('ibg_cost')
-                                                <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
-                                                @enderror
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 @foreach($measure_type->category_types as $typeKey => $type)
                                     @if($type->type == 'material')
@@ -364,26 +335,6 @@
                     @endforeach
                 @endif
                 </div>
-                <div class="row">
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="total_material">Total Material Cost</label>
-                            <input value="{{ isset($row) && $row->total_material ? $row->total_material : 0 }}" type="number" min="0" readonly class="form-control" id="total_material" name="total_material">
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="total_installer">Total Installer Cost</label>
-                            <input value="{{ isset($row) && $row->total_installer ? $row->total_installer : 0 }}" type="number" min="0" readonly class="form-control" id="total_installer" name="total_installer">
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="sub_total">Sub Total</label>
-                            <input value="{{ isset($row) && $row->sub_total ? $row->sub_total : 0 }}" type="number" min="0" readonly class="form-control" id="sub_total" name="sub_total">
-                        </div>
-                    </div>
-                </div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
@@ -397,77 +348,6 @@
 @push('scripts')
 <script>
     let form_index = {{ count($categories) ?? 0 }};
-    let material_index = [];
-    let installer_index = [];
-
-    function addMaterial(id) {
-        material_index[`${id}`]++;
-        $("#" + id + " .materials:last").after(`<div class="row materials">
-    <div class="col-5">
-        <div class="form-group">
-            <label for="material_name">Material</label>
-            <input value="{{ old('material_name') }}" type="text" class="form-control @error('material_name') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][title]" id="material_name" placeholder="Enter Material Name">
-            @error('material_name')
-        <span id="material_name" class="error invalid-feedback">{{ $message }}</span>
-            @enderror
-        </div>
-    </div>
-    <div class="col-5">
-        <div class="form-group">
-            <label for="material_cost">Material Cost</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">£</span>
-                </div>
-                <input value="{{ old('material_cost', 0) }}" type="number" min="0" class="form-control m-cost @error('material_cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[id]}][cost]" id="material_cost" placeholder="Enter Material Cost">
-                @error('material_cost')
-        <span id="material_cost" class="error invalid-feedback">{{ $message }}</span>
-                @enderror
-        <div class="input-group-append">
-            <span class="input-group-text">.00</span>
-        </div>
-    </div>
-</div>
-</div>
-<div class="col-2 d-flex justify-content-center align-items-center mt-2">
-<button type="button" class="btn btn-danger mx-2 remove_material"><i class="fas fa-trash"></i></button>
-</div>
-</div>`);
-    }
-    function addInstaller(id) {
-        installer_index[`${id}`]++;
-        $("#" + id + " .installers:last").after(`<div class="row installers">
-    <div class="col-5">
-        <div class="form-group">
-            <label for="title">Installer</label>
-            <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][title]" id="installer_title" placeholder="Enter Installer">
-            @error('title')
-        <span id="title" class="error invalid-feedback">{{ $message }}</span>
-            @enderror
-        </div>
-    </div>
-    <div class="col-5">
-        <div class="form-group">
-            <label for="cost">Installer Cost</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">£</span>
-                </div>
-                <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control i-cost @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[id]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
-                @error('cost')
-        <span id="cost" class="error invalid-feedback">{{ $message }}</span>
-                @enderror
-        <div class="input-group-append">
-            <span class="input-group-text">.00</span>
-        </div>
-    </div>
-</div>
-</div>
-<div class="col-2 d-flex justify-content-center align-items-center mt-2">
-<button type="button" class="btn btn-danger mx-2 remove_installer"><i class="fas fa-trash"></i></button>
-</div>
-</div>`);
-    }
     function convertToSlug(Text) {
         return Text.toLowerCase()
             .replace(/ /g, "-")
@@ -475,8 +355,6 @@
     }
     function addMeasureForm(type) {
         const slug = convertToSlug(type);
-        material_index[`${slug}`] = 0;
-        installer_index[`${slug}`] = 0;
         form_index = $("#measure-type .card-outline").length;
         if ($('#' + slug).length) {
             $('#' + slug).remove()
@@ -540,18 +418,6 @@
             </div>
         </div>
     </div>
-    <div class="col-3">
-        <div class="form-group">
-            <label for="is_customer_informed">Customer Informed of Start</label>
-            <select class="form-control @error('is_customer_informed') is-invalid @enderror" id="is_customer_informed" name="types[${form_index}][is_customer_informed]" style="width: 100%;">
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                    </select>
-                    @error('is_customer_informed')
-            <span id="is_customer_informed" class="error invalid-feedback">{{ $message }}</span>
-                    @enderror
-            </div>
-        </div>
     </div>
     <div class="row">
         <div class="col-4">
@@ -599,127 +465,24 @@
                     @enderror
             </div>
         </div>
-        <div class="col-4">
-            <div class="form-group">
-                <label for="is_warranty_applied">Warranties Applied</label>
-                <select class="form-control @error('is_warranty_applied') is-invalid @enderror" id="is_warranty_applied" name="types[${form_index}][is_warranty_applied]" style="width: 100%;">
-                        <option value="true" {{ old('is_warranty_applied') == 'true' ? 'selected': '' }}>Yes</option>
-                        <option value="false" {{ old('is_warranty_applied') == 'false' ? 'selected': '' }}>No</option>
+         <div class="col-4">
+        <div class="form-group">
+            <label for="is_customer_informed">Customer Informed of Start</label>
+            <select class="form-control @error('is_customer_informed') is-invalid @enderror" id="is_customer_informed" name="types[${form_index}][is_customer_informed]" style="width: 100%;">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
                     </select>
-                    @error('is_warranty_applied')
-            <span id="is_warranty_applied" class="error invalid-feedback">{{ $message }}</span>
+                    @error('is_customer_informed')
+            <span id="is_customer_informed" class="error invalid-feedback">{{ $message }}</span>
                     @enderror
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <label for="ibg_cost">IBG Cost</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">£</span>
-                    </div>
-                    <input value="{{ old('ibg_cost', 0) }}" type="number" min="0" class="form-control ibg_cost @error('ibg_cost') is-invalid @enderror" name="types[${form_index}][ibg_cost]" id="ibg_cost" placeholder="Enter IBG Cost">
-                        @error('ibg_cost')
-            <span id="ibg_cost" class="error invalid-feedback">{{ $message }}</span>
-                        @enderror
-            <div class="input-group-append">
-                <span class="input-group-text">.00</span>
             </div>
         </div>
     </div>
 </div>
 </div>
-<div class="row materials">
-<div class="col-5">
-    <div class="form-group">
-        <label for="title">Material</label>
-        <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name=" types[${form_index}][materials][${material_index[`${slug}`]}][title]" id="material_title" placeholder="Enter Material Name">
-                    @error('title')
-            <span id="title" class="error invalid-feedback">{{ $message }}</span>
-                    @enderror
-            </div>
-        </div>
-        <div class="col-5">
-            <div class="form-group">
-                <label for="cost">Material Cost</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">£</span>
-                    </div>
-                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control m-cost @error('cost') is-invalid @enderror" name="types[${form_index}][materials][${material_index[`${slug}`]}][cost]" id="material_cost" placeholder="Enter Material Cost">
-                        @error('cost')
-            <span id="cost" class="error invalid-feedback">{{ $message }}</span>
-                        @enderror
-            <div class="input-group-append">
-                <span class="input-group-text">.00</span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-2 d-flex justify-content-center align-items-center mt-2">
-    <button type="button" class="btn btn-primary mx-2" onclick="addMaterial('${slug}')"><i class="fas fa-plus-square"></i></button>
-            </div>
-        </div>
-        <div class="row installers">
-            <div class="col-5">
-                <div class="form-group">
-                    <label for="title">Installer</label>
-                    <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][title]" id="installer_title" placeholder="Enter Installer">
-                    @error('title')
-            <span id="title" class="error invalid-feedback">{{ $message }}</span>
-                    @enderror
-            </div>
-        </div>
-        <div class="col-5">
-            <div class="form-group">
-                <label for="cost">Installer Cost</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">£</span>
-                    </div>
-                    <input value="{{ old('cost', 0) }}" type="number" min="0" class="form-control i-cost @error('cost') is-invalid @enderror" name="types[${form_index}][installers][${installer_index[`${slug}`]}][cost]" id="installer_cost" placeholder="Enter Installer Cost">
-                        @error('cost')
-            <span id="cost" class="error invalid-feedback">{{ $message }}</span>
-                        @enderror
-            <div class="input-group-append">
-                <span class="input-group-text">.00</span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-2 d-flex justify-content-center align-items-center mt-2">
-    <button type="button" class="btn btn-primary mx-2" onclick="addInstaller('${slug}')"><i class="fas fa-plus-square"></i></button>
-            </div>
-        </div>
     </div>
 </div>`)
         }
     }
-    $(document).on('click', '.remove_material', function () {
-        $(this).parents('div.materials').remove();
-    });
-    $(document).on('click', '.remove_installer', function () {
-        $(this).parents('div.installers').remove();
-    });
-    $('body').on('input', '.m-cost', function() {
-        var m_price = 0;
-        $('.m-cost').each(function(index, el) {
-            const price = parseInt($(el).val());
-            m_price = m_price+price
-        });
-        $('#total_material').val(m_price)
-        const total_installer = parseInt($("#total_installer").val());
-        $('#sub_total').val(m_price + total_installer)
-    });
-    $('body').on('input', '.i-cost', function() {
-        var i_price = 0;
-        $('.i-cost').each(function(index, el) {
-            const price = parseInt($(el).val());
-            i_price = i_price+price
-        });
-        $('#total_installer').val(i_price)
-        const total_material = parseInt($("#total_material").val());
-        $('#sub_total').val(i_price + total_material)
-    });
 </script>
 @endpush

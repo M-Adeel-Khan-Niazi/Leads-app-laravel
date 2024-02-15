@@ -29,10 +29,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('installers', InstallerController::class);
     Route::resource('funders', FunderController::class);
     Route::resource('leads', LeadsController::class);
-    Route::get('leads-details/{lead}', [LeadsController::class, 'leads_details'])->name('leads.details');
+    Route::get('leads-details/{type}/{lead}', [LeadsController::class, 'leads_details'])->name('leads.details');
     Route::post('lead-data-matched/{id}', [LeadsController::class, 'data_matched'])->name('leads.data_matched');
     Route::post('lead-retrofit/{id}', [LeadsController::class, 'retrofit'])->name('leads.retrofit');
     Route::post('lead-measures/{id}', [LeadsController::class, 'measures'])->name('leads.measures');
+    Route::post('lead-handover/{id}', [LeadsController::class, 'lead_handover'])->name('leads.handover');
     Route::post('lead-summary/{id}', [LeadsController::class, 'lead_summary'])->name('leads.summary');
     Route::get('generate/{id}/survey-pdf', [AppController::class, 'survey_pdf'])->name('survey.pdf');
     Route::get('generate', function () {

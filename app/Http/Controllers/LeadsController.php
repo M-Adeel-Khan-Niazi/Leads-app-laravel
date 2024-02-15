@@ -280,20 +280,26 @@ class LeadsController extends Controller
         return response()->json(['deleted' => false]);
     }
 
-    public function leads_details(Leads $lead)
+    public function leads_details($type, Leads $lead)
     {
-        if ($lead->status == 'pending') {
+//        $lead->status == 'pending'
+        if ($type == 'data-matched') {
             $row = $lead->data_matched()->first();
             return view('leads.data-matched-form', compact('row'));
-        } elseif (in_array($lead->status, ['approved', 'raBooked', 'raCompleted'])) {
+//            in_array($lead->status, ['approved', 'raBooked', 'raCompleted'])
+        } elseif ($type == 'retrofit') {
             $row = $lead->retrofit()->first();
             return view('leads.retrofit-form', compact('row'));
-        } elseif (in_array($lead->status, ['raLodged', 'installationBooked', 'installationStarted'])) {
+//            in_array($lead->status, ['raLodged', 'installationBooked', 'installationStarted'])
+        } elseif ($type == 'measure-install') {
             $installers = Installer::latest()->get();
             $row = LeadDetails::where('lead_id', $lead->id)->first();
             $categories = LeadMeasureCategories::with('category_types')->where('lead_id', $lead->id)->get();
             return view('leads.measure-form', compact('installers', 'row', 'categories'));
-        } elseif (in_array($lead->status, ['installationCompleted', 'handoverCompleted', 'paperWorkSubmitted', 'paperWorkAccepted', 'paperWorkError'])) {
+//            in_array($lead->status, ['installationCompleted', 'handoverCompleted', 'paperWorkSubmitted', 'paperWorkAccepted', 'paperWorkError'])
+        } elseif ($type == 'handover') {
+            return view('leads.handover', compact('lead'));
+        } elseif ($type == 'summary') {
             $total_ibg = LeadMeasureCategories::where('lead_id', $lead->id)->sum('ibg_cost');
             return view('leads.lead-summary', compact('lead', 'total_ibg'));
         }
@@ -402,6 +408,11 @@ class LeadsController extends Controller
             return redirect()->back()->with('error', $error->getMessage());
         }
 
+    }
+
+    public function lead_handover(Request $request, $id)
+    {
+        //
     }
 
     public function lead_summary(Request $request, $id)

@@ -110,7 +110,11 @@
                                         <button type="submit" class="SingleDelete btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
                                     @endif
                                     @if (!in_array($lead->status,['draft','rejected','onHold']) && auth()->user()->role == 'admin')
-                                        <a href="{{ route('leads.details', $lead->id) }}" class="btn btn-sm btn-outline-primary">Next <i class="fas fa-arrow-right"></i></a>
+                                        <a href="{{ route('leads.details', ['data-matched',$lead->id]) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-book-open"></i></a>
+                                        <a href="{{ route('leads.details', ['retrofit',$lead->id]) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-user-cog"></i></a>
+                                        <a href="{{ route('leads.details', ['measure-install',$lead->id]) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-ruler-combined"></i></a>
+                                        <a href="{{ route('leads.details', ['handover',$lead->id]) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-hand-holding"></i></a>
+                                        <a href="{{ route('leads.details', ['summary',$lead->id]) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-calculator"></i></a>
                                     @endif
                                     @if($lead->status == 'completed')
                                         <a href="{{ route('survey.pdf', $lead->id) }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf"></i></a>
