@@ -25,9 +25,6 @@ class CreateLeadRetrofitsTable extends Migration
             $table->string('post_epr_result')->nullable();
             $table->string('floor_area')->nullable();
             $table->boolean('is_floor_plan_created')->nullable();
-            $table->integer('abs_score')->default(0);
-            $table->integer('rate')->default(0);
-            $table->integer('funding')->default(0);
             $table->string('rc_name')->nullable();
             $table->string('wall_type')->nullable();
             $table->timestamps();

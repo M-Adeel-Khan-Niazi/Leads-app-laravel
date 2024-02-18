@@ -727,8 +727,8 @@
 @endsection
 @push('scripts')
     <script>
-        $('.select2').select2()
         $(document).ready(function ($) {
+            $('.select2').select2();
             summary_calculate()
         });
         $('body').on('input', function() {
@@ -800,16 +800,37 @@
         function addMaterial() {
             material_index++;
             $(".materials:last").after(`<div class="row materials">
-    <div class="col-5">
-        <div class="form-group">
-            <label for="material_name">Material</label>
-            <input value="{{ old('material_name') }}" type="text" class="form-control @error('material_name') is-invalid @enderror" name="materials[${material_index}][title]" id="material_name" placeholder="Enter Material Name">
+            <div class="col-3">
+                        <div class="form-group">
+                            <label for="measure">Measure</label>
+                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="materials[${material_index}][measure]" style="width: 100%;">
+                                <option value="Loft">Loft</option>
+                                <option value="IWI">IWI</option>
+                                <option value="EWI">EWI</option>
+                                <option value="ASHP">ASHP</option>
+                                <option value="Solar PV">Solar PV</option>
+                                <option value="HC">HC</option>
+                                <option value="Boiler">Boiler</option>
+                                <option value="FTCH">FTCH</option>
+                                <option value="RIR">RIR</option>
+                                <option value="Storage Heaters">Storage Heaters</option>
+                                <option value="Cavity Wall Insulation">Cavity Wall Insulation</option>
+                            </select>
+                            @error('measure')
+            <span id="measure" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+            </div>
+        </div>
+<div class="col-4">
+<div class="form-group">
+<label for="material_name">Material</label>
+<input value="{{ old('material_name') }}" type="text" class="form-control @error('material_name') is-invalid @enderror" name="materials[${material_index}][title]" id="material_name" placeholder="Enter Material Name">
             @error('material_name')
             <span id="material_name" class="error invalid-feedback">{{ $message }}</span>
             @enderror
             </div>
         </div>
-        <div class="col-5">
+        <div class="col-3">
             <div class="form-group">
                 <label for="material_cost">Material Cost</label>
                 <div class="input-group">
@@ -830,20 +851,42 @@
     <button type="button" class="btn btn-danger mx-2 remove_material"><i class="fas fa-trash"></i></button>
     </div>
     </div>`);
+            $('.select2').select2();
         }
         function addInstaller() {
             installer_index++;
             $(".installers:last").after(`<div class="row installers">
-    <div class="col-5">
-        <div class="form-group">
-            <label for="title">Installer</label>
-            <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="installers[${installer_index}][title]" id="installer_title" placeholder="Enter Installer">
+            <div class="col-3">
+                        <div class="form-group">
+                            <label for="measure">Measure</label>
+                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="installers[${installer_index}][measure]" style="width: 100%;">
+                                <option value="Loft">Loft</option>
+                                <option value="IWI">IWI</option>
+                                <option value="EWI">EWI</option>
+                                <option value="ASHP">ASHP</option>
+                                <option value="Solar PV">Solar PV</option>
+                                <option value="HC">HC</option>
+                                <option value="Boiler">Boiler</option>
+                                <option value="FTCH">FTCH</option>
+                                <option value="RIR">RIR</option>
+                                <option value="Storage Heaters">Storage Heaters</option>
+                                <option value="Cavity Wall Insulation">Cavity Wall Insulation</option>
+                            </select>
+                            @error('measure')
+            <span id="measure" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+            </div>
+        </div>
+<div class="col-4">
+<div class="form-group">
+<label for="title">Installer</label>
+<input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="installers[${installer_index}][title]" id="installer_title" placeholder="Enter Installer">
             @error('title')
             <span id="title" class="error invalid-feedback">{{ $message }}</span>
             @enderror
             </div>
         </div>
-        <div class="col-5">
+        <div class="col-3">
             <div class="form-group">
                 <label for="cost">Installer Cost</label>
                 <div class="input-group">
@@ -864,6 +907,7 @@
     <button type="button" class="btn btn-danger mx-2 remove_installer"><i class="fas fa-trash"></i></button>
     </div>
     </div>`);
+            $('.select2').select2();
         }
     </script>
 @endpush

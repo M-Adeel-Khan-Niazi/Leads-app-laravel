@@ -9,5 +9,5 @@ class LeadMeasureCategoryTypes extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'cost', 'lead_id', 'measure_category_id', 'type'];
+    protected $fillable = ['title', 'cost', 'lead_id', 'measure', 'type'];
 }

@@ -318,7 +318,8 @@ class LeadsController extends Controller
         $lead->status = $request->status;
         $lead->save();
 
-        $data = new LeadDataMatches($request->except('_token'));
+        $data = LeadDetails::firstOrNew(['lead_id' => $id]);
+        $data = $data->fill($request->except('_token'));
         $data->is_match_sent = filter_var($request->is_match_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         $data->is_land_reg_matched = filter_var($request->is_land_reg_matched, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         $data->lead_id = $id;
@@ -328,16 +329,15 @@ class LeadsController extends Controller
 
     public function retrofit(Request $request, $id)
     {
-        $lead = Leads::find($id);
-        if ($lead->retrofit()->exists())
-            $retrofit = LeadRetrofit::where('lead_id', $id)->first()->fill($request->except('_token'));
-        else $retrofit = new LeadRetrofit($request->except('_token'));
+        $retrofit = LeadRetrofit::firstOrNew(['lead_id' => $id]);
+        $retrofit = $retrofit->fill($request->except('_token'));
         $retrofit->is_floor_plan_created = filter_var($request->is_floor_plan_created, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         $retrofit->is_rfa_lodged = filter_var($request->is_rfa_lodged, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         $retrofit->is_rfa_complete = filter_var($request->is_rfa_complete, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         $retrofit->lead_id = $id;
         $retrofit->save();
 
+        $lead = Leads::find($id);
         if ($retrofit->rfa_booked_time && $retrofit->rfa_booked_date)
             $lead->status = 'raBooked';
         if ($retrofit->is_rfa_complete)
@@ -358,7 +358,6 @@ class LeadsController extends Controller
             foreach ($request->types as $category) {
                 $lead_category = new LeadMeasureCategories($category);
                 $lead_category->is_customer_informed = filter_var($category['is_customer_informed'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-                $lead_category->is_warranty_applied = filter_var($category['is_warranty_applied'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
                 $lead_category->is_pibi = isset($category['is_pibi']) == 'on';
                 $lead_category->is_design = isset($category['is_design']) == 'on';
                 $lead_category->is_tech_survey = isset($category['is_tech_survey']) == 'on';
@@ -380,9 +379,7 @@ class LeadsController extends Controller
                 }
             }
             // Pending: Update the lead status in the behalf of checking of measures statuses
-            if ($lead->details()->exists())
-                $details = $lead->details()->first();
-            else $details = new LeadDetails();
+            $details = LeadDetails::firstOrNew(['lead_id' => $id]);
             $details->is_boiler_replacement = $request->is_boiler_replacement == 'on';
             $details->is_external_wall_insulation = $request->is_external_wall_insulation == 'on';
             $details->is_first_time_central_heating = $request->is_first_time_central_heating == 'on';
@@ -412,24 +409,49 @@ class LeadsController extends Controller
 
     public function lead_handover(Request $request, $id)
     {
-        //
-    }
-
-    public function lead_summary(Request $request, $id)
-    {
-        $detail = LeadDetails::where('lead_id', $id)->first();
-        $detail->fill($request->except('_token'));
-        $detail->is_agent_paid = filter_var($request->is_agent_paid, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-        $detail->is_invoice_paid = filter_var($request->is_invoice_paid, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-        $detail->save();
+        $details = LeadDetails::firstOrNew(['lead_id' => $id]);
+        $details->is_handover_emailed = filter_var($request->is_handover_emailed, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $details->is_warranty_applied = filter_var($request->is_warranty_applied, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $details->is_agent_paid = filter_var($request->is_agent_paid, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $details->is_invoice_paid = filter_var($request->is_invoice_paid, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $details->handover_on = $request->handover_on;
+        $details->lead_id = $id;
+        $details->save();
         $lead = Leads::find($id);
         if ($request->handover_on)
             $lead->status = 'hanoverCompleted';
         if ($request->status)
             $lead->status = $request->status;
-        if ($detail->is_invoice_paid)
-            $lead->status = 'invoicePaid';
         $lead->save();
+        return redirect()->route('leads.index');
+    }
+
+    public function lead_summary(Request $request, $id)
+    {
+        dd($request->all());
+        $retrofit = LeadRetrofit::firstOrNew(['lead_id' => $id]);
+        $retrofit->wall_type = $request->wall_type;
+        $retrofit->floor_area = $request->floor_area;
+        $retrofit->pre_epr_result = $request->pre_epr_result;
+        $retrofit->post_epr_result = $request->post_epr_result;
+        $retrofit->save();
+        // Save and deletes measures
+        LeadMeasureCategoryTypes::where('lead_id', $id)->delete();
+        foreach ($request->installers as $installer) {
+            $type = new LeadMeasureCategoryTypes($installer);
+            $type->type = 'installer';
+            $type->lead_id = $id;
+            $type->save();
+        }
+        foreach ($request->materials as $material) {
+            $type = new LeadMeasureCategoryTypes($material);
+            $type->lead_id = $id;
+            $type->type = 'material';
+            $type->save();
+        }
+        $detail = LeadDetails::firstOrNew(['lead_id' => $id]);
+        $detail->fill($request->except('_token'));
+        $detail->save();
         return redirect()->route('leads.index');
     }
 
