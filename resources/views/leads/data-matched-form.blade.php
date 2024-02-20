@@ -21,14 +21,14 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="land_reg_matched">Land Registry Matched</label>
-                            <select class="form-control @error('land_reg_matched') is-invalid @enderror" id="land_reg_matched" name="land_reg_matched" style="width: 100%;">
-                                <option value="" {{ isset($row) && $row->land_reg_matched == null ? 'selected' : (old('land_reg_matched') ? 'selected': '')}}>N/A</option>
-                                <option value="true" {{ isset($row) && $row->land_reg_matched ? 'selected' : (old('land_reg_matched') ? 'selected': '')}}>Yes</option>
-                                <option value="false" {{ isset($row) && !$row->land_reg_matched ? 'selected' : (old('land_reg_matched') == 'false' ? 'selected': '') }}>No</option>
+                            <label for="is_land_reg_matched">Land Registry Matched</label>
+                            <select class="form-control @error('is_land_reg_matched') is-invalid @enderror" id="is_land_reg_matched" name="is_land_reg_matched" style="width: 100%;">
+                                <option value="" {{ isset($row) && $row->is_land_reg_matched == null ? 'selected' : (old('is_land_reg_matched') ? 'selected': '')}}>N/A</option>
+                                <option value="true" {{ isset($row) && $row->is_land_reg_matched ? 'selected' : (old('is_land_reg_matched') ? 'selected': '')}}>Yes</option>
+                                <option value="false" {{ isset($row) && !$row->is_land_reg_matched ? 'selected' : (old('is_land_reg_matched') == 'false' ? 'selected': '') }}>No</option>
                             </select>
-                            @error('land_reg_matched')
-                            <span id="land_reg_matched" class="error invalid-feedback">{{ $message }}</span>
+                            @error('is_land_reg_matched')
+                            <span id="is_land_reg_matched" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -89,7 +89,7 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <a href="{{ route('funders.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('leads.index') }}" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>

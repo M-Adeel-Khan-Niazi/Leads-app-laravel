@@ -10,4 +10,5 @@ class LeadMeasureCategoryTypes extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'cost', 'lead_id', 'measure', 'type'];
+    protected $casts = ['measure' => 'array'];
 }

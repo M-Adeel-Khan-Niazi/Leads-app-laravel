@@ -294,14 +294,13 @@ class LeadsController extends Controller
         } elseif ($type == 'measure-install') {
             $installers = Installer::latest()->get();
             $row = LeadDetails::where('lead_id', $lead->id)->first();
-            $categories = LeadMeasureCategories::with('category_types')->where('lead_id', $lead->id)->get();
+            $categories = LeadMeasureCategories::where('lead_id', $lead->id)->get();
             return view('leads.measure-form', compact('installers', 'row', 'categories'));
 //            in_array($lead->status, ['installationCompleted', 'handoverCompleted', 'paperWorkSubmitted', 'paperWorkAccepted', 'paperWorkError'])
         } elseif ($type == 'handover') {
             return view('leads.handover', compact('lead'));
         } elseif ($type == 'summary') {
-            $total_ibg = LeadMeasureCategories::where('lead_id', $lead->id)->sum('ibg_cost');
-            return view('leads.lead-summary', compact('lead', 'total_ibg'));
+            return view('leads.lead-summary', compact('lead'));
         }
     }
 
@@ -309,7 +308,7 @@ class LeadsController extends Controller
     {
         $request->validate([
             'land_reg_check' => 'required',
-            'land_reg_matched' => 'required',
+            'is_land_reg_matched' => 'required',
             'is_match_sent' => 'required',
             'data_match_result' => 'required',
             'status' => 'required',
@@ -318,7 +317,7 @@ class LeadsController extends Controller
         $lead->status = $request->status;
         $lead->save();
 
-        $data = LeadDetails::firstOrNew(['lead_id' => $id]);
+        $data = LeadDataMatches::firstOrNew(['lead_id' => $id]);
         $data = $data->fill($request->except('_token'));
         $data->is_match_sent = filter_var($request->is_match_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         $data->is_land_reg_matched = filter_var($request->is_land_reg_matched, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
@@ -350,11 +349,8 @@ class LeadsController extends Controller
 
     public function measures(Request $request, $id)
     {
-        dd($request->all());
         DB::beginTransaction();
         try {
-            $lead = Leads::find($id);
-
             foreach ($request->types as $category) {
                 $lead_category = new LeadMeasureCategories($category);
                 $lead_category->is_customer_informed = filter_var($category['is_customer_informed'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
@@ -363,20 +359,6 @@ class LeadsController extends Controller
                 $lead_category->is_tech_survey = isset($category['is_tech_survey']) == 'on';
                 $lead_category->lead_id = $id;
                 $lead_category->save();
-                foreach ($category['materials'] as $material) {
-                    $category_material = new LeadMeasureCategoryTypes($material);
-                    $category_material->type = 'material';
-                    $category_material->lead_id = $id;
-                    $category_material->measure_category_id = $lead_category->id;
-                    $category_material->save();
-                }
-                foreach ($category['installers'] as $installer) {
-                    $category_installer = new LeadMeasureCategoryTypes($installer);
-                    $category_installer->type = 'installer';
-                    $category_installer->lead_id = $id;
-                    $category_installer->measure_category_id = $lead_category->id;;
-                    $category_installer->save();
-                }
             }
             // Pending: Update the lead status in the behalf of checking of measures statuses
             $details = LeadDetails::firstOrNew(['lead_id' => $id]);
@@ -392,9 +374,6 @@ class LeadsController extends Controller
             $details->is_air_source = $request->is_air_source == 'on';
             $details->is_storage_heater = $request->is_storage_heater == 'on';
             $details->is_rir = $request->is_rir == 'on';
-            $details->total_material = $request->total_material;
-            $details->total_installer = $request->total_installer;
-            $details->sub_total = $request->sub_total;
             $details->lead_id = $id;
             $details->save();
             DB::commit();
@@ -439,6 +418,7 @@ class LeadsController extends Controller
         LeadMeasureCategoryTypes::where('lead_id', $id)->delete();
         foreach ($request->installers as $installer) {
             $type = new LeadMeasureCategoryTypes($installer);
+            $type->measure = collect($request->measure)->implode(',');
             $type->type = 'installer';
             $type->lead_id = $id;
             $type->save();
@@ -446,6 +426,7 @@ class LeadsController extends Controller
         foreach ($request->materials as $material) {
             $type = new LeadMeasureCategoryTypes($material);
             $type->lead_id = $id;
+            $type->measure = collect($request->measure)->implode(',');
             $type->type = 'material';
             $type->save();
         }

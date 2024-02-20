@@ -85,9 +85,9 @@
                                     @case('installationBooked')<button type="button" class="btn btn-block btn-primary btn-sm">Installation Booked</button>@break
 
                                     @case('installationStarted')<button type="button" class="btn btn-block btn-info btn-sm">Installation Started</button>@break
-                                    @case('paperWorkSubmitted')<button type="button" class="btn btn-block btn-info btn-sm">Funder Paperwork Submitted</button>@break
+                                    @case('paperworkSubmitted')<button type="button" class="btn btn-block btn-info btn-sm">Funder Paperwork Submitted</button>@break
 
-                                    @case('paperWorkAccepted')<button type="button" class="btn btn-block btn-warning btn-sm">Awaiting Invoice Payment</button>@break
+                                    @case('paperworkAccepted')<button type="button" class="btn btn-block btn-warning btn-sm">Awaiting Invoice Payment</button>@break
                                     @case('installationCompleted')<button type="button" class="btn btn-block btn-warning btn-sm">Handover Pending</button>@break
                                     @case('handoverCompleted')<button type="button" class="btn btn-block btn-warning btn-sm">Funder Paperwork Pending</button>@break
                                     @case('raLodged')<button type="button" class="btn btn-block btn-warning btn-sm">Awaiting Installation</button>@break
@@ -95,7 +95,7 @@
                                     @case('approved')<button type="button" class="btn btn-block btn-warning btn-sm">RA Pending</button>@break
                                     @case('onHold')<button type="button" class="btn btn-block btn-warning btn-sm">OnHold</button>@break
 
-                                    @case('paperWorkError')<button type="button" class="btn btn-block btn-danger btn-sm">Funder Paperwork Error</button>@break
+                                    @case('paperworkError')<button type="button" class="btn btn-block btn-danger btn-sm">Funder Paperwork Error</button>@break
                                     @case('rejected')<button type="button" class="btn btn-block btn-danger btn-sm">Rejected</button>@break
                                     @case('invoicePaid')<button type="button" class="btn btn-block btn-success btn-sm">Invoice Paid</button>@break
                                 @endswitch

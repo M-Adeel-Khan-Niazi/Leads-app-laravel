@@ -23,8 +23,6 @@ class CreateLeadMeasureCategoriesTable extends Migration
             $table->date('start_date')->nullable();
             $table->date('completion_date')->nullable();
             $table->boolean('is_customer_informed')->default(false);
-            $table->boolean('is_warranty_applied')->default(false);
-            $table->integer('ibg_cost')->default(0);
             $table->boolean('is_pibi')->nullable();
             $table->boolean('is_design')->nullable();
             $table->boolean('is_tech_survey')->nullable();

@@ -484,7 +484,7 @@
                     <div class="col-3">
                         <div class="form-group">
                             <label for="measure">Measure</label>
-                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="materials[0][measure]" style="width: 100%;">
+                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="materials[0][measure][]" style="width: 100%;">
                                 <option value="Loft">Loft</option>
                                 <option value="IWI">IWI</option>
                                 <option value="EWI">EWI</option>
@@ -536,7 +536,7 @@
                     <div class="col-3">
                         <div class="form-group">
                             <label for="measure">Measure</label>
-                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="installers[0][measure]" style="width: 100%;">
+                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="installers[0][measure][]" style="width: 100%;">
                                 <option value="Loft">Loft</option>
                                 <option value="IWI">IWI</option>
                                 <option value="EWI">EWI</option>
@@ -803,7 +803,7 @@
             <div class="col-3">
                         <div class="form-group">
                             <label for="measure">Measure</label>
-                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="materials[${material_index}][measure]" style="width: 100%;">
+                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="materials[${material_index}][measure][]" style="width: 100%;">
                                 <option value="Loft">Loft</option>
                                 <option value="IWI">IWI</option>
                                 <option value="EWI">EWI</option>
@@ -859,7 +859,7 @@
             <div class="col-3">
                         <div class="form-group">
                             <label for="measure">Measure</label>
-                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="installers[${installer_index}][measure]" style="width: 100%;">
+                            <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="installers[${installer_index}][measure][]" style="width: 100%;">
                                 <option value="Loft">Loft</option>
                                 <option value="IWI">IWI</option>
                                 <option value="EWI">EWI</option>
