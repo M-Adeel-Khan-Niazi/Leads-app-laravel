@@ -7,10 +7,10 @@
                 <div class="card-header">
                     <form action="{{route('leads.index')}}">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-12">
                                 <h3 class="card-title py-2">Leads List</h3>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-12">
                                 <div class="form-group">
                                     <select class="form-control" name="status" id="featured">
                                         <option {{is_null(request()->input('status')) ? 'selected' : ''}} value=""> All</option>
@@ -41,23 +41,23 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-12">
                                 <div class="form-group">
                                     <input value="{{ request()->search ?? old('search') }}" type="text" class="form-control" name="search" placeholder="Enter Search">
                                 </div>
                             </div>
-                            <div class="col-md-1">
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                            <div class="col-md-1 col-12">
+                                <button type="submit" class="btn btn-block btn-primary"><i class="fas fa-search"></i></button>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-12">
                                 <a href="{{ route('leads.create') }}" class="btn btn-block btn-outline-primary">Create</a>
                             </div>
                         </div>
                     </form>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body">
-                    <table class="table table-bordered">
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered text-nowrap">
                         <thead>
                         <tr>
                             <th style="width: 10px">#</th>

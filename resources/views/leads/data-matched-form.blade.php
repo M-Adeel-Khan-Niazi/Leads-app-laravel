@@ -7,7 +7,7 @@
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="land_reg_check">Land Registry Check</label>
                             <select class="form-control @error('land_reg_check') is-invalid @enderror" id="land_reg_check" name="land_reg_check" style="width: 100%;">
@@ -19,7 +19,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="is_land_reg_matched">Land Registry Matched</label>
                             <select class="form-control @error('is_land_reg_matched') is-invalid @enderror" id="is_land_reg_matched" name="is_land_reg_matched" style="width: 100%;">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="is_match_sent">Data Match Request Sent</label>
                             <select class="form-control @error('is_match_sent') is-invalid @enderror" id="is_match_sent" name="is_match_sent" style="width: 100%;">
@@ -47,7 +47,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="data_match_result">Data Match Result</label>
                             <select class="form-control @error('data_match_result') is-invalid @enderror" id="data_match_result" name="data_match_result" style="width: 100%;">
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="status">Lead Status</label>
                             <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" style="width: 100%;">
@@ -76,7 +76,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label>Comments</label>
                             <textarea class="form-control @error('comment') is-invalid @enderror" id="comment" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>

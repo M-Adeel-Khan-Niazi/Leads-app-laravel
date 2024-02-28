@@ -12,7 +12,7 @@
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="full_name">Full Name</label>
                             <input value="{{ old('name', isset($row) ? $row->name : '') }}" type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="full_name" placeholder="Enter Full name">
@@ -21,7 +21,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input value="{{ old('email', isset($row) ? $row->email : '') }}" type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="Enter Email">
@@ -30,7 +30,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="phone">Phone</label>
                             <input value="{{ old('phone', isset($row) ? $row->phone : '') }}" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" placeholder="Enter Phone">
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" placeholder="Password">
@@ -51,7 +51,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="confirm_password">Confirm Password</label>
                             <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" placeholder="Confirm Password">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="share">Shares</label>
                             <input type="number" name="share" class="form-control @error('share') is-invalid @enderror" id="share" placeholder="Enter Share" value="{{ old('share', isset($row) && $row->share ?? 0) }}">
@@ -71,7 +71,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label>Comments</label>
                             <textarea class="form-control @error('comment') is-invalid @enderror" id="is_flexible" rows="4" placeholder="Enter Comments" name="comment">{{ isset($row) ? $row->comment : old('comment') }}</textarea>

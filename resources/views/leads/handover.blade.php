@@ -7,7 +7,7 @@
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="handover_on">Handover Date</label>
                             <input value="{{ isset($lead) && $lead->details ? $lead->details->handover_on :old('handover_on') }}" type="date" class="form-control @error('handover_on') is-invalid @enderror" name="handover_on" id="handover_on" placeholder="Enter Handover date">
@@ -16,7 +16,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="is_handover_emailed">Handover Emailed</label>
                             <select class="form-control @error('is_handover_emailed') is-invalid @enderror" id="is_handover_emailed" name="is_handover_emailed" style="width: 100%;">
@@ -28,7 +28,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="is_warranty_applied">Warranties Applied</label>
                             <select class="form-control @error('is_warranty_applied') is-invalid @enderror" id="is_warranty_applied" name="is_warranty_applied" style="width: 100%;">
@@ -40,7 +40,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="status">Funder Paper Work</label>
                             <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" style="width: 100%;">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="is_invoice_paid">Invoice Paid</label>
                             <select class="form-control @error('is_invoice_paid') is-invalid @enderror" id="is_invoice_paid" name="is_invoice_paid" style="width: 100%;">
@@ -68,7 +68,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="is_agent_paid">Agent Paid</label>
                             <select class="form-control @error('is_agent_paid') is-invalid @enderror" id="is_agent_paid" name="is_agent_paid" style="width: 100%;">

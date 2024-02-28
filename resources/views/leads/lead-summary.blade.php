@@ -7,7 +7,7 @@
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="floor_area">Floor Area</label>
                             <input value="{{ old('floor_area', isset($lead) && $lead->retrofit ? $lead->retrofit->floor_area : '') }}" type="text" class="form-control @error('floor_area') is-invalid @enderror" name="floor_area" id="floor_area" placeholder="Enter Floor Area">
@@ -16,7 +16,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="pre_epr_result">Pre EPR Result</label>
                             <input value="{{ old('pre_epr_result', isset($lead) && $lead->retrofit ? $lead->retrofit->pre_epr_result : '') }}" type="text" class="form-control @error('pre_epr_result') is-invalid @enderror" name="pre_epr_result" id="pre_epr_result" placeholder="Enter Pre EPR Result">
@@ -25,7 +25,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="post_epr_result">Post EPR Result</label>
                             <input value="{{ old('post_epr_result', isset($lead) && $lead->retrofit ? $lead->retrofit->post_epr_result : '') }}" type="text" class="form-control @error('post_epr_result') is-invalid @enderror" name="post_epr_result" id="post_epr_result" placeholder="Enter Post EPR Result">
@@ -34,7 +34,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="wall_type">Wall Type</label>
                             <select class="form-control @error('wall_type') is-invalid @enderror" id="wall_type" name="wall_type" style="width: 100%;">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="trickle_vents">Trickle Vents</label>
                             <div class="input-group">
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="air_brick">Air Brick</label>
                             <div class="input-group">
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="fans">Extractor Fans</label>
                             <div class="input-group">
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="minor_work_cert">Minor Works Cert</label>
                             <div class="input-group">
@@ -118,7 +118,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="roof_vents">Roof Vents</label>
                             <div class="input-group">
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="door_undercut">Door Undercut</label>
                             <div class="input-group">
@@ -152,7 +152,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="other_ventilation">Other Ventilation</label>
                             <div class="input-group">
@@ -169,7 +169,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="retrofit_coordinator_cost">Retrofit Coordinator Cost</label>
                             <div class="input-group">
@@ -188,7 +188,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="retrofit_assessor_cost">Retrofit Assessor Cost</label>
                             <div class="input-group">
@@ -205,7 +205,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="gas_safe_reg">Gas Safe Cert</label>
                             <div class="input-group">
@@ -222,7 +222,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="ibg_cost">IBG Cost</label>
                             <div class="input-group">
@@ -239,7 +239,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="tech_survey">Tech Survey</label>
                             <div class="input-group">
@@ -258,7 +258,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="retrofit_design_cost">Retrofit Design</label>
                             <div class="input-group">
@@ -275,7 +275,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="land_reg_cost">Land Registry</label>
                             <div class="input-group">
@@ -292,7 +292,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="trustmark_cost">Trustmark Lodgement</label>
                             <div class="input-group">
@@ -309,7 +309,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="building_regs_fee">Building Regs Fee</label>
                             <div class="input-group">
@@ -328,7 +328,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="data_match_cost">Data Match Cost</label>
                             <div class="input-group">
@@ -345,7 +345,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="data_match_cost">Data Match Cost</label>
                             <div class="input-group">
@@ -362,7 +362,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="waste_manage">Waste Management</label>
                             <div class="input-group">
@@ -379,7 +379,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="plumbing_cost">Plumbing</label>
                             <div class="input-group">
@@ -398,7 +398,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="joinery_cost">Joinery</label>
                             <div class="input-group">
@@ -415,7 +415,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="travel_cost">Travel Cost</label>
                             <div class="input-group">
@@ -432,7 +432,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="food_cost">Food Cost</label>
                             <div class="input-group">
@@ -452,7 +452,7 @@
                     {{--Add Other costs multiple --}}
                 </div>
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="abs_score">ABS Score</label>
                             <input value="{{ old('abs_score', $lead->retrofit->abs_score ?? 0) }}" oninput="fundingCal()" type="number" min="0" class="form-control @error('abs_score') is-invalid @enderror" name="abs_score" id="abs_score" placeholder="Enter ABS Score">
@@ -461,7 +461,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="rate">Rate</label>
                             <input value="{{ old('rate', $lead->retrofit->rate ?? 0) }}" type="number" min="0" oninput="fundingCal()" class="form-control @error('rate') is-invalid @enderror" name="rate" id="rate" placeholder="Enter Rate">
@@ -470,7 +470,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="funding">Funding</label>
                             <input value="{{ old('funding', $lead->retrofit->funding ?? 0) }}" type="number" readonly class="form-control @error('funding') is-invalid @enderror" name="funding" id="funding" placeholder="Enter Funding">
@@ -481,7 +481,7 @@
                     </div>
                 </div>
                 <div class="row materials">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="measure">Measure</label>
                             <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="materials[0][measure][]" style="width: 100%;">
@@ -502,7 +502,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="title">Material</label>
                             <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="materials[0][title]" id="material_title" placeholder="Enter Material Name">
@@ -511,7 +511,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="cost">Material Cost</label>
                             <div class="input-group">
@@ -528,12 +528,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-2 d-flex justify-content-center align-items-center mt-2">
+                    <div class="col-md-2 col-12 d-flex justify-content-center align-items-center mt-2">
                         <button type="button" class="btn btn-primary mx-2" onclick="addMaterial()"><i class="fas fa-plus-square"></i></button>
                     </div>
                 </div>
                 <div class="row installers">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="measure">Measure</label>
                             <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="installers[0][measure][]" style="width: 100%;">
@@ -554,7 +554,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="title">Installer</label>
                             <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="installers[0][title]" id="installer_title" placeholder="Enter Installer">
@@ -563,7 +563,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="cost">Installer Cost</label>
                             <div class="input-group">
@@ -580,12 +580,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-2 d-flex justify-content-center align-items-center mt-2">
+                    <div class="col-md-2 col-12 d-flex justify-content-center align-items-center mt-2">
                         <button type="button" class="btn btn-primary mx-2" onclick="addInstaller()"><i class="fas fa-plus-square"></i></button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="total_material">Total Material Cost</label>
                             <div class="input-group">
@@ -599,7 +599,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="total_installer">Total Installer Cost</label>
                             <div class="input-group">
@@ -613,7 +613,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="sub_total">Sub Total</label>
                             <div class="input-group">
@@ -629,7 +629,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="funding">Funding</label>
                             <div class="input-group">
@@ -643,7 +643,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="total_cost">Total Cost of Job</label>
                             <div class="input-group">
@@ -659,7 +659,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="gross_profit">Gross Profit</label>
                             <div class="input-group">
@@ -673,7 +673,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="introducer_share">Introducer Share</label>
                             <div class="input-group">
@@ -686,7 +686,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="introducer_fee">Introducer Fee Payable</label>
                             <div class="input-group">
@@ -700,7 +700,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="net_profit">Net Profit</label>
                             <div class="input-group">
@@ -800,7 +800,7 @@
         function addMaterial() {
             material_index++;
             $(".materials:last").after(`<div class="row materials">
-            <div class="col-3">
+            <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="measure">Measure</label>
                             <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="materials[${material_index}][measure][]" style="width: 100%;">
@@ -821,7 +821,7 @@
                             @enderror
             </div>
         </div>
-<div class="col-4">
+<div class="col-md-4 col-12">
 <div class="form-group">
 <label for="material_name">Material</label>
 <input value="{{ old('material_name') }}" type="text" class="form-control @error('material_name') is-invalid @enderror" name="materials[${material_index}][title]" id="material_name" placeholder="Enter Material Name">
@@ -830,7 +830,7 @@
             @enderror
             </div>
         </div>
-        <div class="col-3">
+        <div class="col-md-3 col-12">
             <div class="form-group">
                 <label for="material_cost">Material Cost</label>
                 <div class="input-group">
@@ -847,7 +847,7 @@
         </div>
     </div>
     </div>
-    <div class="col-2 d-flex justify-content-center align-items-center mt-2">
+    <div class="col-md-2 col-12 d-flex justify-content-center align-items-center mt-2">
     <button type="button" class="btn btn-danger mx-2 remove_material"><i class="fas fa-trash"></i></button>
     </div>
     </div>`);
@@ -856,7 +856,7 @@
         function addInstaller() {
             installer_index++;
             $(".installers:last").after(`<div class="row installers">
-            <div class="col-3">
+            <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="measure">Measure</label>
                             <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="installers[${installer_index}][measure][]" style="width: 100%;">
@@ -877,7 +877,7 @@
                             @enderror
             </div>
         </div>
-<div class="col-4">
+<div class="col-md-4 col-12">
 <div class="form-group">
 <label for="title">Installer</label>
 <input value="{{ old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="installers[${installer_index}][title]" id="installer_title" placeholder="Enter Installer">
@@ -886,7 +886,7 @@
             @enderror
             </div>
         </div>
-        <div class="col-3">
+        <div class="col-md-3 col-12">
             <div class="form-group">
                 <label for="cost">Installer Cost</label>
                 <div class="input-group">
@@ -903,7 +903,7 @@
         </div>
     </div>
     </div>
-    <div class="col-2 d-flex justify-content-center align-items-center mt-2">
+    <div class="col-md-2 col-12 d-flex justify-content-center align-items-center mt-2">
     <button type="button" class="btn btn-danger mx-2 remove_installer"><i class="fas fa-trash"></i></button>
     </div>
     </div>`);
