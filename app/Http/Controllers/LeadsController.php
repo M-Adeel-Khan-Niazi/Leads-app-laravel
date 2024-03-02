@@ -92,7 +92,6 @@ class LeadsController extends Controller
                 "main_wall_type" => 'nullable',
                 "extension_wall_type" => 'nullable',
                 "resident_first_name" => 'required',
-                "resident_mid_name" => 'required',
                 "resident_sur_name" => 'required',
                 "resident_dob" => 'required',
                 "resident_contact" => 'required',
@@ -407,7 +406,7 @@ class LeadsController extends Controller
 
     public function lead_summary(Request $request, $id)
     {
-        dd($request->all());
+//        dd($request->all());
         $retrofit = LeadRetrofit::firstOrNew(['lead_id' => $id]);
         $retrofit->wall_type = $request->wall_type;
         $retrofit->floor_area = $request->floor_area;
@@ -418,7 +417,6 @@ class LeadsController extends Controller
         LeadMeasureCategoryTypes::where('lead_id', $id)->delete();
         foreach ($request->installers as $installer) {
             $type = new LeadMeasureCategoryTypes($installer);
-            $type->measure = collect($request->measure)->implode(',');
             $type->type = 'installer';
             $type->lead_id = $id;
             $type->save();
@@ -426,7 +424,6 @@ class LeadsController extends Controller
         foreach ($request->materials as $material) {
             $type = new LeadMeasureCategoryTypes($material);
             $type->lead_id = $id;
-            $type->measure = collect($request->measure)->implode(',');
             $type->type = 'material';
             $type->save();
         }

@@ -41,6 +41,11 @@ class Leads extends Model
         return $this->hasMany(FileUploads::class, 'lead_id', 'id');
     }
 
+    public function types()
+    {
+        return $this->hasMany(LeadMeasureCategoryTypes::class, 'lead_id', 'id');
+    }
+
     public function other_pictures()
     {
         return $this->pictures()->where('type', 'other');

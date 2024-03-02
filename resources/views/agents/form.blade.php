@@ -65,7 +65,7 @@
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="share">Shares</label>
-                            <input type="number" name="share" class="form-control @error('share') is-invalid @enderror" id="share" placeholder="Enter Share" value="{{ old('share', isset($row) && $row->share ?? 0) }}">
+                            <input type="number" name="share" class="form-control @error('share') is-invalid @enderror" id="share" placeholder="Enter Share" value="{{ old('share', isset($row) && $row->share ? $row->share : 0) }}">
                             @error('share')
                             <span id="share" class="error invalid-feedback">{{ $message }}</span>
                             @enderror

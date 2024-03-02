@@ -87,7 +87,7 @@ class AgentsController extends Controller
             'password' => 'nullable|confirmed|min:8',
         ]);
         $agent = User::find($id);
-        $agent->fill($request->only('name', 'email'));
+        $agent->fill($request->except('password'));
         if ($request->password)
             $agent->password = Hash::make($request->password);
         $agent->save();

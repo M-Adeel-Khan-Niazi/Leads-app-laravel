@@ -15,7 +15,7 @@ class CreateLeadMeasureCategoryTypesTable extends Migration
     {
         Schema::create('lead_measure_category_types', function (Blueprint $table) {
             $table->id();
-            $table->json('measure')->nullable();
+            $table->string('measure')->nullable();
             $table->string('title')->nullable();
             $table->integer('cost')->default(0);
             $table->enum('type', ['material', 'installer']);

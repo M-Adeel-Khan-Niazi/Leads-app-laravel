@@ -43,7 +43,7 @@ class CreateLeadsTable extends Migration
             $table->string('relationship')->nullable();
             //
             $table->boolean('is_prev_epc')->default(false);
-            $table->integer('epc_rating')->nullable();
+            $table->string('epc_rating')->nullable();
             $table->date('epc_date')->nullable();
             //
             $table->boolean('is_property_check')->default(false);

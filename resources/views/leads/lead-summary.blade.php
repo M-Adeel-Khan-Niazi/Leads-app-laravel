@@ -347,23 +347,6 @@
                     </div>
                     <div class="col-md-3 col-12">
                         <div class="form-group">
-                            <label for="data_match_cost">Data Match Cost</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">£</span>
-                                </div>
-                                <input value="{{ $lead->details->data_match_cost ?? 0 }}" type="number" min="0" class="form-control data_match_cost @error('data_match_cost') is-invalid @enderror" name="data_match_cost" id="data_match_cost" placeholder="Enter Data Match Cost">
-                                @error('data_match_cost')
-                                <span id="data_match_cost" class="error invalid-feedback">{{ $message }}</span>
-                                @enderror
-                                <div class="input-group-append">
-                                    <span class="input-group-text">.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-12">
-                        <div class="form-group">
                             <label for="waste_manage">Waste Management</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -396,8 +379,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="joinery_cost">Joinery</label>
@@ -415,6 +396,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="travel_cost">Travel Cost</label>
@@ -455,7 +438,7 @@
                     <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="abs_score">ABS Score</label>
-                            <input value="{{ old('abs_score', $lead->retrofit->abs_score ?? 0) }}" oninput="fundingCal()" type="number" min="0" class="form-control @error('abs_score') is-invalid @enderror" name="abs_score" id="abs_score" placeholder="Enter ABS Score">
+                            <input value="{{ old('abs_score', $lead->details->abs_score ?? 0) }}" oninput="fundingCal()" type="number" min="0" class="form-control @error('abs_score') is-invalid @enderror" name="abs_score" id="abs_score" placeholder="Enter ABS Score">
                             @error('abs_score')
                             <span id="abs_score" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -464,7 +447,7 @@
                     <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="rate">Rate</label>
-                            <input value="{{ old('rate', $lead->retrofit->rate ?? 0) }}" type="number" min="0" oninput="fundingCal()" class="form-control @error('rate') is-invalid @enderror" name="rate" id="rate" placeholder="Enter Rate">
+                            <input value="{{ old('rate', $lead->details->rate ?? 0) }}" type="number" min="0" oninput="fundingCal()" class="form-control @error('rate') is-invalid @enderror" name="rate" id="rate" placeholder="Enter Rate">
                             @error('rate')
                             <span id="rate" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -473,13 +456,124 @@
                     <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="funding">Funding</label>
-                            <input value="{{ old('funding', $lead->retrofit->funding ?? 0) }}" type="number" readonly class="form-control @error('funding') is-invalid @enderror" name="funding" id="funding" placeholder="Enter Funding">
+                            <input value="{{ old('funding', $lead->details->funding ?? 0) }}" type="number" readonly class="form-control @error('funding') is-invalid @enderror" name="funding" id="funding" placeholder="Enter Funding">
                             @error('funding')
                             <span id="funding" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
                 </div>
+                @if(count($lead->types))
+                    @foreach($lead->types as $type)
+                        @if($type->type == 'material')
+                        <div class="row materials">
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="measure">Measure</label>
+                                    <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="materials[0][measure][]" style="width: 100%;">
+                                        <option value="Loft" {{ in_array('Loft', $type->measure) ? 'selected' : '' }}>Loft</option>
+                                        <option value="IWI" {{ in_array('IWI', $type->measure) ? 'selected' : '' }}>IWI</option>
+                                        <option value="EWI" {{ in_array('EWI', $type->measure) ? 'selected' : '' }}>EWI</option>
+                                        <option value="ASHP" {{ in_array('ASHP', $type->measure) ? 'selected' : '' }}>ASHP</option>
+                                        <option value="Solar PV" {{ in_array('Solar PV', $type->measure) ? 'selected' : '' }}>Solar PV</option>
+                                        <option value="HC" {{ in_array('HC', $type->measure) ? 'selected' : '' }}>HC</option>
+                                        <option value="Boiler" {{ in_array('Boiler', $type->measure) ? 'selected' : '' }}>Boiler</option>
+                                        <option value="FTCH" {{ in_array('FTCH', $type->measure) ? 'selected' : '' }}>FTCH</option>
+                                        <option value="RIR" {{ in_array('RIR', $type->measure) ? 'selected' : '' }}>RIR</option>
+                                        <option value="Storage Heaters" {{ in_array('Storage Heaters', $type->measure) ? 'selected' : '' }}>Storage Heaters</option>
+                                        <option value="Cavity Wall Insulation" {{ in_array('Cavity Wall Insulation', $type->measure) ? 'selected' : '' }}>Cavity Wall Insulation</option>
+                                    </select>
+                                    @error('measure')
+                                    <span id="measure" class="error invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="title">Material</label>
+                                    <input value="{{ $type->title ?? old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="materials[0][title]" id="material_title" placeholder="Enter Material Name">
+                                    @error('title')
+                                    <span id="title" class="error invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="cost">Material Cost</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">£</span>
+                                        </div>
+                                        <input value="{{ old('cost', $type->cost ?? 0) }}" type="number" min="0" class="form-control m-cost @error('cost') is-invalid @enderror" name="materials[0][cost]" id="material_cost" placeholder="Enter Material Cost">
+                                        @error('cost')
+                                        <span id="cost" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-12 d-flex justify-content-center align-items-center mt-2">
+                                <button type="button" class="btn btn-primary mx-2" onclick="addMaterial()"><i class="fas fa-plus-square"></i></button>
+                            </div>
+                        </div>
+                        @else
+                        <div class="row installers">
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="measure">Measure</label>
+                                    <select class="form-control select2 @error('measure') is-invalid @enderror" multiple="multiple" name="installers[0][measure][]" style="width: 100%;">
+                                        <option value="Loft" {{ in_array('Loft', $type->measure) ? 'selected' : '' }}>Loft</option>
+                                        <option value="IWI" {{ in_array('IWI', $type->measure) ? 'selected' : '' }}>IWI</option>
+                                        <option value="EWI" {{ in_array('EWI', $type->measure) ? 'selected' : '' }}>EWI</option>
+                                        <option value="ASHP" {{ in_array('ASHP', $type->measure) ? 'selected' : '' }}>ASHP</option>
+                                        <option value="Solar PV" {{ in_array('Solar PV', $type->measure) ? 'selected' : '' }}>Solar PV</option>
+                                        <option value="HC" {{ in_array('HC', $type->measure) ? 'selected' : '' }}>HC</option>
+                                        <option value="Boiler" {{ in_array('Boiler', $type->measure) ? 'selected' : '' }}>Boiler</option>
+                                        <option value="FTCH" {{ in_array('FTCH', $type->measure) ? 'selected' : '' }}>FTCH</option>
+                                        <option value="RIR" {{ in_array('RIR', $type->measure) ? 'selected' : '' }}>RIR</option>
+                                        <option value="Storage Heaters" {{ in_array('Storage Heaters', $type->measure) ? 'selected' : '' }}>Storage Heaters</option>
+                                        <option value="Cavity Wall Insulation" {{ in_array('Cavity Wall Insulation', $type->measure) ? 'selected' : '' }}>Cavity Wall Insulation</option>
+                                    </select>
+                                    @error('measure')
+                                    <span id="measure" class="error invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="title">Installer</label>
+                                    <input value="{{ $type->title ?? old('title') }}" type="text" class="form-control @error('title') is-invalid @enderror" name="installers[0][title]" id="installer_title" placeholder="Enter Installer">
+                                    @error('title')
+                                    <span id="title" class="error invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="cost">Installer Cost</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">£</span>
+                                        </div>
+                                        <input value="{{ old('cost', $type->cost ?? 0) }}" type="number" min="0" class="form-control i-cost @error('cost') is-invalid @enderror" name="installers[0][cost]" id="installer_cost" placeholder="Enter Installer Cost">
+                                        @error('cost')
+                                        <span id="cost" class="error invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-12 d-flex justify-content-center align-items-center mt-2">
+                                <button type="button" class="btn btn-primary mx-2" onclick="addInstaller()"><i class="fas fa-plus-square"></i></button>
+                            </div>
+                        </div>
+                        @endif
+                    @endforeach
+                @else
                 <div class="row materials">
                     <div class="col-md-3 col-12">
                         <div class="form-group">
@@ -584,43 +678,30 @@
                         <button type="button" class="btn btn-primary mx-2" onclick="addInstaller()"><i class="fas fa-plus-square"></i></button>
                     </div>
                 </div>
+                @endif
                 <div class="row">
-                    <div class="col-md-4 col-12">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="total_material">Total Material Cost</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">£</span>
                                 </div>
-                                <input value="{{ isset($row) && $row->total_material ? $row->total_material : 0 }}" type="number" min="0" readonly class="form-control" id="total_material" name="total_material">
+                                <input value="{{ isset($lead) && $lead->details ? $lead->details->total_material : 0 }}" type="number" min="0" readonly class="form-control" id="total_material" name="total_material">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-12">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="total_installer">Total Installer Cost</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">£</span>
                                 </div>
-                                <input value="{{ isset($row) && $row->total_installer ? $row->total_installer : 0 }}" type="number" min="0" readonly class="form-control" id="total_installer" name="total_installer">
-                                <div class="input-group-append">
-                                    <span class="input-group-text">.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-12">
-                        <div class="form-group">
-                            <label for="sub_total">Sub Total</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">£</span>
-                                </div>
-                                <input value="{{ isset($row) && $row->sub_total ? $row->sub_total : 0 }}" type="number" min="0" readonly class="form-control" id="sub_total" name="sub_total">
+                                <input value="{{ isset($lead) && $lead->details ? $lead->details->total_installer : 0 }}" type="number" min="0" readonly class="form-control" id="total_installer" name="total_installer">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -631,12 +712,12 @@
                 <div class="row">
                     <div class="col-md-6 col-12">
                         <div class="form-group">
-                            <label for="funding">Funding</label>
+                            <label for="sub_total">Sub Total</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">£</span>
                                 </div>
-                                <input value="{{$lead->retrofit->funding}}" type="number" disabled class="form-control" id="funding_summary">
+                                <input value="{{ isset($lead) && $lead->details ? $lead->details->sub_total : 0 }}" type="number" min="0" readonly class="form-control" id="sub_total" name="sub_total">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -650,7 +731,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">£</span>
                                 </div>
-                                <input value="0" type="number" name="total_cost" readonly class="form-control" id="total_cost">
+                                <input value="{{ old('total_cost', $lead->details->total_cost ?? 0) }}" type="number" name="total_cost" readonly class="form-control" id="total_cost">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -666,7 +747,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">£</span>
                                 </div>
-                                <input value="0" type="number" readonly class="form-control" name="gross_profit" id="gross_profit">
+                                <input value="{{ old('gross_profit', $lead->details->gross_profit ?? 0) }}" type="number" readonly class="form-control" name="gross_profit" id="gross_profit">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -680,7 +761,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">%</span>
                                 </div>
-                                <input value="0" type="number" name="introducer_share" min="0" max="100" class="form-control" id="introducer_share">
+                                <input value="{{ old('introducer_share', $lead->details->introducer_share ?? 0) }}" type="number" name="introducer_share" min="0" max="100" class="form-control" id="introducer_share">
                             </div>
                         </div>
                     </div>
@@ -693,7 +774,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">£</span>
                                 </div>
-                                <input value="0" type="number" readonly class="form-control" name="introducer_fee" id="introducer_fee">
+                                <input value="{{ old('introducer_fee', $lead->details->introducer_fee ?? 0) }}" type="number" readonly class="form-control" name="introducer_fee" id="introducer_fee">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -707,7 +788,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">£</span>
                                 </div>
-                                <input value="0" type="number" readonly class="form-control" name="net_profit" id="net_profit">
+                                <input value="{{ old('net_profit', $lead->details->net_profit ?? 0) }}" type="number" readonly class="form-control" name="net_profit" id="net_profit">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>

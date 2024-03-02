@@ -13,7 +13,7 @@
                 <input type="hidden" name="lead_id" value="{{$row->id}}" />
             @endif
             <div class="row">
-                <div class="col-md-6" col-12>
+                <div class="col-md-6 col-12">
                     <div class="card card-gray">
                         <div class="card-header">
                             <h3 class="card-title">Lead Details</h3>
@@ -21,13 +21,13 @@
                         <div class="card-body">
                             @if(auth()->user()->role == 'admin')
                                 <div class="row">
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="agent_id">Select Agent</label>
                                         <select class="form-control select2 @error('agent_id') is-invalid @enderror" name="agent_id" style="width: 100%;">
                                             <option disabled selected value> -- select agent -- </option>
                                             @foreach($agents as $agent)
-                                                <option value="{{ $agent->id }}" {{ isset($row) ? $row->agent_id == $agent->id ? 'selected': null : old('agent_id') }}>
+                                                <option value="{{ $agent->id }}" {{ isset($row) && $row->agent_id == $agent->id ? 'selected' : (old('agent_id') == $agent->id ? 'selected': '') }}>
                                                     {{ $agent->name }}</option>
                                             @endforeach
                                         </select>
@@ -36,7 +36,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="source">Other Source</label>
                                         <input value="{{ old('source', isset($row) ? $row->source : '') }}" type="text" class="form-control @error('source') is-invalid @enderror" name="source" id="source" placeholder="Enter Other Source">
@@ -48,7 +48,7 @@
                             </div>
                             @endif
                             <div class="row">
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="house_number">House# / House Name</label>
                                         <input value="{{ old('house_number', isset($row) ? $row->house_number : '') }}" type="text" class="form-control @error('house_number') is-invalid @enderror" name="house_number" id="house_number" placeholder="Enter House# / House Name">
@@ -57,7 +57,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="street">Street</label>
                                         <input value="{{ old('street', isset($row) ? $row->street : '') }}" type="text" class="form-control @error('street') is-invalid @enderror" name="street" id="street" placeholder="Enter Street">
@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="town">Town</label>
                                         <input value="{{ old('town', isset($row) ? $row->town : '') }}" type="text" class="form-control @error('town') is-invalid @enderror" name="town" id="town" placeholder="Enter Town">
@@ -77,7 +77,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="postal_code">Postal Code</label>
                                         <input value="{{ old('postal_code', isset($row) ? $row->postal_code : '') }}" type="text" class="form-control @error('postal_code') is-invalid @enderror" name="postal_code" id="postal_code" placeholder="Enter Postal Code">
@@ -101,16 +101,24 @@
                                 </div>
                             </div>
                             <div class="row" id="epc_details" style="display: none">
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="epc_rating">EPC Rating</label>
-                                        <input value="{{ old('epc_rating', isset($row) ? $row->epc_rating : '') }}" type="number" class="form-control @error('epc_rating') is-invalid @enderror" name="epc_rating" id="epc_rating" placeholder="Enter EPC Rating">
+                                        <select class="form-control @error('epc_rating') is-invalid @enderror" id="epc_rating" name="epc_rating" style="width: 100%;">
+                                            <option value="A" {{ isset($row) && $row->epc_rating == 'A' ? 'selected': (old('epc_rating') == 'A' ? 'selected': '') }}>A</option>
+                                            <option value="B" {{ isset($row) && $row->epc_rating == 'B' ? 'selected': (old('epc_rating') == 'B' ? 'selected': '')}}>B</option>
+                                            <option value="C" {{ isset($row) && $row->epc_rating == 'C' ? 'selected': (old('epc_rating') == 'C' ? 'selected': '')}}>C</option>
+                                            <option value="D" {{ isset($row) && $row->epc_rating == 'D' ? 'selected': (old('epc_rating') == 'D' ? 'selected': '')}}>D</option>
+                                            <option value="E" {{ isset($row) && $row->epc_rating == 'E' ? 'selected': (old('epc_rating') == 'E' ? 'selected': '')}}>E</option>
+                                            <option value="F" {{ isset($row) && $row->epc_rating == 'F' ? 'selected': (old('epc_rating') == 'F' ? 'selected': '')}}>F</option>
+                                            <option value="G" {{ isset($row) && $row->epc_rating == 'G' ? 'selected': (old('epc_rating') == 'G' ? 'selected': '')}}>G</option>
+                                        </select>
                                         @error('epc_rating')
                                         <span id="epc_rating" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="epc_date">EPC Date</label>
                                         <input value="{{ old('epc_date', isset($row) ? $row->epc_date : '') }}" type="date" class="form-control @error('epc_date') is-invalid @enderror" name="epc_date" id="epc_date" placeholder="Enter EPC Date">
@@ -124,7 +132,7 @@
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" name="is_property_check" type="checkbox" id="is_property_check" value="" {{ old('is_property_check') == 'true' ? 'checked' : (isset($row) && $row->is_property_check ? 'checked' : '') }}>
+                                            <input class="custom-control-input" name="is_property_check" type="checkbox" id="is_property_check" value="" {{ isset($row) && $row->is_property_check ? 'checked' : (old('is_property_check') == 'true' ? 'checked' : '') }}>
                                             <label for="is_property_check" class="custom-control-label">Online Pics of Property Check</label>
                                             @error('is_property_check')
                                             <span id="is_property_check" class="error invalid-feedback">{{ $message }}</span>
@@ -178,29 +186,29 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4" col-12>
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="property_type">Property Type</label>
                                         <select class="form-control @error('property_type') is-invalid @enderror" id="property_type" name="property_type" style="width: 100%;">
-                                            <option value="Detached" {{ isset($row) && !$row->property_type ? 'selected': (old('property_type') == 'Detached' ? 'selected': '') }}>Detached</option>
-                                            <option value="Semi Detached" {{ isset($row) && $row->property_type ? 'selected': (old('property_type') == 'Semi Detached' ? 'selected': '')}}>Semi Detached</option>
-                                            <option value="Mid Terrace" {{ isset($row) && $row->property_type ? 'selected': (old('property_type') == 'Mid Terrace' ? 'selected': '')}}>Mid Terrace</option>
-                                            <option value="End Terrace" {{ isset($row) && $row->property_type ? 'selected': (old('property_type') == 'End Terrace' ? 'selected': '')}}>End Terrace</option>
-                                            <option value="banglow" {{ isset($row) && $row->property_type ? 'selected': (old('property_type') == 'banglow' ? 'selected': '')}}>Banalow</option>
+                                            <option value="Detached" {{ isset($row) && $row->property_type == 'Detached' ? 'selected': (old('property_type') == 'Detached' ? 'selected': '') }}>Detached</option>
+                                            <option value="Semi Detached" {{ isset($row) && $row->property_type == 'Semi Detached' ? 'selected': (old('property_type') == 'Semi Detached' ? 'selected': '')}}>Semi Detached</option>
+                                            <option value="Mid Terrace" {{ isset($row) && $row->property_type == 'Mid Terrace' ? 'selected': (old('property_type') == 'Mid Terrace' ? 'selected': '')}}>Mid Terrace</option>
+                                            <option value="End Terrace" {{ isset($row) && $row->property_type == 'End Terrace' ? 'selected': (old('property_type') == 'End Terrace' ? 'selected': '')}}>End Terrace</option>
+                                            <option value="Bungalow" {{ isset($row) && $row->property_type == 'Bungalow' ? 'selected': (old('property_type') == 'Bungalow' ? 'selected': '')}}>Bungalow</option>
                                         </select>
                                         @error('property_type')
                                         <span id="property_type" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4" col-12>
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="main_wall_type">Main Wall Type</label>
                                         <select class="form-control @error('main_wall_type') is-invalid @enderror" id="main_wall_type" name="main_wall_type" style="width: 100%;">
-                                            <option value="Solid" {{ isset($row) && !$row->main_wall_type ? 'selected': (old('main_wall_type') == 'Solid' ? 'selected': '') }}>Solid</option>
-                                            <option value="Cavity" {{ isset($row) && $row->main_wall_type ? 'selected': (old('main_wall_type') == 'Cavity' ? 'selected': '')}}>Cavity</option>
-                                            <option value="Stone" {{ isset($row) && $row->main_wall_type ? 'selected': (old('main_wall_type') == 'Stone' ? 'selected': '')}}>Stone</option>
-                                            <option value="Other" {{ isset($row) && $row->main_wall_type ? 'selected': (old('main_wall_type') == 'Other' ? 'selected': '')}}>Other</option>
+                                            <option value="Solid" {{ isset($row) && $row->main_wall_type == 'Solid' ? 'selected': (old('main_wall_type') == 'Solid' ? 'selected': '') }}>Solid</option>
+                                            <option value="Cavity" {{ isset($row) && $row->main_wall_type == 'Cavity' ? 'selected': (old('main_wall_type') == 'Cavity' ? 'selected': '')}}>Cavity</option>
+                                            <option value="Stone" {{ isset($row) && $row->main_wall_type == 'Stone' ? 'selected': (old('main_wall_type') == 'Stone' ? 'selected': '')}}>Stone</option>
+                                            <option value="Other" {{ isset($row) && $row->main_wall_type == 'Other' ? 'selected': (old('main_wall_type') == 'Other' ? 'selected': '')}}>Other</option>
                                         </select>
                                         @error('main_wall_type')
                                         <span id="main_wall_type" class="error invalid-feedback">{{ $message }}</span>
@@ -216,15 +224,15 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4" col-12>
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="extension_wall_type">Extension Wall Type</label>
                                         <select class="form-control @error('extension_wall_type') is-invalid @enderror" id="extension_wall_type" name="extension_wall_type" style="width: 100%;">
-                                            <option value="Solid" {{ isset($row) && !$row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'Solid' ? 'selected': '') }}>Solid</option>
-                                            <option value="Cavity" {{ isset($row) && $row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'Cavity' ? 'selected': '')}}>Cavity</option>
-                                            <option value="Stone" {{ isset($row) && $row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'Stone' ? 'selected': '')}}>Stone</option>
-                                            <option value="N/A" {{ isset($row) && $row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'N/A' ? 'selected': '')}}>N/A</option>
-                                            <option value="Other" {{ isset($row) && $row->extension_wall_type ? 'selected': (old('extension_wall_type') == 'Other' ? 'selected': '')}}>Other</option>
+                                            <option value="" {{ isset($row) && !$row->extension_wall_type ? 'selected': (old('extension_wall_type') == '' ? 'selected': '')}}>N/A</option>
+                                            <option value="Solid" {{ isset($row) && $row->extension_wall_type == 'Solid' ? 'selected': (old('extension_wall_type') == 'Solid' ? 'selected': '') }}>Solid</option>
+                                            <option value="Cavity" {{ isset($row) && $row->extension_wall_type == 'Cavity' ? 'selected': (old('extension_wall_type') == 'Cavity' ? 'selected': '')}}>Cavity</option>
+                                            <option value="Stone" {{ isset($row) && $row->extension_wall_type == 'Stone' ? 'selected': (old('extension_wall_type') == 'Stone' ? 'selected': '')}}>Stone</option>
+                                            <option value="Other" {{ isset($row) && $row->extension_wall_type == 'Other' ? 'selected': (old('extension_wall_type') == 'Other' ? 'selected': '')}}>Other</option>
                                         </select>
                                         @error('extension_wall_type')
                                         <span id="extension_wall_type" class="error invalid-feedback">{{ $message }}</span>
@@ -391,14 +399,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6" col-12>
+                <div class="col-md-6 col-12">
                     <div class="card card-gray">
                         <div class="card-header">
                             <h3 class="card-title">Resident Details</h3>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4" col-12>
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="resident_first_name">First Name</label>
                                         <input value="{{ old('resident_first_name', isset($row) ? $row->resident_first_name : '') }}" type="text" class="form-control @error('resident_first_name') is-invalid @enderror" name="resident_first_name" id="resident_first_name" placeholder="Enter First Name">
@@ -407,7 +415,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4" col-12>
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="resident_mid_name">Mid Name</label>
                                         <input value="{{ old('resident_mid_name', isset($row) ? $row->resident_mid_name : '') }}" type="text" class="form-control @error('resident_mid_name') is-invalid @enderror" name="resident_mid_name" id="resident_mid_name" placeholder="Enter Mid Name">
@@ -416,9 +424,9 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4" col-12>
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
-                                        <label for="resident_sur_name">Sur Name</label>
+                                        <label for="resident_sur_name">Surname</label>
                                         <input value="{{ old('resident_sur_name', isset($row) ? $row->resident_sur_name : '') }}" type="text" class="form-control @error('resident_sur_name') is-invalid @enderror" name="resident_sur_name" id="resident_sur_name" placeholder="Enter Sur Name">
                                         @error('resident_sur_name')
                                         <span id="resident_sur_name" class="error invalid-feedback">{{ $message }}</span>
@@ -427,7 +435,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="resident_dob">Date of Birth</label>
                                         <input value="{{ old('resident_dob', isset($row) ? $row->resident_dob : '') }}" type="date" class="form-control @error('resident_dob') is-invalid @enderror" name="resident_dob" id="resident_dob" placeholder="Enter Date of Birth">
@@ -436,7 +444,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="resident_contact">Phone Number</label>
                                         <input value="{{ old('resident_contact', isset($row) ? $row->resident_contact : '') }}" type="tel" class="form-control @error('resident_contact') is-invalid @enderror" name="resident_contact" id="resident_contact" placeholder="Enter Phone Number">
@@ -447,7 +455,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="resident_email">Email</label>
                                         <input value="{{ old('resident_email', isset($row) ? $row->resident_email : '') }}" type="email" class="form-control @error('resident_email') is-invalid @enderror" name="resident_email" id="resident_email" placeholder="Enter Email">
@@ -456,7 +464,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="type">Select Resident Type</label>
                                         <select class="form-control @error('type') is-invalid @enderror" id="type" name="type" style="width: 100%;">
@@ -470,7 +478,7 @@
                                 </div>
                             </div>
                             <div class="row" id="landlord_details" style="">
-                                <div class="col-md-4" col-12>
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="owner_name">Landlord's Name</label>
                                         <input value="{{ old('owner_name', isset($row) ? $row->owner_name : '') }}" type="text" class="form-control @error('owner_name') is-invalid @enderror" name="owner_name" id="owner_name" placeholder="Enter Landlord's Name">
@@ -479,7 +487,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4" col-12>
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="owner_contact">Landlord's Contact</label>
                                         <input value="{{ old('owner_contact', isset($row) ? $row->owner_contact : '') }}" type="tel" class="form-control @error('owner_contact') is-invalid @enderror" name="owner_contact" id="owner_contact" placeholder="Enter Landlord's Contact">
@@ -488,7 +496,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4" col-12>
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="owner_email">Landlord's Email</label>
                                         <input value="{{ old('owner_email', isset($row) ? $row->owner_email : '') }}" type="text" class="form-control @error('owner_email') is-invalid @enderror" name="owner_email" id="owner_email" placeholder="Enter Landlord's Email">
@@ -506,34 +514,34 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="benefit_type">Select Benefit Type</label>
                                         <select class="form-control @error('benefit_type') is-invalid @enderror" id="benefit_type" name="benefit_type" style="width: 100%;">
-                                            <option value="Income Base Job Seeker’s Allowance (JSA)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Income Base Job Seeker’s Allowance (JSA)' ? 'selected': '') }}>Income Base Job Seeker’s Allowance (JSA)</option>
-                                            <option value="Income Related Employment & Support Allowance (ESA)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Income Related Employment & Support Allowance (ESA)' ? 'selected': '') }}>Income Related Employment & Support Allowance (ESA)</option>
-                                            <option value="income Support (IS)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'income Support (IS)' ? 'selected': '') }}>Income Support (IS)</option>
-                                            <option value="Pension Guarantee Credit" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Pension Guarantee Credit' ? 'selected': '') }}>Pension Guarantee Credit</option>
-                                            <option value="Working Tax Credit (WTC)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Working Tax Credit (WTC)' ? 'selected': '') }}>Working Tax Credit (WTC)</option>
-                                            <option value="Child Tax Credit (CTC)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Tax Credit (CTC)' ? 'selected': '') }}>Child Tax Credit (CTC)</option>
-                                            <option value="Universal Credit (UC)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Universal Credit (UC)' ? 'selected': '') }}>Universal Credit (UC)</option>
-                                            <option value="Housing Benefit (New Eligible Benefit under EC04)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Housing Benefit (New Eligible Benefit under EC04)' ? 'selected': '') }}>Housing Benefit (New Eligible Benefit under EC04)</option>
-                                            <option value="Pension Savings Credit (New Eligible Under EC04)" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Pension Savings Credit (New Eligible Under EC04)' ? 'selected': '') }}>Pension Savings Credit (New Eligible Under EC04)</option>
-                                            <option value="Child Benefit Single Claimant 1 - £19,900" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Benefit Single Claimant 1 - £19,900' ? 'selected': '') }}>Child Benefit Single Claimant 1 - £19,900</option>
-                                            <option value="Child Benefit Single Claimant 2 - £24,800" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Benefit Single Claimant 2 - £24,800' ? 'selected': '') }}>Child Benefit Single Claimant 2 - £24,800</option>
-                                            <option value="Child Benefit Single Claimant 3 - £29,600" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Benefit Single Claimant 3 - £29,600' ? 'selected': '') }}>Child Benefit Single Claimant 3 - £29,600</option>
-                                            <option value="Child Benefit Single Claimant 4 - £35,500" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Benefit Single Claimant 4 - £35,500' ? 'selected': '') }}>Child Benefit Single Claimant 4 - £35,500</option>
-                                            <option value="Child Benefit Multiple Claimant 1 - £27,500" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Benefit Multiple Claimant 1 - £27,500' ? 'selected': '') }}>Child Benefit Multiple Claimant 1 - £27,500</option>
-                                            <option value="Child Benefit Multiple Claimant 2 - £32,300" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Benefit Multiple Claimant 2 - £32,300' ? 'selected': '') }}>Child Benefit Multiple Claimant 2 - £32,300</option>
-                                            <option value="Child Benefit Multiple Claimant 3 - £37,200" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Benefit Multiple Claimant 3 - £37,200' ? 'selected': '') }}>Child Benefit Multiple Claimant 3 - £37,200</option>
-                                            <option value="Child Benefit Multiple Claimant 4 - £42,000" {{ isset($row) && !$row->benefit_type ? 'selected': (old('benefit_type') == 'Child Benefit Multiple Claimant 4 - £42,000' ? 'selected': '') }}>Child Benefit Multiple Claimant 4 - £42,000</option>
+                                            <option value="Income Base Job Seeker’s Allowance (JSA)" {{ isset($row) && $row->benefit_type == 'Income Base Job Seeker’s Allowance (JSA)' ? 'selected': (old('benefit_type') == 'Income Base Job Seeker’s Allowance (JSA)' ? 'selected': '') }}>Income Base Job Seeker’s Allowance (JSA)</option>
+                                            <option value="Income Related Employment & Support Allowance (ESA)" {{ isset($row) && $row->benefit_type == 'Income Related Employment & Support Allowance (ESA)' ? 'selected': (old('benefit_type') == 'Income Related Employment & Support Allowance (ESA)' ? 'selected': '') }}>Income Related Employment & Support Allowance (ESA)</option>
+                                            <option value="income Support (IS)" {{ isset($row) && $row->benefit_type == 'income Support (IS)' ? 'selected': (old('benefit_type') == 'income Support (IS)' ? 'selected': '') }}>Income Support (IS)</option>
+                                            <option value="Pension Guarantee Credit" {{ isset($row) && $row->benefit_type == 'Pension Guarantee Credit' ? 'selected': (old('benefit_type') == 'Pension Guarantee Credit' ? 'selected': '') }}>Pension Guarantee Credit</option>
+                                            <option value="Working Tax Credit (WTC)" {{ isset($row) && $row->benefit_type == 'Working Tax Credit (WTC)' ? 'selected': (old('benefit_type') == 'Working Tax Credit (WTC)' ? 'selected': '') }}>Working Tax Credit (WTC)</option>
+                                            <option value="Child Tax Credit (CTC)" {{ isset($row) && $row->benefit_type == 'Child Tax Credit (CTC)' ? 'selected': (old('benefit_type') == 'Child Tax Credit (CTC)' ? 'selected': '') }}>Child Tax Credit (CTC)</option>
+                                            <option value="Universal Credit (UC)" {{ isset($row) && $row->benefit_type == 'Universal Credit (UC)' ? 'selected': (old('benefit_type') == 'Universal Credit (UC)' ? 'selected': '') }}>Universal Credit (UC)</option>
+                                            <option value="Housing Benefit (New Eligible Benefit under EC04)" {{ isset($row) && $row->benefit_type == 'Housing Benefit (New Eligible Benefit under EC04)' ? 'selected': (old('benefit_type') == 'Housing Benefit (New Eligible Benefit under EC04)' ? 'selected': '') }}>Housing Benefit (New Eligible Benefit under EC04)</option>
+                                            <option value="Pension Savings Credit (New Eligible Under EC04)" {{ isset($row) && $row->benefit_type == 'Pension Savings Credit (New Eligible Under EC04)' ? 'selected': (old('benefit_type') == 'Pension Savings Credit (New Eligible Under EC04)' ? 'selected': '') }}>Pension Savings Credit (New Eligible Under EC04)</option>
+                                            <option value="Child Benefit Single Claimant 1 - £19,900" {{ isset($row) && $row->benefit_type == 'Child Benefit Single Claimant 1 - £19,900' ? 'selected': (old('benefit_type') == 'Child Benefit Single Claimant 1 - £19,900' ? 'selected': '') }}>Child Benefit Single Claimant 1 - £19,900</option>
+                                            <option value="Child Benefit Single Claimant 2 - £24,800" {{ isset($row) && $row->benefit_type == 'Child Benefit Single Claimant 2 - £24,800' ? 'selected': (old('benefit_type') == 'Child Benefit Single Claimant 2 - £24,800' ? 'selected': '') }}>Child Benefit Single Claimant 2 - £24,800</option>
+                                            <option value="Child Benefit Single Claimant 3 - £29,600" {{ isset($row) && $row->benefit_type == 'Child Benefit Single Claimant 3 - £29,600' ? 'selected': (old('benefit_type') == 'Child Benefit Single Claimant 3 - £29,600' ? 'selected': '') }}>Child Benefit Single Claimant 3 - £29,600</option>
+                                            <option value="Child Benefit Single Claimant 4 - £35,500" {{ isset($row) && $row->benefit_type == 'Child Benefit Single Claimant 4 - £35,500' ? 'selected': (old('benefit_type') == 'Child Benefit Single Claimant 4 - £35,500' ? 'selected': '') }}>Child Benefit Single Claimant 4 - £35,500</option>
+                                            <option value="Child Benefit Multiple Claimant 1 - £27,500" {{ isset($row) && $row->benefit_type == 'Child Benefit Multiple Claimant 1 - £27,500' ? 'selected': (old('benefit_type') == 'Child Benefit Multiple Claimant 1 - £27,500' ? 'selected': '') }}>Child Benefit Multiple Claimant 1 - £27,500</option>
+                                            <option value="Child Benefit Multiple Claimant 2 - £32,300" {{ isset($row) && $row->benefit_type == 'Child Benefit Multiple Claimant 2 - £32,300' ? 'selected': (old('benefit_type') == 'Child Benefit Multiple Claimant 2 - £32,300' ? 'selected': '') }}>Child Benefit Multiple Claimant 2 - £32,300</option>
+                                            <option value="Child Benefit Multiple Claimant 3 - £37,200" {{ isset($row) && $row->benefit_type == 'Child Benefit Multiple Claimant 3 - £37,200' ? 'selected': (old('benefit_type') == 'Child Benefit Multiple Claimant 3 - £37,200' ? 'selected': '') }}>Child Benefit Multiple Claimant 3 - £37,200</option>
+                                            <option value="Child Benefit Multiple Claimant 4 - £42,000" {{ isset($row) && $row->benefit_type == 'Child Benefit Multiple Claimant 4 - £42,000' ? 'selected': (old('benefit_type') == 'Child Benefit Multiple Claimant 4 - £42,000' ? 'selected': '') }}>Child Benefit Multiple Claimant 4 - £42,000</option>
                                         </select>
                                         @error('benefit_type')
                                         <span id="benefit_type" class="error invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6" col-12>
+                                <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="is_benefit_recipient">Select Benefit Recipient</label>
                                         <select class="form-control @error('is_benefit_recipient') is-invalid @enderror" id="is_benefit_recipient" name="is_benefit_recipient" style="width: 100%;">
@@ -548,7 +556,7 @@
                             </div>
                             <div class="benefit_details" style="">
                                 <div class="row">
-                                    <div class="col-md-6" col-12>
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="benefit_first_name">First Name</label>
                                             <input value="{{ old('benefit_first_name', isset($row) ? $row->benefit_first_name : '') }}" type="text" class="form-control @error('benefit_first_name') is-invalid @enderror" name="benefit_first_name" id="benefit_first_name" placeholder="Enter First Name">
@@ -557,7 +565,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6" col-12>
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="benefit_mid_name">Mid Name</label>
                                             <input value="{{ old('benefit_mid_name', isset($row) ? $row->benefit_mid_name : '') }}" type="text" class="form-control @error('benefit_mid_name') is-invalid @enderror" name="benefit_mid_name" id="benefit_mid_name" placeholder="Enter Mid Name">
@@ -568,7 +576,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6" col-12>
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="benefit_sur_name">Sur Name</label>
                                             <input value="{{ old('benefit_sur_name', isset($row) ? $row->benefit_sur_name : '') }}" type="text" class="form-control @error('benefit_sur_name') is-invalid @enderror" name="benefit_sur_name" id="benefit_sur_name" placeholder="Enter Sur Name">
@@ -577,7 +585,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6" col-12>
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="benefit_dob">Date of Birth</label>
                                             <input value="{{ old('benefit_dob', isset($row) ? $row->benefit_dob : '') }}" type="date" class="form-control @error('benefit_dob') is-invalid @enderror" name="benefit_dob" id="benefit_dob" placeholder="Enter Date of Birth">
@@ -592,11 +600,11 @@
                                         <div class="form-group">
                                             <label for="relationship">Relationship</label>
                                             <select class="form-control @error('relationship') is-invalid @enderror" id="relationship" name="relationship" style="width: 100%;">
-                                                <option value="father" {{ isset($row) && !$row->relationship ? 'selected': (old('relationship') == 'father' ? 'selected': '') }}>Father</option>
-                                                <option value="mother" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'mother' ? 'selected': '')}}>Mother</option>
-                                                <option value="son" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'son' ? 'selected': '')}}>Son</option>
-                                                <option value="daughter" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'daughter' ? 'selected': '')}}>Daughter</option>
-                                                <option value="other" {{ isset($row) && $row->relationship ? 'selected': (old('relationship') == 'other' ? 'selected': '')}}>Other</option>
+                                                <option value="father" {{ isset($row) && $row->relationship == 'father' ? 'selected': (old('relationship') == 'father' ? 'selected': '') }}>Father</option>
+                                                <option value="mother" {{ isset($row) && $row->relationship == 'mother' ? 'selected': (old('relationship') == 'mother' ? 'selected': '')}}>Mother</option>
+                                                <option value="son" {{ isset($row) && $row->relationship == 'son' ? 'selected': (old('relationship') == 'son' ? 'selected': '')}}>Son</option>
+                                                <option value="daughter" {{ isset($row) && $row->relationship == 'daughter' ? 'selected': (old('relationship') == 'daughter' ? 'selected': '')}}>Daughter</option>
+                                                <option value="other" {{ isset($row) && $row->relationship == 'other' ? 'selected': (old('relationship') == 'other' ? 'selected': '')}}>Other</option>
                                             </select>
                                             @error('relationship')
                                             <span id="relationship" class="error invalid-feedback">{{ $message }}</span>
