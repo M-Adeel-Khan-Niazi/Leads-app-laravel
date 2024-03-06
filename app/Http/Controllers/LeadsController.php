@@ -350,6 +350,7 @@ class LeadsController extends Controller
     {
         DB::beginTransaction();
         try {
+            LeadMeasureCategories::where('lead_id', $id)->delete();
             foreach ($request->types as $category) {
                 $lead_category = new LeadMeasureCategories($category);
                 $lead_category->is_customer_informed = filter_var($category['is_customer_informed'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
@@ -379,7 +380,6 @@ class LeadsController extends Controller
             return redirect()->route('leads.index');
         } catch (\Exception $error) {
             DB::rollBack();
-            dd($error->getMessage());
             return redirect()->back()->with('error', $error->getMessage());
         }
 
@@ -406,7 +406,6 @@ class LeadsController extends Controller
 
     public function lead_summary(Request $request, $id)
     {
-//        dd($request->all());
         $retrofit = LeadRetrofit::firstOrNew(['lead_id' => $id]);
         $retrofit->wall_type = $request->wall_type;
         $retrofit->floor_area = $request->floor_area;

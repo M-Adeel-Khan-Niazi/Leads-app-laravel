@@ -173,10 +173,10 @@
                                     <div class="col-md-3 col-12 m-auto">
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" name="types[{{$key}}][is_pibi]" type="checkbox" id="is_pibi" {{ $measure_type->is_pibi ? 'checked' : '' }}>
-                                                <label for="is_pibi" class="custom-control-label">PIBI</label>
+                                                <input class="custom-control-input" name="types[{{$key}}][is_pibi]" type="checkbox" id="is_pibi[{{$key}}]" {{ $measure_type->is_pibi ? 'checked' : '' }}>
+                                                <label for="is_pibi[{{$key}}]" class="custom-control-label">PIBI</label>
                                                 @error('is_pibi')
-                                                <span id="is_pibi" class="error invalid-feedback">{{ $message }}</span>
+                                                <span id="is_pibi[{{$key}}]" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
@@ -184,10 +184,10 @@
                                     <div class="col-md-3 col-12 m-auto">
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" name="types[{{$key}}][is_design]" type="checkbox" id="is_design" {{ $measure_type->is_design ? 'checked' : '' }}>
+                                                <input class="custom-control-input" name="types[{{$key}}][is_design]" type="checkbox" id="is_design[{{$key}}]" {{ $measure_type->is_design ? 'checked' : '' }}>
                                                 <label for="is_design" class="custom-control-label">Design</label>
                                                 @error('is_design')
-                                                <span id="is_design" class="error invalid-feedback">{{ $message }}</span>
+                                                <span id="is_design[{{$key}}]" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
@@ -195,10 +195,10 @@
                                     <div class="col-md-3 col-12 m-auto">
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" name="types[{{$key}}][is_tech_survey]" type="checkbox" id="is_tech_survey" {{ $measure_type->is_tech_survey ? 'checked' : '' }}>
+                                                <input class="custom-control-input" name="types[{{$key}}][is_tech_survey]" type="checkbox" id="is_tech_survey[{{$key}}]" {{ $measure_type->is_tech_survey ? 'checked' : '' }}>
                                                 <label for="is_tech_survey" class="custom-control-label">Tech Survey</label>
                                                 @error('is_tech_survey')
-                                                <span id="is_tech_survey" class="error invalid-feedback">{{ $message }}</span>
+                                                <span id="is_tech_survey[{{$key}}]" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
@@ -321,10 +321,10 @@
             <div class="col-md-3 col-12 m-auto">
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" name="types[${form_index}][is_pibi]" type="checkbox" id="is_pibi" {{ old('is_pibi') == 'true' ? 'checked' : (isset($row) && $row->is_pibi ? 'checked' : '') }}>
-                        <label for="is_pibi" class="custom-control-label">PIBI</label>
+                        <input class="custom-control-input" name="types[${form_index}][is_pibi]" type="checkbox" id="is_pibi[${form_index}]" {{ old('is_pibi') == 'true' ? 'checked' : (isset($row) && $row->is_pibi ? 'checked' : '') }}>
+                        <label for="is_pibi[${form_index}]" class="custom-control-label">PIBI</label>
                         @error('is_pibi')
-            <span id="is_pibi" class="error invalid-feedback">{{ $message }}</span>
+            <span id="is_pibi[${form_index}]" class="error invalid-feedback">{{ $message }}</span>
                         @enderror
             </div>
         </div>
@@ -332,10 +332,10 @@
     <div class="col-md-3 col-12 m-auto">
         <div class="form-group">
             <div class="custom-control custom-checkbox">
-                <input class="custom-control-input" name="types[${form_index}][is_design]" type="checkbox" id="is_design" {{ old('is_design') == 'true' ? 'checked' : (isset($row) && $row->is_design ? 'checked' : '') }}>
-                        <label for="is_design" class="custom-control-label">Design</label>
+                <input class="custom-control-input" name="types[${form_index}][is_design]" type="checkbox" id="is_design[${form_index}]" {{ old('is_design') == 'true' ? 'checked' : (isset($row) && $row->is_design ? 'checked' : '') }}>
+                        <label for="is_design[${form_index}]" class="custom-control-label">Design</label>
                         @error('is_design')
-            <span id="is_design" class="error invalid-feedback">{{ $message }}</span>
+            <span id="is_design[${form_index}]" class="error invalid-feedback">{{ $message }}</span>
                         @enderror
             </div>
         </div>
@@ -343,10 +343,10 @@
     <div class="col-md-3 col-12 m-auto">
         <div class="form-group">
             <div class="custom-control custom-checkbox">
-                <input class="custom-control-input" name="types[${form_index}][is_tech_survey]" type="checkbox" id="is_tech_survey" {{ old('is_tech_survey') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
-                        <label for="is_tech_survey" class="custom-control-label">Tech Survey</label>
+                <input class="custom-control-input" name="types[${form_index}][is_tech_survey]" type="checkbox" id="is_tech_survey[${form_index}]" {{ old('is_tech_survey') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
+                        <label for="is_tech_survey[${form_index}]" class="custom-control-label">Tech Survey</label>
                         @error('is_tech_survey')
-            <span id="is_tech_survey" class="error invalid-feedback">{{ $message }}</span>
+            <span id="is_tech_survey[${form_index}]" class="error invalid-feedback">{{ $message }}</span>
                         @enderror
             </div>
         </div>
