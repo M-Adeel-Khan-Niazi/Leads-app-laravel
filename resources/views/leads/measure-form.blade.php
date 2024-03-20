@@ -1,11 +1,17 @@
 @extends('master')
 @section('title', 'Measures to install')
+@section('address', $lead->house_number .', '. $lead->street .', '. $lead->town .', '. $lead->postal_code ?? 'N/A'))
 @section('main-content')
     <div class="card card-primary">
         <!-- form start -->
         <form method="POST" action="{{ route('leads.measures', request('lead')->id) }}">
             @csrf
             <div class="card-body">
+                @if(Session::has('error'))
+                    <div class="alert alert-danger">
+                        {{ Session::get('error')}}
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-md-3 col-12">
                         <div class="form-group">
@@ -150,6 +156,7 @@
                         @php
                             $slug = \Str::slug($measure_type->category);
                         @endphp
+                        <input type="hidden" name="types[{{$key}}][category]" value="{{$measure_type->category}}" />
                         <div class="card-outline card-primary" id="{{ $slug }}">
                             <div class="card-header">
                                 <div class="row">

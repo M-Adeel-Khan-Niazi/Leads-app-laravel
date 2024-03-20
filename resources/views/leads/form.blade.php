@@ -118,15 +118,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label for="epc_date">EPC Date</label>
-                                        <input value="{{ old('epc_date', isset($row) ? $row->epc_date : '') }}" type="date" class="form-control @error('epc_date') is-invalid @enderror" name="epc_date" id="epc_date" placeholder="Enter EPC Date">
-                                        @error('epc_date')
-                                        <span id="epc_date" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-12">
@@ -149,15 +140,17 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="property_check_pictures[]" id="property_check_pic">
-                                                @if(isset($row) && $row->property_check_pictures)
+                                                @if(isset($row) && count($row->property_check_pictures))
                                                     <label class="custom-file-label" for="property_check_pic">{{ collect($row->property_check_pictures)->pluck('name')->join(', ') }}</label>
                                                 @else
                                                     <label class="custom-file-label" for="property_check_pic">Choose pictures</label>
                                                 @endif
                                             </div>
+                                            @if(isset($row) && count($row->property_check_pictures))
                                             <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
+                                                <a class="input-group-text" href="{{route('file.download',['id'=> $row->id,'type' => 'property_check' ])}}">Download</a>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -269,15 +262,17 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="data_match_pictures[]">
-                                                @if(isset($row) && $row->data_match_pictures)
+                                                @if(isset($row) && count($row->data_match_pictures))
                                                     <label class="custom-file-label" for="data_match_pic">{{ collect($row->data_match_pictures)->pluck('name')->join(', ') }}</label>
                                                 @else
                                                     <label class="custom-file-label" for="data_match_pic">Choose pictures</label>
                                                 @endif
                                             </div>
+                                            @if(isset($row) && count($row->data_match_pictures))
                                             <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
+                                                <a class="input-group-text" href="{{route('file.download',['id'=> $row->id,'type' => 'data_match' ])}}">Download</a>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -302,15 +297,17 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="benefit_proof_pictures[]">
-                                                @if(isset($row) && $row->benefit_proof_pictures)
+                                                @if(isset($row) && count($row->benefit_proof_pictures))
                                                     <label class="custom-file-label" for="benefit_proof_pic">{{ collect($row->benefit_proof_pictures)->pluck('name')->join(', ') }}</label>
                                                 @else
                                                     <label class="custom-file-label" for="benefit_proof_pic">Choose pictures</label>
                                                 @endif
                                             </div>
+                                            @if(isset($row) && count($row->benefit_proof_pictures))
                                             <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
+                                                <a class="input-group-text" href="{{route('file.download',['id'=> $row->id,'type' => 'benefit_proof' ])}}">Download</a>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -335,15 +332,17 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="address_proof_pictures[]">
-                                                @if(isset($row) && $row->address_proof_pictures)
+                                                @if(isset($row) && count($row->address_proof_pictures))
                                                     <label class="custom-file-label" for="address_proof_pic">{{ collect($row->address_proof_pictures)->pluck('name')->join(', ') }}</label>
                                                 @else
                                                     <label class="custom-file-label" for="address_proof_pic">Choose pictures</label>
                                                 @endif
                                             </div>
+                                            @if(isset($row) && count($row->address_proof_pictures))
                                             <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
+                                                <a class="input-group-text" href="{{route('file.download',['id'=> $row->id,'type' => 'address_proof' ])}}">Download</a>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -368,15 +367,17 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" multiple class="custom-file-input" name="other_pictures[]">
-                                                @if(isset($row) && $row->other_pictures)
+                                                @if(isset($row) && count($row->other_pictures))
                                                     <label class="custom-file-label" for="other_pic">{{ collect($row->other_pictures)->pluck('name')->join(', ') }}</label>
                                                 @else
                                                     <label class="custom-file-label" for="other_pic">Choose pictures</label>
                                                 @endif
                                             </div>
+                                            @if(isset($row) && count($row->other_pictures))
                                             <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
+                                                <a class="input-group-text" href="{{route('file.download',['id'=> $row->id,'type' => 'other' ])}}">Download</a>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -578,7 +579,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="benefit_sur_name">Sur Name</label>
+                                            <label for="benefit_sur_name">Surname</label>
                                             <input value="{{ old('benefit_sur_name', isset($row) ? $row->benefit_sur_name : '') }}" type="text" class="form-control @error('benefit_sur_name') is-invalid @enderror" name="benefit_sur_name" id="benefit_sur_name" placeholder="Enter Sur Name">
                                             @error('benefit_sur_name')
                                             <span id="benefit_sur_name" class="error invalid-feedback">{{ $message }}</span>

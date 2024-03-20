@@ -1,5 +1,6 @@
 @extends('master')
 @section('title', 'Handover & Submission')
+@section('address', $lead->house_number .', '. $lead->street .', '. $lead->town .', '. $lead->postal_code ?? 'N/A'))
 @section('main-content')
     <div class="card card-primary">
         <!-- form start -->

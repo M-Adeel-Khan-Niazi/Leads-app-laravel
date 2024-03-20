@@ -19,6 +19,7 @@ class CreateLeadDetailsTable extends Migration
             $table->integer('total_installer')->default(0);
             $table->integer('sub_total')->default(0);
             $table->integer('total_cost')->default(0);
+            $table->string('share_type')->default('percentage');
             $table->integer('introducer_share')->default(0);
             $table->integer('introducer_fee')->default(0);
             $table->integer('gross_profit')->default(0);

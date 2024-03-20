@@ -62,13 +62,38 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-12">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
-                            <label for="share">Shares</label>
-                            <input type="number" name="share" class="form-control @error('share') is-invalid @enderror" id="share" placeholder="Enter Share" value="{{ old('share', isset($row) && $row->share ? $row->share : 0) }}">
-                            @error('share')
-                            <span id="share" class="error invalid-feedback">{{ $message }}</span>
+                            <label for="share_type">Share Type</label>
+                            <select class="form-control @error('share_type') is-invalid @enderror" id="share_type" name="share_type" style="width: 100%;">
+                                <option value="percentage" {{ isset($row) && $row->share_type == 'percentage' ? 'selected' : (old('share_type') == 'percentage' ? 'selected': '')}}>Percentage</option>
+                                <option value="fixed" {{ isset($row) && $row->share_type == 'fixed' ? 'selected' : (old('share_type') == 'fixed' ? 'selected': '') }}>Fixed</option>
+                            </select>
+                            @error('share_type')
+                            <span id="share_type" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12" id="fixed" style="display: none">
+                        <div class="form-group">
+                            <label for="share_f">Share</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">£</span>
+                                </div>
+                                <input value="{{ old('share', $row->share ?? 0) }}" type="number" name="share" class="form-control share" id="share_f">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12" id="percentage" style="">
+                        <div class="form-group">
+                            <label for="share_p">Share</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                                <input value="{{ old('share', $row->share ?? 0) }}" type="number" name="share" min="0" max="100" class="form-control share" id="share_p">
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
@@ -91,3 +116,17 @@
     </div>
     <!-- /.card -->
 @endsection
+@push('scripts')
+    <script>
+        $("#share_type").on('change', function () {
+            const value = $(this).val();
+            if (value == 'fixed') {
+                $("#fixed").show()
+                $("#percentage").hide()
+            } else {
+                $("#fixed").hide()
+                $("#percentage").show()
+            }
+        }).change();
+    </script>
+@endpush

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use ZipArchive;
 
 class LeadsController extends Controller
 {
@@ -84,9 +85,8 @@ class LeadsController extends Controller
                 "postal_code" => 'required',
                 "is_prev_epc" => 'nullable',
                 "epc_rating" => 'required_if:is_prev_epc,true',
-                "epc_date" => 'required_if:is_prev_epc,true',
                 "is_property_check" => 'nullable',
-                'property_check_pictures.*' => 'required_if:is_property_check,true|mimes:jpeg,png|max:2048',
+                'property_check_pictures.*' => 'required_if:is_property_check,true|max:2048',
                 "gas_safe_results" => 'required',
                 "property_type" => 'required',
                 "main_wall_type" => 'nullable',
@@ -103,18 +103,17 @@ class LeadsController extends Controller
                 "benefit_type" => 'required',
                 "is_benefit_recipient" => 'nullable',
                 "benefit_first_name" => 'required_if:is_benefit_recipient,false',
-                "benefit_mid_name" => 'required_if:is_benefit_recipient,false',
                 "benefit_sur_name" => 'required_if:is_benefit_recipient,false',
                 "benefit_dob" => 'required_if:is_benefit_recipient,false',
                 "relationship" => 'required_if:is_benefit_recipient,false',
                 "is_data_sent" => 'nullable',
-                'data_match_pictures.*' => 'required_if:is_data_sent,true|mimes:jpeg,png|max:2048',
+                'data_match_pictures.*' => 'required_if:is_data_sent,true|max:2048',
                 "is_benefit_proof_sent" => 'nullable',
-                'benefit_proof_pictures.*' => 'required_if:is_benefit_proof_sent,true|mimes:jpeg,png|max:2048',
+                'benefit_proof_pictures.*' => 'required_if:is_benefit_proof_sent,true|max:2048',
                 "is_address_proof_sent" => 'nullable',
-                'address_proof_pictures.*' => 'required_if:is_address_proof_sent,true|mimes:jpeg,png|max:2048',
+                'address_proof_pictures.*' => 'required_if:is_address_proof_sent,true|max:2048',
                 "is_other_picture" => 'nullable',
-                'other_pictures.*' => 'required_if:is_other_picture,true|mimes:jpeg,png|max:2048',
+                'other_pictures.*' => 'required_if:is_other_picture,true|max:2048',
             ];
             $request->validate($validation_rules);
         }
@@ -129,12 +128,12 @@ class LeadsController extends Controller
             }
             if ($is_all_checked)
                 $lead->status = 'pending';
-            $lead->is_benefit_recipient = (boolean)$request->is_benefit_recipient;
-            $lead->is_property_check = (boolean)$request->is_property_check;
-            $lead->is_prev_epc = (boolean)$request->is_prev_epc;
-            $lead->is_benefit_proof_sent = (boolean)$request->is_benefit_proof_sent;
-            $lead->is_address_proof_sent = (boolean)$request->is_address_proof_sent;
-            $lead->is_data_sent = (boolean)$request->is_data_sent;
+            $lead->is_benefit_recipient = filter_var($request->is_benefit_recipient, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
+            $lead->is_property_check = filter_var($request->is_property_check, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
+            $lead->is_prev_epc = filter_var($request->is_prev_epc, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
+            $lead->is_benefit_proof_sent = filter_var($request->is_benefit_proof_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
+            $lead->is_address_proof_sent = filter_var($request->is_address_proof_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
+            $lead->is_data_sent = filter_var($request->is_data_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
             $lead->address_line_one = $request->house_number . '-' . $request->postal_code;
             $lead->created_by = Auth::id();
             $lead->extension_wall_type = $request->extension_wall_type ?? $request->extension_wall_type_other;
@@ -281,21 +280,18 @@ class LeadsController extends Controller
 
     public function leads_details($type, Leads $lead)
     {
-//        $lead->status == 'pending'
         if ($type == 'data-matched') {
             $row = $lead->data_matched()->first();
-            return view('leads.data-matched-form', compact('row'));
-//            in_array($lead->status, ['approved', 'raBooked', 'raCompleted'])
+            return view('leads.data-matched-form', compact('row', 'lead'));
         } elseif ($type == 'retrofit') {
             $row = $lead->retrofit()->first();
-            return view('leads.retrofit-form', compact('row'));
-//            in_array($lead->status, ['raLodged', 'installationBooked', 'installationStarted'])
+            $files = FileUploads::where('lead_id', $lead->id)->where('type', 'floor_plan')->get();
+            return view('leads.retrofit-form', compact('row', 'files', 'lead'));
         } elseif ($type == 'measure-install') {
             $installers = Installer::latest()->get();
             $row = LeadDetails::where('lead_id', $lead->id)->first();
             $categories = LeadMeasureCategories::where('lead_id', $lead->id)->get();
-            return view('leads.measure-form', compact('installers', 'row', 'categories'));
-//            in_array($lead->status, ['installationCompleted', 'handoverCompleted', 'paperWorkSubmitted', 'paperWorkAccepted', 'paperWorkError'])
+            return view('leads.measure-form', compact('installers', 'row', 'categories', 'lead'));
         } elseif ($type == 'handover') {
             return view('leads.handover', compact('lead'));
         } elseif ($type == 'summary') {
@@ -336,12 +332,16 @@ class LeadsController extends Controller
         $retrofit->save();
 
         $lead = Leads::find($id);
-        if ($retrofit->rfa_booked_time && $retrofit->rfa_booked_date)
-            $lead->status = 'raBooked';
+        if ($request->hasFile('floor_plan_pictures')) {
+            $data = $this->uploadFiles($request->file('floor_plan_pictures'), 'floor_plan');
+            $lead->property_check_pictures()->saveMany($data);
+        }
         if ($retrofit->is_rfa_complete)
             $lead->status = 'raCompleted';
         if ($retrofit->is_rfa_lodged)
             $lead->status = 'raLodged';
+        if ($retrofit->rfa_booked_time && $retrofit->rfa_booked_date && (!$retrofit->is_rfa_complete || !$retrofit->is_rfa_lodged))
+            $lead->status = 'raBooked';
         $lead->save();
         return redirect()->route('leads.index');
     }
@@ -351,6 +351,7 @@ class LeadsController extends Controller
         DB::beginTransaction();
         try {
             LeadMeasureCategories::where('lead_id', $id)->delete();
+            $statuses = [];
             foreach ($request->types as $category) {
                 $lead_category = new LeadMeasureCategories($category);
                 $lead_category->is_customer_informed = filter_var($category['is_customer_informed'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
@@ -359,6 +360,7 @@ class LeadsController extends Controller
                 $lead_category->is_tech_survey = isset($category['is_tech_survey']) == 'on';
                 $lead_category->lead_id = $id;
                 $lead_category->save();
+                $statuses[] = $category['measure_status'];
             }
             // Pending: Update the lead status in the behalf of checking of measures statuses
             $details = LeadDetails::firstOrNew(['lead_id' => $id]);
@@ -376,6 +378,10 @@ class LeadsController extends Controller
             $details->is_rir = $request->is_rir == 'on';
             $details->lead_id = $id;
             $details->save();
+
+            if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Completed') {
+                Leads::where('id', $id)->update(['status' => 'installationCompleted']);
+            }
             DB::commit();
             return redirect()->route('leads.index');
         } catch (\Exception $error) {
@@ -442,5 +448,21 @@ class LeadsController extends Controller
             $data[] = new FileUploads(['file_path' => $path . $fileName, 'name' => $fileName, 'type' => $type]);
         }
         return $data;
+    }
+
+    public function download_files($id, $type)
+    {
+        $zip = new ZipArchive();
+        $files = FileUploads::where('lead_id', $id)->where('type', $type)->get();
+        if (!count($files)) return redirect()->back()->with('error', 'Files not found!');
+        $zipFileName = 'files.zip';
+        if ($zip->open(public_path($zipFileName), ZipArchive::CREATE) === TRUE) {
+            foreach ($files as $file) {
+                $filePath = storage_path('app/' . $file->file_path);
+                $zip->addFile($filePath, $file->name);
+            }
+            $zip->close();
+            return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);
+        }
     }
 }

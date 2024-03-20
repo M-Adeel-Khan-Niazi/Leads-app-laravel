@@ -114,6 +114,9 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>@yield('title')</h1>
+              @hasSection('address')
+                  <h5>(@yield('address'))</h5>
+              @endif
           </div>
         </div>
       </div><!-- /.container-fluid -->

@@ -9,4 +9,5 @@ class Installer extends Model
 {
     use HasFactory;
     protected $guarded = ['created_at'];
+    protected $casts = ['type' => 'array'];
 }

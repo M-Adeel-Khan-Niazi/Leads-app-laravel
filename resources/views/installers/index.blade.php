@@ -35,7 +35,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $installer->first_name }}</td>
                             <td>{{ $installer->last_name ?? 'N/A' }}</td>
-                            <td>{{ $installer->type }}</td>
+                            <td>{{ is_array($installer->type) ? implode(', ',$installer->type) : $installer->type  }}</td>
                             <td>{{ $installer->phone_number }}</td>
                             <td>{{ $installer->education }}</td>
                             <td>{{ $installer->created_at->format('Y-m-d H:i') }}</td>

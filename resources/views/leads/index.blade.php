@@ -73,8 +73,8 @@
                         @forelse($leads as $lead)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $lead->agent_details ? $lead->agent_details->name : 'N/A' }}</td>
-                            <td>{{ $lead->address_line_one ?? 'N/A' }}</td>
+                            <td>{{ $lead->agent_details ? $lead->agent_details->name : $lead->created_by_user->name }}</td>
+                            <td>{{ $lead->house_number .', '. $lead->street .', '. $lead->town .', '. $lead->postal_code ?? 'N/A' }}</td>
                             <td>{{ $lead->resident_contact ?? 'N/A' }}</td>
                             <td>
                                 @switch($lead->status)

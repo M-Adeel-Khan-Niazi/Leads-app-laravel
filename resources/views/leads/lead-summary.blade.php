@@ -1,5 +1,6 @@
 @extends('master')
 @section('title', 'Additional Costs & Summary')
+@section('address', $lead->house_number .', '. $lead->street .', '. $lead->town .', '. $lead->postal_code ?? 'N/A'))
 @section('main-content')
     <div class="card card-primary">
         <!-- form start -->
@@ -754,14 +755,37 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-12">
+                    <div class="col-md-3 col-12">
                         <div class="form-group">
-                            <label for="introducer_share">Introducer Share</label>
+                            <label for="share_type">Share Type</label>
+                            <select class="form-control @error('share_type') is-invalid @enderror" id="share_type" name="share_type" style="width: 100%;">
+                                <option value="percentage" {{ isset($lead->details) && $lead->details->share_type == 'percentage' ? 'selected' : (old('share_type') == 'percentage' ? 'selected': '')}}>Percentage</option>
+                                <option value="fixed" {{ isset($lead->details) && $lead->details->share_type == 'fixed' ? 'selected' : (old('share_type') == 'fixed' ? 'selected': '') }}>Fixed</option>
+                            </select>
+                            @error('share_type')
+                            <span id="share_type" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12" id="fixed" style="display: none">
+                        <div class="form-group">
+                            <label for="introducer_share_f">Introducer Share</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">£</span>
+                                </div>
+                                <input value="{{ old('introducer_share', $lead->details->introducer_share ?? 0) }}" type="number" name="introducer_share" class="form-control introducer_share" id="introducer_share_f">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12" id="percentage" style="">
+                        <div class="form-group">
+                            <label for="introducer_share_p">Introducer Share</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">%</span>
                                 </div>
-                                <input value="{{ old('introducer_share', $lead->details->introducer_share ?? 0) }}" type="number" name="introducer_share" min="0" max="100" class="form-control" id="introducer_share">
+                                <input value="{{ old('introducer_share', $lead->details->introducer_share ?? 0) }}" type="number" name="introducer_share" min="0" max="100" class="form-control introducer_share" id="introducer_share_p">
                             </div>
                         </div>
                     </div>
@@ -815,10 +839,25 @@
         $('body').on('input', function() {
             summary_calculate()
         })
-        $("#introducer_share").on('change', function () {
+        $("#share_type").on('change', function () {
+            const value = $(this).val();
+            if (value == 'fixed') {
+                $("#fixed").show()
+                $("#percentage").hide()
+            } else {
+                $("#fixed").hide()
+                $("#percentage").show()
+            }
+        }).change();
+        $(".introducer_share").on('change', function () {
             const value = $(this).val()
+            const type = $('#share_type').val();
             const gross_profit = parseInt($("#gross_profit").val());
-            const fee = (((value / 100) * gross_profit)).toFixed(2);
+            let fee = 0;
+            if (type == 'fixed')
+                fee = gross_profit - value
+            else
+                fee = (((value / 100) * gross_profit)).toFixed(2);
             $('#introducer_fee').attr('value', fee);
             $('#net_profit').attr('value', (gross_profit - fee).toFixed(2));
         }).change();
@@ -838,7 +877,7 @@
             const retrofit_assessor_cost = parseInt($("#retrofit_assessor_cost").val());
 
             const total_cost = sub_total + trickle_vents + air_brick + fans + minor_work_cert + roof_vents + door_undercut + other_ventilation + gas_safe_reg + retrofit_assessor_cost + retrofit_coordinator_cost + total_ibg_cost;
-            const gross_profit = total_cost - funding;
+            const gross_profit = funding - total_cost;
             $('#total_cost').attr('value', total_cost);
             $('#gross_profit').attr('value', gross_profit);
             $('#net_profit').attr('value', gross_profit);

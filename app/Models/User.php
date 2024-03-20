@@ -23,6 +23,7 @@ class User extends Authenticatable
         'phone',
         'role',
         'share',
+        'share_type',
         'comment',
         'password',
     ];

@@ -1,11 +1,17 @@
 @extends('master')
 @section('title', 'Retrofit Assessment / Findings')
+@section('address', $lead->house_number .', '. $lead->street .', '. $lead->town .', '. $lead->postal_code ?? 'N/A'))
 @section('main-content')
     <div class="card card-primary">
         <!-- form start -->
-        <form method="POST" action="{{ route('leads.retrofit', request('lead')->id) }}">
+        <form method="POST" action="{{ route('leads.retrofit', request('lead')->id) }}" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
+                @if(Session::has('error'))
+                    <div class="alert alert-danger">
+                        {{ Session::get('error')}}
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-md-4 col-12">
                         <div class="form-group">
@@ -103,6 +109,26 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-4 col-12" style="display:none;" id="floor_plan_pictures">
+                        <div class="form-group">
+                            <label for="floor_plan">Floor Plan Pictures</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" multiple class="custom-file-input" name="floor_plan_pictures[]" id="floor_plan">
+                                    @if(isset($files) && count($files))
+                                        <label class="custom-file-label" for="floor_plan">{{ collect($files)->pluck('name')->join(', ') }}</label>
+                                    @else
+                                        <label class="custom-file-label" for="floor_plan">Choose pictures</label>
+                                    @endif
+                                </div>
+                                @if(isset($files) && count($files))
+                                    <div class="input-group-append">
+                                        <a class="input-group-text" href="{{route('file.download',['id'=> $row->lead_id,'type' => 'floor_plan' ])}}">Download</a>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="rc_name">RC Full Name</label>
@@ -137,5 +163,11 @@
 @endsection
 @push('scripts')
 <script>
+    $("#is_floor_plan_created").on('change', function() {
+        if($(this).val() == 'true')
+            $("#floor_plan_pictures").show()
+        else
+            $("#floor_plan_pictures").hide()
+    }).change();
 </script>
 @endpush

@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('lead-handover/{id}', [LeadsController::class, 'lead_handover'])->name('leads.handover');
     Route::post('lead-summary/{id}', [LeadsController::class, 'lead_summary'])->name('leads.summary');
     Route::get('generate/{id}/survey-pdf', [AppController::class, 'survey_pdf'])->name('survey.pdf');
+    Route::get('file/{id}/{type}', [LeadsController::class, 'download_files'])->name('file.download');
     Route::get('generate', function () {
         return view('pdf_templates.test');
     });

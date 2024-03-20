@@ -36,9 +36,19 @@
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="type">Select Type</label>
-                            <select class="form-control @error('type') is-invalid @enderror" name="type">
-                                <option value="major" {{ isset($row) ? $row->type == 'major' ? 'selected': null : old('type') }}>Major</option>
-                                <option value="boiler" {{ isset($row) ? $row->type == 'boiler' ? 'selected': null : old('type') }}>Boiler</option>
+                            <select class="form-control select2 @error('type') is-invalid @enderror" multiple="multiple" name="type[]" style="width: 100%;">
+                                <option value="EWI" {{ isset($row) ? $row->type == 'EWI' ? 'selected': null : old('type') }}>EWI</option>
+                                <option value="IWI" {{ isset($row) ? $row->type == 'IWI' ? 'selected': null : old('type') }}>IWI</option>
+                                <option value="RIR" {{ isset($row) ? $row->type == 'RIR' ? 'selected': null : old('type') }}>RIR</option>
+                                <option value="Cavity" {{ isset($row) ? $row->type == 'Cavity' ? 'selected': null : old('type') }}>Cavity</option>
+                                <option value="Boiler" {{ isset($row) ? $row->type == 'Boiler' ? 'selected': null : old('type') }}>Boiler</option>
+                                <option value="Loft" {{ isset($row) ? $row->type == 'Loft' ? 'selected': null : old('type') }}>Loft</option>
+                                <option value="Plumber" {{ isset($row) ? $row->type == 'Plumber' ? 'selected': null : old('type') }}>Plumber</option>
+                                <option value="Electrician" {{ isset($row) ? $row->type == 'Electrician' ? 'selected': null : old('type') }}>Electrician</option>
+                                <option value="Handy man" {{ isset($row) ? $row->type == 'Handy man' ? 'selected': null : old('type') }}>Handy man</option>
+                                <option value="Cleaner" {{ isset($row) ? $row->type == 'Cleaner' ? 'selected': null : old('type') }}>Cleaner</option>
+                                <option value="Driver" {{ isset($row) ? $row->type == 'Driver' ? 'selected': null : old('type') }}>Driver</option>
+                                <option value="Renewables" {{ isset($row) ? $row->type == 'Renewables' ? 'selected': null : old('type') }}>Renewables</option>
                             </select>
                             @error('type')
                                 <span id="type" class="error invalid-feedback">{{ $message }}</span>
