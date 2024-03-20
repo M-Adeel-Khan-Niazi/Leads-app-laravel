@@ -84,7 +84,7 @@
                     <div class="col-md-3 col-12">
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input" onchange="addMeasureForm('Loft insulation')" name="is_loft_insulation" type="checkbox" id="is_loft_insulation" {{ old('is_loft_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
+                                <input class="custom-control-input" onchange="addMeasureForm('Loft insulation')" name="is_loft_insulation" type="checkbox" id="is_loft_insulation" {{ old('is_loft_insulation') == 'true' ? 'checked' : (isset($row) && $row->is_loft_insulation ? 'checked' : '') }}>
                                 <label for="is_loft_insulation" class="custom-control-label">Loft insulation</label>
                                 @error('is_loft_insulation')
                                 <span id="is_loft_insulation" class="error invalid-feedback">{{ $message }}</span>
@@ -156,8 +156,8 @@
                         @php
                             $slug = \Str::slug($measure_type->category);
                         @endphp
-                        <input type="hidden" name="types[{{$key}}][category]" value="{{$measure_type->category}}" />
                         <div class="card-outline card-primary" id="{{ $slug }}">
+                            <input type="hidden" name="types[{{$key}}][category]" value="{{$measure_type->category}}" />
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6 col-12 m-auto">
@@ -192,7 +192,7 @@
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
                                                 <input class="custom-control-input" name="types[{{$key}}][is_design]" type="checkbox" id="is_design[{{$key}}]" {{ $measure_type->is_design ? 'checked' : '' }}>
-                                                <label for="is_design" class="custom-control-label">Design</label>
+                                                <label for="is_design[{{$key}}]" class="custom-control-label">Design</label>
                                                 @error('is_design')
                                                 <span id="is_design[{{$key}}]" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -203,7 +203,7 @@
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
                                                 <input class="custom-control-input" name="types[{{$key}}][is_tech_survey]" type="checkbox" id="is_tech_survey[{{$key}}]" {{ $measure_type->is_tech_survey ? 'checked' : '' }}>
-                                                <label for="is_tech_survey" class="custom-control-label">Tech Survey</label>
+                                                <label for="is_tech_survey[{{$key}}]" class="custom-control-label">Tech Survey</label>
                                                 @error('is_tech_survey')
                                                 <span id="is_tech_survey[{{$key}}]" class="error invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -350,7 +350,7 @@
     <div class="col-md-3 col-12 m-auto">
         <div class="form-group">
             <div class="custom-control custom-checkbox">
-                <input class="custom-control-input" name="types[${form_index}][is_tech_survey]" type="checkbox" id="is_tech_survey[${form_index}]" {{ old('is_tech_survey') == 'true' ? 'checked' : (isset($row) && $row->is_under_floor_insulation ? 'checked' : '') }}>
+                <input class="custom-control-input" name="types[${form_index}][is_tech_survey]" type="checkbox" id="is_tech_survey[${form_index}]" {{ old('is_tech_survey') == 'true' ? 'checked' : (isset($row) && $row->is_tech_survey ? 'checked' : '') }}>
                         <label for="is_tech_survey[${form_index}]" class="custom-control-label">Tech Survey</label>
                         @error('is_tech_survey')
             <span id="is_tech_survey[${form_index}]" class="error invalid-feedback">{{ $message }}</span>
