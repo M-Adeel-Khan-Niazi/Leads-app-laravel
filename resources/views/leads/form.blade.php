@@ -7,6 +7,11 @@
                     {{ Session::get('error')}}
                 </div>
             @endif
+            @if(isset($row) && $row->status == 'rejected')
+                <div class="alert alert-danger">
+                    <i class="fa fa-info-circle pr-2"></i><strong>{{$row->data_matched->comment ?? 'N/A'}}</strong>
+                </div>
+            @endif
             <form method="POST" action="{{ route('leads.store') }}" enctype="multipart/form-data">
             @csrf
             @if(isset($row))
