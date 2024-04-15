@@ -38,7 +38,10 @@ class CreateLeadDetailsTable extends Migration
             $table->boolean('is_solar_pv')->default(false);
             $table->boolean('is_air_source')->default(false);
             $table->boolean('is_storage_heater')->default(false);
+            $table->boolean('is_invoice_paid')->default(false);
             $table->boolean('is_rir')->default(false);
+            $table->boolean('is_agent_paid')->default(false);
+            $table->boolean('is_warranty_applied')->default(false);
             $table->decimal('trickle_vents', 5, 2)->default(0);
             $table->decimal('air_brick', 5, 2)->default(0);
             $table->decimal('fans', 5, 2)->default(0);

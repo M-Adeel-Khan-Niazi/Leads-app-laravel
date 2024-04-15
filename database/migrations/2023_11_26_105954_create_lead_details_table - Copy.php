@@ -47,13 +47,13 @@ class CreateLeadDetailsTable extends Migration
             $table->boolean('is_cavity_wall_insulation')->default(false);
             $table->boolean('is_under_floor_insulation')->default(false);
             $table->boolean('is_loft_insulation')->default(false);
-            $table->boolean('is_warranty_applied')->default(false);
             $table->boolean('is_heating_controls')->default(false);
             $table->boolean('is_solar_pv')->default(false);
             $table->boolean('is_air_source')->default(false);
             $table->boolean('is_storage_heater')->default(false);
             $table->boolean('is_rir')->default(false);
             $table->boolean('is_agent_paid')->default(false);
+            $table->boolean('is_warranty_applied')->default(false);
             $table->boolean('is_invoice_paid')->default(false);
             $table->integer('trickle_vents')->default(0);
             $table->integer('air_brick')->default(0);

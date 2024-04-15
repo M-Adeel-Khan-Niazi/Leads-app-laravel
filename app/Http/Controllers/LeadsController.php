@@ -465,4 +465,9 @@ class LeadsController extends Controller
             return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);
         }
     }
+
+    private function updateStatus($lead)
+    {
+
+    }
 }

@@ -109,7 +109,7 @@
                                         @method('DELETE')
                                         <button type="submit" class="SingleDelete btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
                                     @endif
-                                    @if (!in_array($lead->status,['draft','rejected','onHold']) && auth()->user()->role == 'admin')
+                                    @if (!in_array($lead->status,['draft']) && auth()->user()->role == 'admin')
                                         <a href="{{ route('leads.details', ['data-matched',$lead->id]) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-book-open"></i></a>
                                         <a href="{{ route('leads.details', ['retrofit',$lead->id]) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-user-cog"></i></a>
                                         <a href="{{ route('leads.details', ['measure-install',$lead->id]) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-ruler-combined"></i></a>
