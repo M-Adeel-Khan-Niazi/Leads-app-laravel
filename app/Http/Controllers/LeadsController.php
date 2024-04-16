@@ -125,8 +125,9 @@ class LeadsController extends Controller
                 $lead->fill($except);
             } else {
                 $lead = new Leads($except);
+                $lead->created_by = Auth::id();
             }
-            if ($is_all_checked)
+            if ($is_all_checked && $lead->status == 'draft')
                 $lead->status = 'pending';
             $lead->is_benefit_recipient = filter_var($request->is_benefit_recipient, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
             $lead->is_property_check = filter_var($request->is_property_check, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
@@ -135,7 +136,6 @@ class LeadsController extends Controller
             $lead->is_address_proof_sent = filter_var($request->is_address_proof_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
             $lead->is_data_sent = filter_var($request->is_data_sent, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);;
             $lead->address_line_one = $request->house_number . '-' . $request->postal_code;
-            $lead->created_by = Auth::id();
             $lead->extension_wall_type = $request->extension_wall_type ?? $request->extension_wall_type_other;
             $lead->relationship = $request->relationship ?? $request->other_relationship;
             $lead->save();
@@ -309,8 +309,9 @@ class LeadsController extends Controller
             'status' => 'required',
         ]);
         $lead = Leads::find($id);
-        $lead->status = $request->status;
-        $lead->save();
+//        $lead->status = $request->status;
+//        $lead->save();
+        $this->updateStatus($lead, $request->status);
 
         $data = LeadDataMatches::firstOrNew(['lead_id' => $id]);
         $data = $data->fill($request->except('_token'));
@@ -336,13 +337,14 @@ class LeadsController extends Controller
             $data = $this->uploadFiles($request->file('floor_plan_pictures'), 'floor_plan');
             $lead->property_check_pictures()->saveMany($data);
         }
-        if ($retrofit->is_rfa_complete)
-            $lead->status = 'raCompleted';
-        if ($retrofit->is_rfa_lodged)
-            $lead->status = 'raLodged';
-        if ($retrofit->rfa_booked_time && $retrofit->rfa_booked_date && (!$retrofit->is_rfa_complete || !$retrofit->is_rfa_lodged))
-            $lead->status = 'raBooked';
-        $lead->save();
+//        if ($retrofit->is_rfa_complete)
+//            $lead->status = 'raCompleted';
+//        if ($retrofit->is_rfa_lodged)
+//            $lead->status = 'raLodged';
+//        if ($retrofit->rfa_booked_time && $retrofit->rfa_booked_date && (!$retrofit->is_rfa_complete || !$retrofit->is_rfa_lodged))
+//            $lead->status = 'raBooked';
+//        $lead->save();
+        $this->updateStatus($lead);
         return redirect()->route('leads.index');
     }
 
@@ -379,10 +381,18 @@ class LeadsController extends Controller
             $details->lead_id = $id;
             $details->save();
 
-            if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Completed') {
-                Leads::where('id', $id)->update(['status' => 'installationCompleted']);
-            }
+//            if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Completed') {
+//                Leads::where('id', $id)->update(['status' => 'installationCompleted']);
+//            }
+//            if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Booked') {
+//                Leads::where('id', $id)->update(['status' => 'installationBooked']);
+//            }
+//            if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Started') {
+//                Leads::where('id', $id)->update(['status' => 'installationStarted']);
+//            }
             DB::commit();
+            $lead = Leads::find($id);
+            $this->updateStatus($lead);
             return redirect()->route('leads.index');
         } catch (\Exception $error) {
             DB::rollBack();
@@ -402,11 +412,12 @@ class LeadsController extends Controller
         $details->lead_id = $id;
         $details->save();
         $lead = Leads::find($id);
-        if ($request->handover_on)
-            $lead->status = 'hanoverCompleted';
-        if ($request->status)
-            $lead->status = $request->status;
-        $lead->save();
+//        if ($request->handover_on)
+//            $lead->status = 'handoverCompleted';
+//        if ($request->status)
+//            $lead->status = $request->status;
+//        $lead->save();
+        $this->updateStatus($lead, $request->status);
         return redirect()->route('leads.index');
     }
 
@@ -418,7 +429,6 @@ class LeadsController extends Controller
         $retrofit->pre_epr_result = $request->pre_epr_result;
         $retrofit->post_epr_result = $request->post_epr_result;
         $retrofit->save();
-        // Save and deletes measures
         LeadMeasureCategoryTypes::where('lead_id', $id)->delete();
         foreach ($request->installers as $installer) {
             $type = new LeadMeasureCategoryTypes($installer);
@@ -466,8 +476,32 @@ class LeadsController extends Controller
         }
     }
 
-    private function updateStatus($lead)
+    private function updateStatus($lead, $status = null)
     {
-
+        $statuses = LeadMeasureCategories::where('lead_id', $lead->id)->pluck('measure_status')->toArray();
+        if ($lead->retrofit && $lead->retrofit->rfa_booked_time && $lead->retrofit->rfa_booked_date)
+            $lead->status = 'raBooked';
+        if ($lead->retrofit && $lead->retrofit->is_rfa_complete)
+            $lead->status = 'raCompleted';
+        if ($lead->retrofit && $lead->retrofit->is_rfa_lodged)
+            $lead->status = 'raLodged';
+        if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Completed') {
+            $lead->status = 'installationCompleted';
+        }
+        if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Booked') {
+            $lead->status = 'installationBooked';
+        }
+        if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Started') {
+            $lead->status = 'installationStarted';
+        }
+        if ($lead->details && $lead->details->handover_on)
+            $lead->status = 'handoverCompleted';
+        if ($status)
+            $lead->status = $status;
+        if ($lead->details && $lead->details->is_invoice_paid)
+            $lead->status = 'invoicePaid';
+        if ($lead->details && $lead->details->is_agent_paid)
+            $lead->status = 'agentPaid';
+        $lead->save();
     }
 }

@@ -855,7 +855,7 @@
             const gross_profit = parseInt($("#gross_profit").val());
             let fee = 0;
             if (type == 'fixed')
-                fee = gross_profit - value
+                fee = value
             else
                 fee = (((value / 100) * gross_profit)).toFixed(2);
             $('#introducer_fee').attr('value', fee);
@@ -877,7 +877,7 @@
             const retrofit_assessor_cost = parseInt($("#retrofit_assessor_cost").val());
 
             const total_cost = sub_total + trickle_vents + air_brick + fans + minor_work_cert + roof_vents + door_undercut + other_ventilation + gas_safe_reg + retrofit_assessor_cost + retrofit_coordinator_cost + total_ibg_cost;
-            const gross_profit = funding - total_cost;
+            const gross_profit = funding ? funding - total_cost : total_cost;
             $('#total_cost').attr('value', total_cost);
             $('#gross_profit').attr('value', gross_profit);
             $('#net_profit').attr('value', gross_profit);

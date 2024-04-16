@@ -21,8 +21,8 @@
                         <div class="form-group">
                             <label for="is_handover_emailed">Handover Emailed</label>
                             <select class="form-control @error('is_handover_emailed') is-invalid @enderror" id="is_handover_emailed" name="is_handover_emailed" style="width: 100%;">
+                                <option value="true" {{ isset($lead->details) && $lead->details->is_andover_emailed ? 'selected' : (old('is_handover_emailed') == 'true' ? 'selected': '')}}>Yes</option>
                                 <option value="false" {{ isset($lead->details) && !$lead->details->is_handover_emailed ? 'selected' : (old('is_handover_emailed') == 'false' ? 'selected': '') }}>No</option>
-                                <option value="true" {{ isset($lead->details) && $lead->details->is_andover_emailed ? 'selected' : (old('is_handover_emailed') ? 'selected': '')}}>Yes</option>
                             </select>
                             @error('is_handover_emailed')
                             <span id="is_handover_emailed" class="error invalid-feedback">{{ $message }}</span>

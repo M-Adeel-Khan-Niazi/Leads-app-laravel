@@ -29,7 +29,7 @@
                                         <option {{request()->input('status') == 'installationStarted' ? 'selected' : ''}} value="installationStarted">Installation Started</option>
                                         <option {{request()->input('status') == 'installationCompleted' ? 'selected' : ''}} value="installationCompleted">Installation Completed</option>
                                         <option {{request()->input('status') == 'installationCompleted' ? 'selected' : ''}} value="installationCompleted">Hanover Pending</option>
-                                        <option {{request()->input('status') == 'hanoverCompleted' ? 'selected' : ''}} value="hanoverCompleted">Hanover Completed</option>
+                                        <option {{request()->input('status') == 'handoverCompleted' ? 'selected' : ''}} value="handoverCompleted">Hanover Completed</option>
                                         <option {{request()->input('status') == 'paperworkSubmitted' ? 'selected' : ''}} value="paperworkSubmitted">Funder Paperwork Submitted</option>
                                         <option {{request()->input('status') == 'paperworkError' ? 'selected' : ''}} value="paperworkError">Funder Paperwork Error</option>
                                         <option {{request()->input('status') == 'paperworkAccepted' ? 'selected' : ''}} value="paperworkAccepted">Funder Paperwork Accepted</option>
@@ -88,6 +88,7 @@
                                     @case('paperworkSubmitted')<button type="button" class="btn btn-block btn-info btn-sm">Funder Paperwork Submitted</button>@break
 
                                     @case('paperworkAccepted')<button type="button" class="btn btn-block btn-warning btn-sm">Awaiting Invoice Payment</button>@break
+                                    @case('invoicePaid')<button type="button" class="btn btn-block btn-warning btn-sm">Agent Awaiting Invoice</button>@break
                                     @case('installationCompleted')<button type="button" class="btn btn-block btn-warning btn-sm">Handover Pending</button>@break
                                     @case('handoverCompleted')<button type="button" class="btn btn-block btn-warning btn-sm">Funder Paperwork Pending</button>@break
                                     @case('raLodged')<button type="button" class="btn btn-block btn-warning btn-sm">Awaiting Installation</button>@break
@@ -98,6 +99,7 @@
                                     @case('paperworkError')<button type="button" class="btn btn-block btn-danger btn-sm">Funder Paperwork Error</button>@break
                                     @case('rejected')<button type="button" class="btn btn-block btn-danger btn-sm">Rejected</button>@break
                                     @case('invoicePaid')<button type="button" class="btn btn-block btn-success btn-sm">Invoice Paid</button>@break
+                                    @case('agentPaid')<button type="button" class="btn btn-block btn-success btn-sm">Agent Paid</button>@break
                                 @endswitch
                             </td>
                             <td>{{ $lead->created_at->format('Y-m-d H:i') }}</td>
