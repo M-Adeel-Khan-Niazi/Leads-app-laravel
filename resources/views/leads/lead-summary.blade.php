@@ -867,6 +867,7 @@
             const total_ibg_cost = parseInt($("#ibg_cost").val());
             const trickle_vents = parseInt($("#trickle_vents").val());
             const air_brick = parseInt($("#air_brick").val());
+            const tech_survey = parseInt($("#tech_survey").val());
             const fans = parseInt($("#fans").val());
             const minor_work_cert = parseInt($("#minor_work_cert").val());
             const roof_vents = parseInt($("#roof_vents").val());
@@ -875,8 +876,18 @@
             const gas_safe_reg = parseInt($("#gas_safe_reg").val());
             const retrofit_coordinator_cost = parseInt($("#retrofit_coordinator_cost").val());
             const retrofit_assessor_cost = parseInt($("#retrofit_assessor_cost").val());
+            const retrofit_design_cost = parseInt($("#retrofit_design_cost").val());
+            const land_reg_cost = parseInt($("#land_reg_cost").val());
+            const building_regs_fee = parseInt($("#building_regs_fee").val());
+            const trustmark_cost = parseInt($("#trustmark_cost").val());
+            const data_match_cost = parseInt($("#data_match_cost").val());
+            const waste_manage = parseInt($("#waste_manage").val());
+            const plumbing_cost = parseInt($("#plumbing_cost").val());
+            const joinery_cost = parseInt($("#joinery_cost").val());
+            const travel_cost = parseInt($("#travel_cost").val());
+            const food_cost = parseInt($("#food_cost").val());
 
-            const total_cost = sub_total + trickle_vents + air_brick + fans + minor_work_cert + roof_vents + door_undercut + other_ventilation + gas_safe_reg + retrofit_assessor_cost + retrofit_coordinator_cost + total_ibg_cost;
+            const total_cost = sub_total + trickle_vents + retrofit_design_cost + tech_survey + air_brick + fans + minor_work_cert + roof_vents + door_undercut + other_ventilation + gas_safe_reg + retrofit_assessor_cost + retrofit_coordinator_cost + total_ibg_cost + land_reg_cost + building_regs_fee + trustmark_cost + data_match_cost + waste_manage + plumbing_cost + joinery_cost + travel_cost + food_cost;
             const gross_profit = funding ? funding - total_cost : total_cost;
             $('#total_cost').attr('value', total_cost);
             $('#gross_profit').attr('value', gross_profit);
@@ -886,8 +897,8 @@
             const score = $("#abs_score").val();
             const rate = $("#rate").val();
             const funding = score * rate;
-            $('#funding').attr('value', funding);
-            $('#funding_summary').attr('value', funding);
+            $('#funding').attr('value', funding.toFixed(2));
+            // $('#funding_summary').attr('value', funding);
         }
         $(document).on('click', '.remove_material', function () {
             $(this).parents('div.materials').remove();

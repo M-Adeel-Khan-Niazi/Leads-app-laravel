@@ -68,9 +68,9 @@
                         <div class="form-group">
                             <label for="status">Lead Status</label>
                             <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" style="width: 100%;">
-                                <option value="approved" {{ isset($row) && $row->status == 'approved' ? 'selected' : (old('status') == 'approved' ? 'selected': '')}}>Approved</option>
-                                <option value="rejected" {{ isset($row) && $row->status == 'rejected' ? 'selected' : (old('status') == 'rejected' ? 'selected': '') }}>Rejected</option>
-                                <option value="onHold" {{ isset($row) && $row->status == 'onHold' ? 'selected' : (old('status') == 'onHold' ? 'selected': '') }}>On Hold</option>
+                                <option value="approved" {{ isset($lead) && $lead->status == 'approved' ? 'selected' : (old('status') == 'approved' ? 'selected': '')}}>Approved</option>
+                                <option value="rejected" {{ isset($lead) && $lead->status == 'rejected' ? 'selected' : (old('status') == 'rejected' ? 'selected': '') }}>Rejected</option>
+                                <option value="onHold" {{ isset($lead) && $lead->status == 'onHold' ? 'selected' : (old('status') == 'onHold' ? 'selected': '') }}>On Hold</option>
                             </select>
                             @error('status')
                             <span id="status" class="error invalid-feedback">{{ $message }}</span>

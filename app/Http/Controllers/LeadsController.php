@@ -354,15 +354,17 @@ class LeadsController extends Controller
         try {
             LeadMeasureCategories::where('lead_id', $id)->delete();
             $statuses = [];
-            foreach ($request->types as $category) {
-                $lead_category = new LeadMeasureCategories($category);
-                $lead_category->is_customer_informed = filter_var($category['is_customer_informed'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-                $lead_category->is_pibi = isset($category['is_pibi']) == 'on';
-                $lead_category->is_design = isset($category['is_design']) == 'on';
-                $lead_category->is_tech_survey = isset($category['is_tech_survey']) == 'on';
-                $lead_category->lead_id = $id;
-                $lead_category->save();
-                $statuses[] = $category['measure_status'];
+            if ($request->types) {
+                foreach ($request->types as $category) {
+                    $lead_category = new LeadMeasureCategories($category);
+                    $lead_category->is_customer_informed = filter_var($category['is_customer_informed'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                    $lead_category->is_pibi = isset($category['is_pibi']) == 'on';
+                    $lead_category->is_design = isset($category['is_design']) == 'on';
+                    $lead_category->is_tech_survey = isset($category['is_tech_survey']) == 'on';
+                    $lead_category->lead_id = $id;
+                    $lead_category->save();
+                    $statuses[] = $category['measure_status'];
+                }
             }
             // Pending: Update the lead status in the behalf of checking of measures statuses
             $details = LeadDetails::firstOrNew(['lead_id' => $id]);
@@ -491,7 +493,7 @@ class LeadsController extends Controller
         if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Booked') {
             $lead->status = 'installationBooked';
         }
-        if (count(array_unique($statuses)) == 1 && array_unique($statuses)[0] == 'Started') {
+        if (in_array('Started', $statuses)) {
             $lead->status = 'installationStarted';
         }
         if ($lead->details && $lead->details->handover_on)
